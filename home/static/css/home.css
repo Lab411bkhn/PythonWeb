@@ -76,6 +76,7 @@ body{
     float: left;
     /*min-height: 800px;*/
     /*height:inherit;*/
+    min-height: 700px;
     height: auto;
     margin: 0px;
     position: relative;

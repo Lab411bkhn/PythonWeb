@@ -5,7 +5,12 @@ from rbi.models import ApiComponentType
 from rbi.models import Sites
 from rbi.models import Facility,EquipmentMaster, ComponentMaster, EquipmentType, DesignCode, Manufacturer, ComponentType
 from rbi.models import FacilityRiskTarget
+from rbi.models import RwAssessment,RwEquipment,RwComponent,RwStream,RwExtcorTemperature, RwCoating, RwMaterial
+from rbi.models import RwInputCaLevel1, RwCaLevel1, RwFullPof, RwFullFcof
 from django.http import Http404, HttpResponse
+from rbi.DM_CAL import DM_CAL
+from rbi.CA_CAL import CA_NORMAL
+
 from datetime import datetime
 
 # Project Management Function
@@ -27,7 +32,7 @@ def newSite(request):
         data['sitename'] = request.POST.get('sitename')
         count = Sites.objects.filter(sitename= data['sitename']).count()
         if(count > 0):
-            error['exist'] = "This Site Existed"
+            error['exist'] = "This Site already exist!"
         else:
             if (not data['sitename']):
                 error['empty'] = "Sites does not empty!"
@@ -35,7 +40,7 @@ def newSite(request):
                 obj = Sites(sitename= data['sitename'])
                 obj.save()
                 return redirect('site_display')
-    return  render(request,"home/new/newSite.html",{'error': error, 'site': data})
+    return  render(request,"home/new/newSite.html",{'error': error, 'obj': data})
 
 def facility(request,siteid):
     try:
@@ -45,25 +50,25 @@ def facility(request,siteid):
         if request.method == "POST":
             dataFacility['facilityname'] = request.POST.get('FacilityName')
             dataFacility['siteid'] = siteid
-            dataFacility['managefactor'] = request.POST.get('ManagementSystemFactor')
-            dataFacility['TargetFC'] = request.POST.get('Financial')
-            dataFacility['TargetAC'] = request.POST.get('Area')
+            dataFacility['managementfactor'] = request.POST.get('ManagementSystemFactor')
+            dataFacility['risktarget_fc'] = request.POST.get('Financial')
+            dataFacility['risktarget_ac'] = request.POST.get('Area')
             countFaci = Facility.objects.filter(facilityname= dataFacility['facilityname']).count()
             if(not dataFacility['facilityname']):
                 error['facilityname'] = "Facility does not empty!"
-            if(not dataFacility['managefactor']):
+            if(not dataFacility['managementfactor']):
                 error['managefactor'] = "Manage Factor does not empty!"
-            if(not dataFacility['TargetFC']):
+            if(not dataFacility['risktarget_fc']):
                 error['TargetFC'] = "Finance Target does not empty!"
-            if(not dataFacility['TargetAC']):
+            if(not dataFacility['risktarget_ac']):
                 error['TargetAC'] = "Area Target does not empty!"
-            if(dataFacility['facilityname'] and dataFacility['managefactor'] and dataFacility['TargetAC'] and dataFacility['TargetFC']):
+            if(dataFacility['facilityname'] and dataFacility['managementfactor'] and dataFacility['risktarget_ac'] and dataFacility['risktarget_fc']):
                 if countFaci == 0:
-                    faci = Facility(facilityname= dataFacility['facilityname'],managementfactor= dataFacility['managefactor'], siteid_id=siteid)
+                    faci = Facility(facilityname= dataFacility['facilityname'],managementfactor= dataFacility['managementfactor'], siteid_id=siteid)
                     faci.save()
                     faciOb = Facility.objects.get(facilityname= dataFacility['facilityname'])
-                    facility_target = FacilityRiskTarget(facilityid_id= faciOb.facilityid , risktarget_ac= dataFacility['TargetAC'],
-                                                         risktarget_fc= dataFacility['TargetFC'])
+                    facility_target = FacilityRiskTarget(facilityid_id= faciOb.facilityid , risktarget_ac= dataFacility['risktarget_ac'],
+                                                         risktarget_fc= dataFacility['risktarget_fc'])
                     facility_target.save()
                     return redirect('facilityDisplay', siteid)
                 else:
@@ -80,42 +85,42 @@ def equipment(request, facilityname):
         dataManufacture = Manufacturer.objects.all()
         error = {}
         data = {}
+        data['commissiondate'] = ""
         if request.method == "POST":
-            data['equipmentNumber'] = request.POST.get('equipmentNumber')
-            data['equipmentName'] = request.POST.get('equipmentName')
-            data['equipmentType'] = request.POST.get('equipmentType')
-            data['designcode'] = request.POST.get('designCode')
+            data['equipmentnumber'] = request.POST.get('equipmentNumber')
+            data['equipmentname'] = request.POST.get('equipmentName')
+            data['equipmenttypeid'] = request.POST.get('equipmentType')
+            data['designcodeid'] = request.POST.get('designCode')
             data['site'] = request.POST.get('Site')
             data['facility'] = request.POST.get('Facility')
-            data['manufacture'] = request.POST.get('manufacture')
-            data['commisiondate'] = request.POST.get('CommissionDate')
-            data['PDFNo'] = request.POST.get('PDFNo')
-            data['processDescription'] = request.POST.get('processDescription')
-            data['decription']= request.POST.get('decription')
-            equip = EquipmentMaster.objects.filter(equipmentnumber= data['equipmentNumber']).count()
-            if not data['equipmentNumber']:
+            data['manufactureid'] = request.POST.get('manufacture')
+            data['commissiondate'] = request.POST.get('CommissionDate')
+            data['pfdno'] = request.POST.get('PDFNo')
+            data['processdescription'] = request.POST.get('processDescription')
+            data['equipmentdesc']= request.POST.get('decription')
+            equip = EquipmentMaster.objects.filter(equipmentnumber= data['equipmentnumber']).count()
+            if not data['equipmentnumber']:
                 error['equipmentNumber'] = "Equipment Number does not empty!"
-            if not data['equipmentName']:
+            if not data['equipmentname']:
                 error['equipmentName'] = "Equipment Name does not empty!"
-            if not data['designcode']:
+            if not data['designcodeid']:
                 error['designcode'] = "Design Code does not empty!"
-            if not data['manufacture']:
+            if not data['manufactureid']:
                 error['manufacture'] = "Manufacture does not empty!"
-            if not data['commisiondate']:
+            if not data['commissiondate']:
                 error['commisiondate'] = "Commission Date does not empty!"
-            if (data['equipmentNumber'] and data['equipmentName'] and data['designcode'] and data['manufacture'] and data['commisiondate']):
+            if (data['equipmentnumber'] and data['equipmentname'] and data['designcodeid'] and data['manufactureid'] and data['commissiondate']):
                 if equip > 0:
                     error['exist'] = "Equipment already exists! Please choose other Equipment Number!"
                 else:
-
-                    equipdata = EquipmentMaster(equipmentnumber= data['equipmentNumber'], equipmentname= data['equipmentName'], equipmenttypeid_id=EquipmentType.objects.get(equipmenttypename= data['equipmentType']).equipmenttypeid,
-                                                designcodeid_id= DesignCode.objects.get(designcode= data['designcode']).designcodeid, siteid_id= Sites.objects.get(sitename= data['site']).siteid, facilityid_id= Facility.objects.get(facilityname= data['facility']).facilityid,
-                                                manufacturerid_id= Manufacturer.objects.get(manufacturername= data['manufacture']).manufacturerid, commissiondate= data['commisiondate'], pfdno= data['PDFNo'], processdescription= data['processDescription'], equipmentdesc= data['decription'])
+                    equipdata = EquipmentMaster(equipmentnumber= data['equipmentnumber'], equipmentname= data['equipmentname'], equipmenttypeid_id=EquipmentType.objects.get(equipmenttypename= data['equipmenttypeid']).equipmenttypeid,
+                                                designcodeid_id= DesignCode.objects.get(designcode= data['designcodeid']).designcodeid, siteid_id= Sites.objects.get(sitename= data['site']).siteid, facilityid_id= Facility.objects.get(facilityname= data['facility']).facilityid,
+                                                manufacturerid_id= Manufacturer.objects.get(manufacturername= data['manufactureid']).manufacturerid, commissiondate= data['commissiondate'], pfdno= data['pfdno'], processdescription= data['processdescription'], equipmentdesc= data['equipmentdesc'])
                     equipdata.save()
                     return redirect('equipment_display',facilityname)
     except Facility.DoesNotExist:
         raise Http404
-    return render(request,"home/new/equipment.html", {'obj': dataFacility, 'equipmenttype': dataEquipmentType, 'designcode': dataDesignCode, 'manufacture': dataManufacture, 'error': error, 'equipment':data})
+    return render(request,"home/new/equipment.html", {'obj': dataFacility, 'equipmenttype': dataEquipmentType, 'designcode': dataDesignCode, 'manufacture': dataManufacture, 'error': error, 'equipment':data, 'commisiondate':data['commissiondate']})
 
 def newDesigncode(request, facilityname):
     try:
@@ -145,15 +150,15 @@ def newManufacture(request, facilityname):
         error = {}
         data = {}
         if(request.method == "POST"):
-            data['manufacture'] = request.POST.get('manufacture')
-            manufac = Manufacturer.objects.filter(manufacturername= data['manufacture']).count()
+            data['manufacturername'] = request.POST.get('manufacture')
+            manufac = Manufacturer.objects.filter(manufacturername= data['manufacturername']).count()
             if(manufac > 0):
-                error['exist'] = "Manufacture already exists!"
+                error['exist'] = "This Manufacture already exists!"
             else:
-                if(not data['manufacture']):
+                if(not data['manufacturername']):
                     error['manufacture'] = "Manufacture does not empty!"
                 else:
-                    manu = Manufacturer(manufacturername= data['manufacture'])
+                    manu = Manufacturer(manufacturername= data['manufacturername'])
                     manu.save()
                     return redirect('manufactureDisplay', facilityname)
     except Facility.DoesNotExist:
@@ -167,116 +172,416 @@ def newcomponent(request,equipmentname):
         dataApicomponent = ApiComponentType.objects.all()
         error = {}
         data = {}
+        isedit = 0
         if request.method == "POST":
             data['equipmentNumber'] = request.POST.get('equipmentNub')
             data['equipmentType'] = request.POST.get('equipmentType')
             data['designCode'] = request.POST.get('designCode')
             data['site'] = request.POST.get('plant')
             data['facility'] = request.POST.get('facility')
-            data['componentNumer'] = request.POST.get('componentNumer')
-            data['componentType'] = request.POST.get('componentType')
-            data['apiComponentType'] = request.POST.get('apiComponentType')
-            data['componentName'] = request.POST.get('componentName')
+            data['componentnumber'] = request.POST.get('componentNumer')
+            data['componenttypeid'] = request.POST.get('componentType')
+            data['apicomponenttypeid'] = request.POST.get('apiComponentType')
+            data['componentname'] = request.POST.get('componentName')
             data['comRisk'] = request.POST.get('comRisk')
-            data['decription'] = request.POST.get('decription')
-            comnum = ComponentMaster.objects.filter(componentnumber= data['componentNumer']).count()
-            if(not data['componentNumer']):
+            data['componentdesc'] = request.POST.get('decription')
+            if data['comRisk'] == "on":
+                data['isequipmentlinked'] = 1
+            else:
+                data['isequipmentlinked'] = 0
+            comnum = ComponentMaster.objects.filter(componentnumber= data['componentnumber']).count()
+            if(not data['componentnumber']):
                 error['componentNumber'] ="Component Number does not empty!"
-            if(not data['componentName']):
+            if(not data['componentname']):
                 error['componentName'] = "Component Name does not empty!"
-            if(data['componentNumer'] and data['componentName']):
+            if(data['componentnumber'] and data['componentname']):
                 if(comnum > 0):
-                    error['exist'] = "Component already exists!"
+                    error['exist'] = "This Component already exists!"
                 else:
-                    if data['comRisk'] =="on":
-                        comRisk = 1
-                    else:
-                        comRisk = 0
-                    com = ComponentMaster(componentnumber= data['componentNumer'], equipmentid_id=EquipmentMaster.objects.get(equipmentnumber= data['equipmentNumber']).equipmentid,
-                                          componenttypeid_id= ComponentType.objects.get(componenttypename= data['componentType']).componenttypeid, componentname= data['componentName'],
-                                          componentdesc= data['decription'], apicomponenttypeid_id= ApiComponentType.objects.get(apicomponenttypename= data['apiComponentType']).apicomponenttypeid,
-                                          isequipmentlinked= comRisk)
+                    com = ComponentMaster(componentnumber= data['componentnumber'], equipmentid_id=EquipmentMaster.objects.get(equipmentnumber= data['equipmentNumber']).equipmentid,
+                                          componenttypeid= ComponentType.objects.get(componenttypename= data['componenttypeid']), componentname= data['componentname'],
+                                          componentdesc= data['componentdesc'], apicomponenttypeid= ApiComponentType.objects.get(apicomponenttypename= data['apicomponenttypeid']).apicomponenttypeid,
+                                          isequipmentlinked= data['isequipmentlinked'])
                     com.save()
                     return redirect('component_display', equipmentname)
     except EquipmentMaster.DoesNotExist:
         raise Http404
-    return render(request,'home/new/component.html', {'obj': dataEq , 'componenttype': dataComponentType, 'api':dataApicomponent})
+    return render(request,'home/new/component.html', {'obj': dataEq , 'componenttype': dataComponentType, 'api':dataApicomponent, 'component':data, 'error': error, 'isedit':isedit})
 
+def newProposal(request, componentname):
+    try:
+        dataCom = ComponentMaster.objects.get(componentid= componentname)
+        dataEq = EquipmentMaster.objects.get(equipmentid= dataCom.equipmentid_id)
+        api = ApiComponentType.objects.get(apicomponenttypeid= dataCom.apicomponenttypeid)
+        data ={}
+        if request.method =="POST":
+            data['assessmentname'] = request.POST.get('AssessmentName')
+            data['assessmentdate'] = request.POST.get('assessmentdate')
+            data['riskperiod']=request.POST.get('RiskAnalysisPeriod')
+            data['islink'] = 1
+
+            rwassessment = RwAssessment(equipmentid= dataEq, componentid= dataCom, assessmentdate=data['assessmentdate'],
+                                        riskanalysisperiod=data['riskperiod'],isequipmentlinked=data['islink'],proposalname=data['assessmentname'])
+            rwassessment.save()
+
+            rwequipment = RwEquipment(id= rwassessment, commissiondate= data['assessmentdate'], adminupsetmanagement= 1)
+            rwequipment.save()
+
+            data['normaldiameter'] = request.POST.get('NominalDiameter')
+            data['normalthick'] = request.POST.get('NominalThickness')
+            data['currentthick'] = request.POST.get('CurrentThickness')
+            data['tmin'] = request.POST.get('tmin')
+            data['currentrate'] = request.POST.get('CurrentRate')
+            data['deltafatt'] = request.POST.get('DeltaFATT')
+            rwcomponent =RwComponent(id = rwassessment, nominaldiameter=data['normaldiameter'], nominalthickness= data['normalthick'],
+                                     minreqthickness=data['tmin'], currentcorrosionrate=data['currentrate'],deltafatt= data['deltafatt'])
+            rwcomponent.save()
+
+            rwstream = RwStream(id = rwassessment)
+            rwstream.save()
+
+            rwexcor = RwExtcorTemperature(id= rwassessment)
+            rwexcor.save()
+
+            rwcoat = RwCoating(id= rwassessment)
+            rwcoat.save()
+
+            data['CA'] = request.POST.get('CorrosionAllowance')
+            rwmaterial = RwMaterial(id = rwassessment, corrosionallowance=data['CA'])
+            rwmaterial.save()
+
+            rwinputca = RwInputCaLevel1(id= rwassessment)
+            rwinputca.save()
+
+            dm_cal = DM_CAL(APIComponentType= "COLBTM",
+                 Diametter= float(data['normaldiameter']), NomalThick=float(data['normalthick']), CurrentThick=float(data['currentthick']), MinThickReq=float(data['tmin']), CorrosionRate=float(data['currentrate']), CA=float(data['CA']),
+                 ProtectedBarrier=False, CladdingCorrosionRate=0, InternalCladding=False, NoINSP_THINNING=1,
+                 EFF_THIN="B", OnlineMonitoring="", HighlyEffectDeadleg=False, ContainsDeadlegs=False,
+                 TankMaintain653=False, AdjustmentSettle="", ComponentIsWeld=False,
+                 LinningType="", LINNER_ONLINE=False, LINNER_CONDITION="", YEAR_IN_SERVICE=0, INTERNAL_LINNING=False,
+                 CAUSTIC_INSP_EFF="E", CAUSTIC_INSP_NUM=0, HEAT_TREATMENT="", NaOHConcentration=0, HEAT_TRACE=False,
+                 STEAM_OUT=False,
+                 AMINE_INSP_EFF="E", AMINE_INSP_NUM=0, AMINE_EXPOSED=False, AMINE_SOLUTION="",
+                 ENVIRONMENT_H2S_CONTENT=False, AQUEOUS_OPERATOR=False, AQUEOUS_SHUTDOWN=False, SULPHIDE_INSP_EFF="E",
+                 SULPHIDE_INSP_NUM=0, H2SContent=0, PH=0, PRESENT_CYANIDE=False, BRINNEL_HARDNESS="",
+                 SULFUR_INSP_EFF="E", SULFUR_INSP_NUM=0, SULFUR_CONTENT="",
+                 CACBONATE_INSP_EFF="E", CACBONATE_INSP_NUM=0, CO3_CONTENT=0,
+                 PTA_SUSCEP=False, NICKEL_ALLOY=False, EXPOSED_SULFUR=False, PTA_INSP_EFF="E", PTA_INSP_NUM=0,
+                 ExposedSH2OOperation=False, ExposedSH2OShutdown=False, ThermalHistory="", PTAMaterial="",
+                 DOWNTIME_PROTECTED=False,
+                 INTERNAL_EXPOSED_FLUID_MIST=False, EXTERNAL_EXPOSED_FLUID_MIST=False, CHLORIDE_ION_CONTENT=0,
+                 CLSCC_INSP_EFF="E", CLSCC_INSP_NUM=0,
+                 HSC_HF_INSP_EFF="E", HSC_HF_INSP_NUM=0,
+                 HICSOHIC_INSP_EFF="E", HICSOHIC_INSP_NUM=0, HF_PRESENT=False,
+                 EXTERNAL_INSP_NUM=0, EXTERNAL_INSP_EFF="E",
+                 INTERFACE_SOIL_WATER=False, SUPPORT_COATING=False, INSULATION_TYPE="", CUI_INSP_NUM=0,
+                 CUI_INSP_EFF="E", CUI_INSP_DATE=datetime.now().date(), CUI_PERCENT_1=0, CUI_PERCENT_2=0,
+                 CUI_PERCENT_3=0, CUI_PERCENT_4=0, CUI_PERCENT_5=0, CUI_PERCENT_6=0, CUI_PERCENT_7=0, CUI_PERCENT_8=0,
+                 CUI_PERCENT_9=0, CUI_PERCENT_10=0,
+                 EXTERN_CLSCC_INSP_NUM=0, EXTERN_CLSCC_INSP_EFF="E",
+                 EXTERNAL_INSULATION=False, COMPONENT_INSTALL_DATE=datetime.now().date(), CRACK_PRESENT=False,
+                 EXTERNAL_EVIRONMENT="", EXTERN_COAT_QUALITY="", EXTERN_CLSCC_CUI_INSP_NUM=0,
+                 EXTERN_CLSCC_CUI_INSP_EFF="E", PIPING_COMPLEXITY="", INSULATION_CONDITION="",
+                 INSULATION_CHLORIDE=False,
+                 MATERIAL_SUSCEP_HTHA=False, HTHA_MATERIAL="", HTHA_NUM_INSP=0, HTHA_EFFECT="E", HTHA_PRESSURE=0,
+                 CRITICAL_TEMP=0, DAMAGE_FOUND=False,
+                 LOWEST_TEMP=False,
+                 TEMPER_SUSCEP=False, PWHT=False, BRITTLE_THICK=0, CARBON_ALLOY=False, DELTA_FATT=0,
+                 MAX_OP_TEMP=0, CHROMIUM_12=False, MIN_OP_TEMP=0, MIN_DESIGN_TEMP=0, REF_TEMP=0,
+                 AUSTENITIC_STEEL=False, PERCENT_SIGMA=0,
+                 EquipmentType="", PREVIOUS_FAIL="", AMOUNT_SHAKING="", TIME_SHAKING="", CYLIC_LOAD="",
+                 CORRECT_ACTION="", NUM_PIPE="", PIPE_CONDITION="", JOINT_TYPE="", BRANCH_DIAMETER="")
+
+            ca_cal = CA_NORMAL(NominalDiametter = float(request.POST.get('NominalDiameter')), MATERIAL_COST = 1, FLUID = "C3-C4", FLUID_PHASE = "Liquid", API_COMPONENT_TYPE_NAME ="COLBTM", DETECTION_TYPE = "C",
+                 ISULATION_TYPE = "C", STORED_PRESSURE = 102, ATMOSPHERIC_PRESSURE = 101, STORED_TEMP = 27, MASS_INVERT = 181528,
+                 MASS_COMPONENT = 12154, MITIGATION_SYSTEM = "", TOXIC_PERCENT = 0, RELEASE_DURATION = "", PRODUCTION_COST = 50000,
+                 INJURE_COST = 5000000, ENVIRON_COST = 0, PERSON_DENSITY = 0.0005, EQUIPMENT_COST = 1200, TOXIC_PHASE = "")
+
+            refullPOF = RwFullPof(id= rwassessment, thinningap1= dm_cal.DFB_THIN(5.08), thinningap2= dm_cal.DFB_THIN(8.08), thinningap3= dm_cal.DFB_THIN(11.08))
+            refullPOF.save()
+
+            refullfc = RwFullFcof(id= rwassessment, envcost=0)
+            refullfc.save()
+
+            calv1 = RwCaLevel1(id= rwassessment, release_phase= ca_cal.GET_RELEASE_PHASE(), fact_di= ca_cal.fact_di(), ca_inj_flame= ca_cal.ca_inj_flame(),
+                               fact_mit= ca_cal.fact_mit(), fact_ait= ca_cal.fact_ait(), ca_cmd= ca_cal.ca_cmd(), fc_cmd= ca_cal.fc_cmd(),
+                               fc_affa= ca_cal.fc_affa(), fc_envi= ca_cal.fc_environ(), fc_prod= ca_cal.fc_prod(), fc_inj= ca_cal.fc_inj(),
+                               fc_total= ca_cal.fc(), fcof_category= ca_cal.FC_Category(ca_cal.fc()))
+            calv1.save()
+
+            return redirect('resultca', rwassessment.id)
+    except ComponentMaster.DoesNotExist:
+        raise Http404
+    return render(request, 'home/new/Normal.html',{'component': dataCom , 'equipment':dataEq,'api':api})
 
 ### Edit function
 def editSite(request, sitename):
      try:
         data = Sites.objects.get(siteid= sitename)
+        error = {}
+        datatemp ={}
+        if request.method == "POST":
+            datatemp['sitename'] = request.POST.get('sitename')
+            if (not datatemp['sitename']):
+                error['empty'] = "Sites does not empty!"
+            else:
+                if data.sitename != datatemp['sitename'] and Sites.objects.filter(sitename= datatemp['sitename']).count() > 0:
+                    error['exist'] = "This Site already exist!"
+                else:
+                    data.sitename = datatemp['sitename']
+                    data.save()
+                    return redirect('site_display')
      except Sites.DoesNotExist:
          raise Http404
-     return render(request,'home/new/newSite.html', {'obj':data});
+     return render(request,'home/new/newSite.html', {'obj':data, 'error':error});
 
-def editFacility(request, facilityname):
+def editFacility(request, sitename, facilityname):
     try:
-        data = Facility.objects.get(facilityid= facilityname)
+        datafaci = Facility.objects.get(facilityid= facilityname)
+        dataTarget = FacilityRiskTarget.objects.get(facilityid= facilityname)
+        data = Sites.objects.get(siteid=sitename)
+        dataFacility = {}
+        dataFacility['facilityname'] = datafaci.facilityname
+        dataFacility['managementfactor'] = datafaci.managementfactor
+        dataFacility['risktarget_fc'] = dataTarget.risktarget_fc
+        dataFacility['risktarget_ac'] = dataTarget.risktarget_ac
+        error = {}
+        if request.method == "POST":
+            dataFacility['facilityname'] = request.POST.get('FacilityName')
+            dataFacility['siteid'] = sitename
+            dataFacility['managementfactor'] = request.POST.get('ManagementSystemFactor')
+            dataFacility['risktarget_fc'] = request.POST.get('Financial')
+            dataFacility['risktarget_ac'] = request.POST.get('Area')
+            if (not dataFacility['facilityname']):
+                error['facilityname'] = "Facility does not empty!"
+            if (not dataFacility['managementfactor']):
+                error['managefactor'] = "Manage Factor does not empty!"
+            if (not dataFacility['risktarget_fc']):
+                error['TargetFC'] = "Finance Target does not empty!"
+            if (not dataFacility['risktarget_ac']):
+                error['TargetAC'] = "Area Target does not empty!"
+            if (dataFacility['facilityname'] and dataFacility['managementfactor'] and dataFacility['risktarget_ac'] and
+                    dataFacility['risktarget_fc']):
+                if datafaci.facilityname !=  dataFacility['facilityname'] and Facility.objects.filter(facilityname= dataFacility['facilityname']).count() >0:
+                    error['exist'] = "This Facility already exist!"
+                else:
+                    datafaci.facilityname = dataFacility['facilityname']
+                    datafaci.managementfactor = dataFacility['managementfactor']
+                    datafaci.save()
+                    facility_target = FacilityRiskTarget.objects.get(facilityid= datafaci.facilityid)
+                    facility_target.risktarget_ac = dataFacility['risktarget_ac']
+                    facility_target.risktarget_fc = dataFacility['risktarget_fc']
+                    facility_target.save()
+                    return redirect('facilityDisplay', sitename)
     except Facility.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/facility.html', {'obj': data})
+    return render(request, 'home/new/facility.html', {'facility': dataFacility, 'site': data, 'error':error})
 
-def editEquipment(request, equipmentname):
+def editEquipment(request,facilityname,equipmentname):
     try:
+        dataFacility = Facility.objects.get(facilityid=facilityname)
         data = EquipmentMaster.objects.get(equipmentid= equipmentname)
+        commisiondate = data.commissiondate.date().strftime('%Y-%m-%d')
+        dataEquipmentType = EquipmentType.objects.all()
+        dataDesignCode = DesignCode.objects.all()
+        dataManufacture = Manufacturer.objects.all()
+        dataEq = {}
+        error = {}
+        if request.method == "POST":
+            dataEq['equipmentnumber'] = request.POST.get('equipmentNumber')
+            dataEq['equipmentname'] = request.POST.get('equipmentName')
+            dataEq['equipmenttype'] = request.POST.get('equipmentType')
+            dataEq['designcode'] = request.POST.get('designCode')
+            dataEq['manufacture'] = request.POST.get('manufacture')
+            dataEq['commisiondate'] = request.POST.get('CommissionDate')
+            dataEq['pfdno'] = request.POST.get('PDFNo')
+            dataEq['description'] = request.POST.get('decription')
+            dataEq['processdescription'] = request.POST.get('processDescription')
+
+            if not dataEq['equipmentnumber']:
+                error['equipmentNumber'] = "Equipment Number does not empty!"
+            if not dataEq['equipmentname']:
+                error['equipmentName'] = "Equipment Name does not empty!"
+            if not dataEq['designcode']:
+                error['designcode'] = "Design Code does not empty!"
+            if not dataEq['manufacture']:
+                error['manufacture'] = "Manufacture does not empty!"
+            if not dataEq['commisiondate']:
+                error['commisiondate'] = "Commission Date does not empty!"
+            if dataEq['equipmentnumber'] and dataEq['equipmentname'] and dataEq['designcode'] and dataEq['manufacture'] and dataEq['commisiondate']:
+                if EquipmentMaster.objects.filter(equipmentnumber= dataEq['equipmentnumber']).count() > 0 and data.equipmentnumber != dataEq['equipmentnumber']:
+                    error['exist'] = "Equipment already exists!"
+                else:
+                    data.equipmentnumber = dataEq['equipmentnumber']
+                    data.equipmentname = dataEq['equipmentname']
+                    data.equipmenttypeid = EquipmentType.objects.get(equipmenttypename= dataEq['equipmenttype'])
+                    data.designcodeid = DesignCode.objects.get(designcode= dataEq['designcode'])
+                    data.manufacturerid = Manufacturer.objects.get(manufacturername= dataEq['manufacture'])
+                    data.commissiondate = dataEq['commisiondate']
+                    data.pfdno = dataEq['pfdno']
+                    data.equipmentdesc = dataEq['description']
+                    data.processdescription = dataEq['processdescription']
+                    data.save()
+                    return redirect('equipment_display', facilityname)
     except EquipmentMaster.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/equipment.html', {'obj':data})
+    return render(request, 'home/new/equipment.html', {'equipment':data, 'obj':dataFacility, 'commisiondate':commisiondate,'equipmenttype': dataEquipmentType, 'designcode': dataDesignCode, 'manufacture': dataManufacture, 'error':error})
 
-def editComponent(request, componentname):
+def editComponent(request, equipmentname,componentname):
     try:
         data = ComponentMaster.objects.get(componentid= componentname)
+        dataEquip = EquipmentMaster.objects.get(equipmentid= equipmentname)
+        dataComponentType = ComponentType.objects.all()
+        dataApicomponent = ApiComponentType.objects.all()
+        dataCom = {}
+        error = {}
+        isEdit = 1;
+        if request.method == "POST":
+            dataCom['componentnumber'] = request.POST.get('componentNumer')
+            dataCom['componenttype'] = request.POST.get('componentType')
+            dataCom['apicomponenttype'] = request.POST.get('apiComponentType')
+            dataCom['componentname'] = request.POST.get('componentName')
+            dataCom['isequipmentlink'] = request.POST.get('comRisk')
+            dataCom['descrip'] = request.POST.get('decription')
+            if dataCom['isequipmentlink'] == "on":
+                islink = 1
+            else:
+                islink = 0
+            if (not dataCom['componentnumber']):
+                error['componentNumber'] = "Component Number does not empty!"
+            if (not dataCom['componentname']):
+                error['componentName'] = "Component Name does not empty!"
+            if dataCom['componentnumber'] and dataCom['componentname']:
+                if ComponentMaster.objects.filter(componentnumber= dataCom['componentnumber']).count()>0 and data.componentnumber != dataCom['componentnumber']:
+                    error['exist'] = "This Component already exist!"
+                else:
+                    data.componentnumber = dataCom['componentnumber']
+                    data.componentname = dataCom['componentname']
+                    data.componenttypeid = ComponentType.objects.get(componenttypename=dataCom['componenttype'])
+                    data.isequipmentlinked = islink
+                    data.componentdesc = dataCom['descrip']
+                    data.save()
+                    return  redirect('component_display', equipmentname)
     except ComponentMaster.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/component.html', {'obj':data})
+    return render(request, 'home/new/component.html', {'obj': dataEquip , 'componenttype': dataComponentType, 'api':dataApicomponent,'component':data, 'isedit':isEdit})
 
-def editDesignCode(request, designcodeid):
+def editDesignCode(request, facilityname,designcodeid):
     try:
         data = DesignCode.objects.get(designcodeid= designcodeid)
+        dataDesign = {}
+        error = {}
+        if request.method == "POST":
+            dataDesign['designcode'] = request.POST.get('design_code_name')
+            dataDesign['designcodeapp'] = request.POST.get('design_code_app')
+            if not dataDesign['designcode']:
+                error['designcode'] = "Design Code does not empty!"
+            if not dataDesign['designcodeapp']:
+                error['designcodeapp'] = "Design Code App does not empty!"
+            if dataDesign['designcode'] and dataDesign['designcodeapp']:
+                if DesignCode.objects.filter(designcode= dataDesign['designcode']).count() >0 and data.designcode != dataDesign['designcode']:
+                    error['exist'] = "This Design Code already exist!"
+                else:
+                    data.designcode = dataDesign['designcode']
+                    data.designcodeapp = dataDesign['designcodeapp']
+                    data.save()
+                    return redirect('designcodeDisplay', facilityname)
     except DesignCode.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/newDesignCode.html', {'obj':data})
+    return render(request, 'home/new/newDesignCode.html', {'design':data, 'facilityid':facilityname})
 
-def editManufacture(request, manufactureid):
+def editManufacture(request, facilityname,manufactureid):
     try:
         data = Manufacturer.objects.get(manufacturerid= manufactureid)
+        dataManu = {}
+        error = {}
+        if request.method == "POST":
+            dataManu['manufacturername'] = request.POST.get('manufacture')
+            if not dataManu['manufacturername']:
+                error['manufacture'] = "Manufacture does not empty!"
+            if dataManu['manufacturername']:
+                if Manufacturer.objects.filter(manufacturername= dataManu['manufacturername']).count()>0 and data.manufacturername != dataManu['manufacturername']:
+                    error['exist'] = "This Manufacture already exists!"
+                else:
+                    data.manufacturername = dataManu['manufacturername']
+                    data.save()
+                    return redirect('manufactureDisplay', facilityname)
     except Manufacturer.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/newManufacture.html', {'obj': data})
+    return render(request, 'home/new/newManufacture.html', {'manufacture': data, 'facilityid': facilityname, 'error': error})
 
 ### Display function
 def site_display(request):
     data = Sites.objects.all()
-    return render_to_response('display/site_display.html',{'obj':data})
+    if "_delete" in request.POST:
+        for a in data:
+            if(request.POST.get('%d' %a.siteid)):
+                a.delete()
+        return redirect('site_display')
+    elif "_edit" in request.POST:
+        for a in data:
+            if(request.POST.get('%d' %a.siteid)):
+                return redirect('editsite', a.siteid)
+    return render(request,'display/site_display.html',{'obj':data})
 
 def facilityDisplay(request, sitename):
     try:
-        dataSite = Sites.objects.get(siteid= sitename)
         count = Facility.objects.filter(siteid= sitename).count()
-        if( count > 1):
+        if( count > 0):
             data = Facility.objects.filter(siteid = sitename)
         else:
             data = {}
+        if "_edit" in request.POST:
+            for a in data:
+                if(request.POST.get('%d' %a.facilityid)):
+                    return redirect('editfacility', sitename= sitename, facilityname= a.facilityid)
+        elif "_delete" in request.POST:
+            for a in data:
+                if(request.POST.get('%d' %a.facilityid)):
+                    a.delete()
+            return redirect('facilityDisplay', sitename)
     except Sites.DoesNotExist:
         raise  Http404
-    return  render(request, 'display/facility_display.html', {'obj':data, 'c': sitename})
+    return render(request, 'display/facility_display.html', {'obj':data, 'c': sitename})
 
 def equipmentDisplay(request, facilityname):
     try:
-        dataFacility = Facility.objects.get(facilityid= facilityname)
-        data = EquipmentMaster.objects.filter(facilityid=facilityname)
-        siteid = data[0].siteid_id
-        facilityid = data[0].facilityid_id
+        sitename = Facility.objects.get(facilityid= facilityname).siteid_id;
+        count = EquipmentMaster.objects.filter(facilityid = facilityname).count()
+        if(count > 0):
+            data = EquipmentMaster.objects.filter(facilityid=facilityname)
+        else:
+            data = {}
+        if "_edit" in request.POST:
+            for a in data:
+                if request.POST.get('%d' %a.equipmentid):
+                    return redirect('editequipment', facilityname= facilityname, equipmentname= a.equipmentid)
+        elif "_delete" in request.POST:
+            for a in data:
+                if request.POST.get('%d' %a.equipmentid):
+                    a.delete()
+            return redirect('equipment_display', facilityname)
     except Facility.DoesNotExist:
         raise Http404
-    return render(request, 'display/equipment_display.html', {'obj':data , 'siteid':siteid, 'facilityid':facilityid})
+    return render(request, 'display/equipment_display.html', {'obj':data , 'facilityid':facilityname, 'sitename': sitename})
 
 def componentDisplay(request, equipmentname):
     try:
-        dataCom = ComponentMaster.objects.filter(equipmentid= equipmentname)
-        dataEq = EquipmentMaster.objects.get(equipmentid= equipmentname)
+        dataEq = EquipmentMaster.objects.get(equipmentid=equipmentname)
+        countCom = ComponentMaster.objects.filter(equipmentid= equipmentname).count()
+        if(countCom > 0):
+            dataCom = ComponentMaster.objects.filter(equipmentid= equipmentname)
+        else:
+            dataCom = {}
+        if "_edit" in request.POST:
+            for a in dataCom:
+                if request.POST.get('%d' %a.componentid):
+                    return redirect('editcomponent', equipmentname= equipmentname, componentname= a.componentid)
+        elif "_delete" in request.POST:
+            for a in dataCom:
+                if request.POST.get('%d' %a.componentid):
+                    a.delete()
+            return redirect('component_display', equipmentname)
     except EquipmentMaster.DoesNotExist:
         raise Http404
     return render(request, 'display/component_display.html', {'obj':dataCom, 'equipment': dataEq})
@@ -285,6 +590,15 @@ def designcodeDisplay(request, facilityname):
     try:
         dataEq = Facility.objects.get(facilityid= facilityname)
         dataDesign = DesignCode.objects.all()
+        if "_delete" in request.POST:
+            for a in dataDesign:
+                if request.POST.get('%d' %a.designcodeid):
+                    a.delete()
+            return redirect('designcodeDisplay', facilityname)
+        elif "_edit" in request.POST:
+            for a in dataDesign:
+                if request.POST.get('%d' %a.designcodeid):
+                    return redirect('editdesigncode', facilityname= facilityname, designcodeid= a.designcodeid)
     except Facility.DoesNotExist:
         raise Http404
     return render(request, 'display/designcode_display.html',{'designcode': dataDesign, 'facilityid': facilityname})
@@ -293,12 +607,23 @@ def manufactureDisplay(request, facilityname):
     try:
         dataEq = Facility.objects.get(facilityid= facilityname)
         datamanufacture = Manufacturer.objects.all()
+        if "_edit" in request.POST:
+            for a in datamanufacture:
+                if request.POST.get('%d' %a.manufacturerid):
+                    return redirect('editmanufacture', facilityname= facilityname, manufactureid= a.manufacturerid)
+        elif "_delete" in request.POST:
+            for a in datamanufacture:
+                if request.POST.get('%d' %a.manufacturerid):
+                    a.delete()
+            return redirect('manufactureDisplay', facilityname)
     except Facility.DoesNotExist:
         raise Http404
     return render(request, 'display/manufacture_display.html',{'manufacture': datamanufacture, 'facilityid': facilityname})
 
+def displayCA(request, proposalname):
+    ca = RwCaLevel1.objects.get(id= proposalname)
+    return render(request, 'display/CA.html', {'obj': ca})
 
-
-
-
-
+def displayDF(request, proposalname):
+    df = RwFullPof.objects.get(id= proposalname)
+    return render(request, 'display/dfThinning.html', {'obj':df})

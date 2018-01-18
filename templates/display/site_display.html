@@ -62,8 +62,8 @@
     </div>
     <div id="main-right" align="center">
     <div id = Adiv>
-    <form method="post">
-    <br>
+    <form class="form-control" method="post">
+    {% csrf_token %}
     <caption><b style="font-size: 20px; color: darkblue">SITES LIST</b></caption>
         <table id = "t01"><br>
         <thead>
@@ -91,8 +91,8 @@
         <br>
         <table style="text-align: right">
             <td>
-                <button class="btn btn-info" type="button" name="edit" formmethod="post">Edit Selected</button>
-                <button class="btn btn-info" type="button" name="delete" formmethod="post">Delete Selected</button>
+                <button class="btn btn-info" type="submit" name="_edit">Edit Selected</button>
+                <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
             </td>
         </table>
     </form>

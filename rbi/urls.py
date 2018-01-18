@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^contact/$', views.contact, name='contact'),
 
+    # RBI 581 INFO URL
     # New URL
     url(r'^site/new/$', views.newSite, name='newSite'),
     url(r'^site/(?P<siteid>\d+)/facility/new/$', views.facility, name='facility'),
@@ -34,10 +35,14 @@ urlpatterns = [
     url(r'^equipment/(?P<equipmentname>\d+)/component/new/$', views.newcomponent, name='component'),
     url(r'^facility/(?P<facilityname>\d+)/designcode/new/$', views.newDesigncode, name='newdesigncode'),
     url(r'^facility/(?P<facilityname>\d+)/manufacture/new/$', views.newManufacture, name='newmanufacture'),
-
+    url(r'^component/(?P<componentname>\d+)/proposal/new/$', views.newProposal , name='newProposal'),
     # Edit URL
-    url(r'^site/edit/(?P<sitename>\w+)/$', views.editSite, name='editsite'),
-
+    url(r'^site/(?P<sitename>\w+)/edit/$', views.editSite, name='editsite'),
+    url(r'^site/(?P<sitename>\d+)/facility/(?P<facilityname>\d+)/edit/$', views.editFacility, name='editfacility'),
+    url(r'^facility/(?P<facilityname>\d+)/equipment/(?P<equipmentname>\d+)/edit/$', views.editEquipment, name='editequipment'),
+    url(r'^facility/(?P<facilityname>\d+)/designcode/(?P<designcodeid>\d+)/edit/$', views.editDesignCode, name='editdesigncode'),
+    url(r'^facility/(?P<facilityname>\d+)/manufacture/(?P<manufactureid>\d+)/edit/$', views.editManufacture, name='editmanufacture'),
+    url(r'^equipment/(?P<equipmentname>\d+)/component/(?P<componentname>\d+)/edit/$', views.editComponent, name='editcomponent'),
     # Display URL
     url(r'^site/display/$', views.site_display, name='site_display'),
     url(r'^facility/(?P<facilityname>\d+)/equipment/display/$', views.equipmentDisplay, name='equipment_display'),
@@ -45,5 +50,9 @@ urlpatterns = [
     url(r'^site/(?P<sitename>\d+)/facility/display/$', views.facilityDisplay, name='facilityDisplay'),
     url(r'^facility/(?P<facilityname>\d+)/designcode/$', views.designcodeDisplay, name='designcodeDisplay'),
     url(r'^facility/(?P<facilityname>\d+)/manufacture/$', views.manufactureDisplay, name='manufactureDisplay'),
+    url(r'^proposal/(?P<proposalname>\d+)/result/CA/$', views.displayCA, name='resultca'),
+    url(r'^proposal/(?P<proposalname>\d+)/result/DF/$', views.displayDF, name='resultdf'),
+
+    # Proposal URL( RBI 581 calculate URL)
 
 ]

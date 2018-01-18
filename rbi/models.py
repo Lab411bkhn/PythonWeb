@@ -27,6 +27,7 @@ class ApiComponentType(models.Model):
 
     def __str__(self):
         return self.apicomponenttypename
+
     class Meta:
         managed = False
         db_table = 'api_component_type'
@@ -41,8 +42,8 @@ class AuthGroup(models.Model):
 
 
 class AuthGroupPermissions(models.Model):
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+    group = models.ForeignKey(AuthGroup, on_delete=models.CASCADE)
+    permission = models.ForeignKey('AuthPermission', on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -52,7 +53,7 @@ class AuthGroupPermissions(models.Model):
 
 class AuthPermission(models.Model):
     name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    content_type = models.ForeignKey('DjangoContentType', on_delete=models.CASCADE)
     codename = models.CharField(max_length=100)
 
     class Meta:
@@ -79,8 +80,8 @@ class AuthUser(models.Model):
 
 
 class AuthUserGroups(models.Model):
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    group = models.ForeignKey(AuthGroup, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -89,8 +90,8 @@ class AuthUserGroups(models.Model):
 
 
 class AuthUserUserPermissions(models.Model):
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    permission = models.ForeignKey(AuthPermission, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -101,8 +102,8 @@ class AuthUserUserPermissions(models.Model):
 class ComponentMaster(models.Model):
     componentid = models.AutoField(db_column='ComponentID', primary_key=True)  # Field name made lowercase.
     componentnumber = models.CharField(db_column='ComponentNumber', max_length=100)  # Field name made lowercase.
-    equipmentid = models.ForeignKey('EquipmentMaster', models.DO_NOTHING, db_column='EquipmentID')  # Field name made lowercase.
-    componenttypeid = models.ForeignKey('ComponentType', models.DO_NOTHING, db_column='ComponentTypeID')  # Field name made lowercase.
+    equipmentid = models.ForeignKey('EquipmentMaster', on_delete=models.CASCADE, db_column='EquipmentID')  # Field name made lowercase.
+    componenttypeid = models.ForeignKey('ComponentType', on_delete=models.CASCADE, db_column='ComponentTypeID')  # Field name made lowercase.
     componentname = models.CharField(db_column='ComponentName', max_length=150, blank=True, null=True)  # Field name made lowercase.
     componentdesc = models.CharField(db_column='ComponentDesc', max_length=250, blank=True, null=True)  # Field name made lowercase.
     isequipmentlinked = models.IntegerField(db_column='IsEquipmentLinked')  # Field name made lowercase.
@@ -118,6 +119,8 @@ class ComponentType(models.Model):
     componenttypename = models.CharField(db_column='ComponentTypeName', max_length=50, blank=True, null=True)  # Field name made lowercase.
     componenttypecode = models.CharField(db_column='ComponentTypeCode', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return self.componenttypename
     class Meta:
         managed = False
         db_table = 'component_type'
@@ -142,8 +145,8 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    content_type = models.ForeignKey('DjangoContentType', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -187,13 +190,14 @@ class DmCategory(models.Model):
     class Meta:
         managed = False
         db_table = 'dm_category'
+        verbose_name = "Damage Category"
 
 
 class DmItems(models.Model):
     dmitemid = models.IntegerField(db_column='DMItemID', primary_key=True)  # Field name made lowercase.
     dmdescription = models.CharField(db_column='DMDescription', max_length=100, blank=True, null=True)  # Field name made lowercase.
     dmseq = models.IntegerField(db_column='DMSeq', blank=True, null=True)  # Field name made lowercase.
-    dmcategoryid = models.ForeignKey(DmCategory, models.DO_NOTHING, db_column='DMCategoryID', blank=True, null=True)  # Field name made lowercase.
+    dmcategoryid = models.ForeignKey(DmCategory, on_delete=models.CASCADE, db_column='DMCategoryID', blank=True, null=True)  # Field name made lowercase.
     dmcode = models.CharField(db_column='DMCode', max_length=50, blank=True, null=True)  # Field name made lowercase.
     hasdf = models.IntegerField(db_column='HasDF', blank=True, null=True)  # Field name made lowercase.
     failuremode = models.CharField(db_column='FailureMode', max_length=50, blank=True, null=True)  # Field name made lowercase.
@@ -201,18 +205,19 @@ class DmItems(models.Model):
     class Meta:
         managed = False
         db_table = 'dm_items'
+        verbose_name = "Damage Item"
 
 
 class EquipmentMaster(models.Model):
     equipmentid = models.AutoField(db_column='EquipmentID', primary_key=True)  # Field name made lowercase.
     equipmentnumber = models.CharField(db_column='EquipmentNumber', max_length=100)  # Field name made lowercase.
-    equipmenttypeid = models.ForeignKey('EquipmentType', models.DO_NOTHING, db_column='EquipmentTypeID')  # Field name made lowercase.
+    equipmenttypeid = models.ForeignKey('EquipmentType', on_delete=models.CASCADE, db_column='EquipmentTypeID')  # Field name made lowercase.
     equipmentname = models.CharField(db_column='EquipmentName', max_length=150, blank=True, null=True)  # Field name made lowercase.
     commissiondate = models.DateTimeField(db_column='CommissionDate')  # Field name made lowercase.
-    designcodeid = models.ForeignKey(DesignCode, models.DO_NOTHING, db_column='DesignCodeID')  # Field name made lowercase.
-    siteid = models.ForeignKey('Sites', models.DO_NOTHING, db_column='SiteID')  # Field name made lowercase.
-    facilityid = models.ForeignKey('Facility', models.DO_NOTHING, db_column='FacilityID')  # Field name made lowercase.
-    manufacturerid = models.ForeignKey('Manufacturer', models.DO_NOTHING, db_column='ManufacturerID')  # Field name made lowercase.
+    designcodeid = models.ForeignKey(DesignCode, on_delete=models.CASCADE, db_column='DesignCodeID')  # Field name made lowercase.
+    siteid = models.ForeignKey('Sites', on_delete=models.CASCADE, db_column='SiteID')  # Field name made lowercase.
+    facilityid = models.ForeignKey('Facility', on_delete=models.CASCADE, db_column='FacilityID')  # Field name made lowercase.
+    manufacturerid = models.ForeignKey('Manufacturer', on_delete=models.CASCADE, db_column='ManufacturerID')  # Field name made lowercase.
     pfdno = models.CharField(db_column='PFDNo', max_length=100, blank=True, null=True)  # Field name made lowercase.
     processdescription = models.CharField(db_column='ProcessDescription', max_length=250, blank=True, null=True)  # Field name made lowercase.
     equipmentdesc = models.CharField(db_column='EquipmentDesc', max_length=250, blank=True, null=True)  # Field name made lowercase.
@@ -240,7 +245,7 @@ class EquipmentType(models.Model):
 
 class Facility(models.Model):
     facilityid = models.AutoField(db_column='FacilityID', primary_key=True)  # Field name made lowercase.
-    siteid = models.ForeignKey('Sites', models.DO_NOTHING, db_column='SiteID')  # Field name made lowercase.
+    siteid = models.ForeignKey('Sites', on_delete=models.CASCADE, db_column='SiteID')  # Field name made lowercase.
     facilityname = models.CharField(db_column='FacilityName', max_length=100)  # Field name made lowercase.
     managementfactor = models.FloatField(db_column='ManagementFactor')  # Field name made lowercase.
     def __str__(self):
@@ -251,7 +256,7 @@ class Facility(models.Model):
 
 
 class FacilityRiskTarget(models.Model):
-    facilityid = models.ForeignKey(Facility, models.DO_NOTHING, db_column='FacilityID', primary_key=True)  # Field name made lowercase.
+    facilityid = models.ForeignKey(Facility,on_delete=models.CASCADE, db_column='FacilityID', primary_key=True)  # Field name made lowercase.
     risktarget_fc = models.FloatField(db_column='RiskTarget_FC', blank=True, null=True)  # Field name made lowercase.
     risktarget_ac = models.FloatField(db_column='RiskTarget_AC', blank=True, null=True)
 
@@ -264,6 +269,9 @@ class Manufacturer(models.Model):
     manufacturerid = models.AutoField(db_column='ManufacturerID', primary_key=True)  # Field name made lowercase.
     manufacturername = models.CharField(db_column='ManufacturerName', max_length=100)  # Field name made lowercase.
 
+    def __str__(self):
+        return self.manufacturername
+
     class Meta:
         managed = False
         db_table = 'manufacturer'
@@ -271,12 +279,15 @@ class Manufacturer(models.Model):
 
 class RwAssessment(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    equipmentid = models.ForeignKey(EquipmentMaster, models.DO_NOTHING, db_column='EquipmentID')  # Field name made lowercase.
-    componentid = models.ForeignKey(ComponentMaster, models.DO_NOTHING, db_column='ComponentID')  # Field name made lowercase.
+    equipmentid = models.ForeignKey(EquipmentMaster, on_delete=models.CASCADE, db_column='EquipmentID')  # Field name made lowercase.
+    componentid = models.ForeignKey(ComponentMaster, on_delete=models.CASCADE, db_column='ComponentID')  # Field name made lowercase.
     assessmentdate = models.DateTimeField(db_column='AssessmentDate', blank=True, null=True)  # Field name made lowercase.
     riskanalysisperiod = models.IntegerField(db_column='RiskAnalysisPeriod')  # Field name made lowercase.
     isequipmentlinked = models.IntegerField(db_column='IsEquipmentLinked')  # Field name made lowercase.
     proposalname = models.CharField(db_column='ProposalName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+
+    def __str__(self):
+        return self.proposalname
 
     class Meta:
         managed = False
@@ -284,7 +295,7 @@ class RwAssessment(models.Model):
 
 
 class RwCaLevel1(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     release_phase = models.CharField(db_column='Release_Phase', max_length=50, blank=True, null=True)  # Field name made lowercase.
     fact_di = models.FloatField(blank=True, null=True)
     fact_mit = models.FloatField(blank=True, null=True)
@@ -307,7 +318,7 @@ class RwCaLevel1(models.Model):
 
 
 class RwCaTank(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     hydraulic_water = models.FloatField(db_column='Hydraulic_Water', blank=True, null=True)  # Field name made lowercase.
     hydraulic_fluid = models.FloatField(db_column='Hydraulic_Fluid', blank=True, null=True)  # Field name made lowercase.
     seepage_velocity = models.FloatField(db_column='Seepage_Velocity', blank=True, null=True)  # Field name made lowercase.
@@ -354,7 +365,7 @@ class RwCaTank(models.Model):
 
 
 class RwCoating(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     externalcoating = models.IntegerField(db_column='ExternalCoating', blank=True, null=True)  # Field name made lowercase.
     externalinsulation = models.IntegerField(db_column='ExternalInsulation', blank=True, null=True)  # Field name made lowercase.
     internalcladding = models.IntegerField(db_column='InternalCladding', blank=True, null=True)  # Field name made lowercase.
@@ -376,7 +387,7 @@ class RwCoating(models.Model):
 
 
 class RwComponent(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     nominaldiameter = models.FloatField(db_column='NominalDiameter', blank=True, null=True)  # Field name made lowercase.
     nominalthickness = models.FloatField(db_column='NominalThickness', blank=True, null=True)  # Field name made lowercase.
     currentthickness = models.FloatField(db_column='CurrentThickness', blank=True, null=True)  # Field name made lowercase.
@@ -411,7 +422,7 @@ class RwComponent(models.Model):
 
 
 class RwEquipment(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     commissiondate = models.DateTimeField(db_column='CommissionDate')  # Field name made lowercase.
     adminupsetmanagement = models.IntegerField(db_column='AdminUpsetManagement')  # Field name made lowercase.
     containsdeadlegs = models.IntegerField(db_column='ContainsDeadlegs', blank=True, null=True)  # Field name made lowercase.
@@ -447,7 +458,7 @@ class RwEquipment(models.Model):
 
 
 class RwExtcorTemperature(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     minus12tominus8 = models.FloatField(db_column='Minus12ToMinus8', blank=True, null=True)  # Field name made lowercase.
     minus8toplus6 = models.FloatField(db_column='Minus8ToPlus6', blank=True, null=True)  # Field name made lowercase.
     plus6toplus32 = models.FloatField(db_column='Plus6ToPlus32', blank=True, null=True)  # Field name made lowercase.
@@ -465,7 +476,7 @@ class RwExtcorTemperature(models.Model):
 
 
 class RwFullFcof(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     fcofvalue = models.FloatField(db_column='FCoFValue', blank=True, null=True)  # Field name made lowercase.
     fcofcategory = models.CharField(db_column='FCoFCategory', max_length=50, blank=True, null=True)  # Field name made lowercase.
     ail = models.IntegerField(db_column='AIL', blank=True, null=True)  # Field name made lowercase.
@@ -481,7 +492,7 @@ class RwFullFcof(models.Model):
 
 
 class RwFullPof(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     thinningap1 = models.FloatField(db_column='ThinningAP1', blank=True, null=True)  # Field name made lowercase.
     thinningap2 = models.FloatField(db_column='ThinningAP2', blank=True, null=True)  # Field name made lowercase.
     thinningap3 = models.FloatField(db_column='ThinningAP3', blank=True, null=True)  # Field name made lowercase.
@@ -525,7 +536,7 @@ class RwFullPof(models.Model):
 
 
 class RwInputCaLevel1(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     api_fluid = models.CharField(db_column='API_FLUID', max_length=50, blank=True, null=True)  # Field name made lowercase.
     system = models.CharField(db_column='SYSTEM', max_length=50, blank=True, null=True)  # Field name made lowercase.
     release_duration = models.CharField(db_column='Release_Duration', max_length=50, blank=True, null=True)  # Field name made lowercase.
@@ -550,7 +561,7 @@ class RwInputCaLevel1(models.Model):
 
 
 class RwInputCaTank(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     fluid_height = models.FloatField(db_column='FLUID_HEIGHT', blank=True, null=True)  # Field name made lowercase.
     shell_course_height = models.FloatField(db_column='SHELL_COURSE_HEIGHT', blank=True, null=True)  # Field name made lowercase.
     tank_diametter = models.FloatField(db_column='TANK_DIAMETTER', blank=True, null=True)  # Field name made lowercase.
@@ -587,7 +598,7 @@ class RwInspectionHistory(models.Model):
 
 
 class RwMaterial(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     materialname = models.CharField(db_column='MaterialName', max_length=100, blank=True, null=True)  # Field name made lowercase.
     designpressure = models.FloatField(db_column='DesignPressure', blank=True, null=True)  # Field name made lowercase.
     designtemperature = models.FloatField(db_column='DesignTemperature', blank=True, null=True)  # Field name made lowercase.
@@ -616,7 +627,7 @@ class RwMaterial(models.Model):
 
 
 class RwStream(models.Model):
-    id = models.ForeignKey(RwAssessment, models.DO_NOTHING, db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)  # Field name made lowercase.
     aminesolution = models.CharField(db_column='AmineSolution', max_length=50, blank=True, null=True)  # Field name made lowercase.
     aqueousoperation = models.IntegerField(db_column='AqueousOperation', blank=True, null=True)  # Field name made lowercase.
     aqueousshutdown = models.IntegerField(db_column='AqueousShutdown', blank=True, null=True)  # Field name made lowercase.
@@ -679,6 +690,7 @@ class Tbl204DmHtha(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_204_dm_htha'
+        verbose_name = "Table 20.4 – Damage Factor - HTHA"
 
 
 class Tbl213DmImpactExemption(models.Model):
@@ -691,6 +703,7 @@ class Tbl213DmImpactExemption(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_213_dm_impact_exemption'
+        verbose_name = "Table 21.3 – Impact Test Exemption Temperature"
 
 
 class Tbl214DmNotPwht(models.Model):
@@ -708,6 +721,7 @@ class Tbl214DmNotPwht(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_214_dm_not_pwht'
+        verbose_name = "Table 21.4M – Damage Factor, Component Not Subject to PWHT – Brittle Fracture"
 
 
 class Tbl215DmPwht(models.Model):
@@ -725,6 +739,7 @@ class Tbl215DmPwht(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_215_dm_pwht'
+        verbose_name = "Table 21.5M – Damage Factor, Component Subject to PWHT – Brittle Fracture"
 
 
 class Tbl3B21SiConversion(models.Model):
@@ -735,6 +750,7 @@ class Tbl3B21SiConversion(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_3b21_si_conversion'
+        verbose_name = "Table 3.B.2.1 – SI and US Customary Conversion Factor"
 
 
 class Tbl511DfbThin(models.Model):
@@ -749,6 +765,7 @@ class Tbl511DfbThin(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_511_dfb_thin'
+        verbose_name = "Table 5.11 – Thinning Damage Factor"
 
 
 class Tbl512DfbThinTankBottom(models.Model):
@@ -763,6 +780,7 @@ class Tbl512DfbThinTankBottom(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_512_dfb_thin_tank_bottom'
+        verbose_name = "Table 5.12 – Thinning Damage Factors for Tank Bottom"
 
 
 class Tbl52CaPropertiesLevel1(models.Model):
@@ -782,6 +800,7 @@ class Tbl52CaPropertiesLevel1(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_52_ca_properties_level_1'
+        verbose_name = "Table 5.2 – Properties of the Representative Fluids Used in Level 1 Analysi"
 
 
 class Tbl58CaComponentDm(models.Model):
@@ -806,6 +825,7 @@ class Tbl58CaComponentDm(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_58_ca_component_dm'
+        verbose_name = "Table 5.8M – Component Damage Flammable Consequence Equation Constant"
 
 
 class Tbl59ComponentDamagePerson(models.Model):
@@ -830,6 +850,7 @@ class Tbl59ComponentDamagePerson(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_59_component_damage_person'
+        verbose_name = "Table 5.9M – Personnel Injury Flammable Consequence Equation Constant"
 
 
 class Tbl64DmLinningInorganic(models.Model):
@@ -844,6 +865,7 @@ class Tbl64DmLinningInorganic(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_64_dm_linning_inorganic'
+        verbose_name = "Table 6.4 – Lining Damage Factors – Inorganic Lining"
 
 
 class Tbl65DmLinningOrganic(models.Model):
@@ -855,6 +877,7 @@ class Tbl65DmLinningOrganic(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_65_dm_linning_organic'
+        verbose_name = "Table 6.5 – Lining Damage Factors – Organic Lining"
 
 
 class Tbl71PropertiesStorageTank(models.Model):
@@ -867,6 +890,7 @@ class Tbl71PropertiesStorageTank(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_71_properties_storage_tank'
+        verbose_name = "Table 7.1M – Fluids and Fluid Properties for Atmospheric Storage Tank Consequence Analysi"
 
 
 class Tbl74SccDmPwht(models.Model):
@@ -900,3 +924,4 @@ class Tbl74SccDmPwht(models.Model):
     class Meta:
         managed = False
         db_table = 'tbl_74_scc_dm_pwht'
+        verbose_name = "Table 7.4 – SCC Damage Factors – All SCC Mechanism"

@@ -60,11 +60,14 @@
             <li><a href="{% url 'designcodeDisplay' facilityid %}">Design Code Management</a> </li>
             <li><a href="{% url 'manufactureDisplay' facilityid %}">Manufacture Management</a> </li>
             <li><a href="#">Risk Summary</a></li>
+            <li><a href="{% url 'facilityDisplay' sitename %}">Back To Facility</a> </li>
         </ul>
     </div>
     <div id="main-right" align="center">
     <div id="Adiv">
     <br>
+    <form class="form-control" method="post">
+    {% csrf_token %}
     <caption><b style="font-size: 20px; color: darkblue">EQUIPMENTS LIST</b></caption>
         <table id="t01" class="table">
             <thead>
@@ -96,10 +99,11 @@
     <br>
         <table style="text-align: right">
             <td>
-                <button class="btn btn-info" type="button" name="edit">Edit Selected</button>
-                <button class="btn btn-info" type="button" name="delete">Delete Selected</button>
+                <button class="btn btn-info" type="submit" name="_edit">Edit Selected</button>
+                <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
             </td>
         </table>
+    </form>
     </div>
     </div>
 </div>

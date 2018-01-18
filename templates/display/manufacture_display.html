@@ -43,12 +43,12 @@
 
                 <li><a href="{% url 'login' %}" accesskey="1" title="">ADMINISTRATOR</a></li>
                 <li><a href="#" accesskey="2" title="">CONTACT US</a></li>
-                <li><a href="{% url 'login' %}" accesskey="3" title="">RISK WISK</a></li>
+                <li><a href="{% url 'login' %}" accesskey="3" title="">RBI</a></li>
                 <li><a href="{% url 'home' %}" accesskey="4" title="">HOMEPAGE</a></li>
    </ul>
 </div>
 <div id="slogan">
-     <h1>CORTERK  PROJECT</h1>
+     <h1>CORTERK PROJECT</h1>
 </div>
 <div id="line"></div>
 <div id="main">
@@ -62,7 +62,8 @@
     </div>
     <div id="main-right" align="center">
     <div id="Adiv">
-    <br>
+    <form class="form-control" method="post">
+    {% csrf_token %}
     <caption><b style="font-size: 20px; color: darkblue">MANUFACTURE LIST</b></caption>
         <table id="t01" class="table">
             <thead>
@@ -87,10 +88,11 @@
     <br>
         <table style="text-align: right">
             <td>
-                <button class="btn btn-info" type="button" name="edit">Edit Selected</button>
-                <button class="btn btn-info" type="button" name="delete">Delete Selected</button>
+                <button class="btn btn-info" type="submit" name="_edit">Edit Selected</button>
+                <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
             </td>
         </table>
+    </form>
     </div>
     </div>
 </div>

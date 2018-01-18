@@ -39,7 +39,7 @@
 
                 <li><a href="{% url 'login' %}" accesskey="4" title="">ADMINISTRATOR</a></li>
                 <li><a href="{% url 'contact' %}" accesskey="3" title="">CONTACT US</a></li>
-                <li><a href="{% url 'login' %}" accesskey="2" title="">RISK WISK</a></li>
+                <li><a href="{% url 'login' %}" accesskey="2" title="">RBI</a></li>
                 <li class="current_page_item"><a href="{% url 'home' %}" accesskey="1" title="">HOMEPAGE</a></li>
    </ul>
 </div>
@@ -54,12 +54,18 @@
             <li><a href="{% url 'component_display' obj.equipmentid %}">Component List</a></li>
             <li><a href="{% url 'component' obj.equipmentid %}">New Component</a></li>
             <li><a href="#">Risk Summary</a></li>
+            <li><a href="{% url 'equipment_display' obj.facilityid_id %}">Back To Equipment</a> </li>
         </ul>
     </div>
     <div id="main-right" align="center">
     <div id=Adiv >
      <form method="post">
          {% csrf_token %}
+        {% if error.exist %}
+            <p style="color: red; size: 18px">
+            {{ error.exist }}
+            </p>
+        {% endif %}
      	<fieldset class="scheduler-border">
             <legend class="scheduler-border"><b>Component</b></legend>
             <fieldset class="scheduler-border">
@@ -90,41 +96,80 @@
                 </tr>
                 <tr>
                     <td><span style="font-size:16px;">Component Number: </span></td>
-                    <td><input class="form-control" type="text"  name="componentNumer" value="" size="30"></td>
+                    <td><input class="form-control" type="text"  name="componentNumer" value="{{ component.componentnumber }}" size="30"></td>
                 </tr>
                 <tr>
+                    <td></td>
+                    <td>
+                        {% if error.componentNumber %}
+                        <p style="color: red">
+                        {{ error.componentNumber }}
+                        </p>
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
                     <td><span style="font-size:16px;">Component Type: </span></td>
-                    <td><select class="form-control" id="exampleFormControlSelect1" name="componentType">
+                    <td><select class="form-control" id="exampleFormControlSelect1" name="componentType" >
                         {% for a in componenttype %}
-                            <option>{{ a.componenttypename }}</option>
+                            {% if a.componenttypename == component.componenttype or a.componenttypeid == component.componenttypeid_id %}
+                                <option selected>{{ a.componenttypename }}</option>
+                            {% else %}
+                                <option>{{ a.componenttypename }}</option>
+                            {% endif %}
                         {% endfor %}
                     </select></td>
                 </tr>
                 <tr>
-                    <td><span style="font-size:16px;">API Component Type: </span>
-                    </td> 
-                    <td><select class="form-control" id="exampleFormControlSelect1" name="apiComponentType">
+                    <td><span style="font-size:16px;">API Component Type: </span></td>
+                    {% if isedit %}
+                    <td><select class="form-control" id="exampleFormControlSelect1" name="apiComponentType" disabled="true">
                         {%  for a in api %}
-                            <option>{{ a.apicomponenttypename }}</option>
+                            {% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}
+                                <option selected>{{ a.apicomponenttypename }}</option>
+                            {% else %}
+                                <option>{{ a.apicomponenttypename }}</option>
+                            {% endif %}
                         {% endfor %}
-                    </select>
-                    </td>
+                    </select></td>
+                    {% else %}
+                    <td><select class="form-control" id="exampleFormControlSelect1" name="apiComponentType" >
+                        {%  for a in api %}
+                            {% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}
+                                <option selected>{{ a.apicomponenttypename }}</option>
+                            {% else %}
+                                <option>{{ a.apicomponenttypename }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select></td>
+                    {% endif %}
                 </tr>
+
                 <tr>
                     <td><span style="font-size:16px;">Component Name:</span></td>
-                    <td><input class="form-control" type="text"  name="componentName" list="componentName" value="" size="30">
+                    <td><input class="form-control" type="text"  name="componentName" list="componentName" value="{{ component.componentname }}" size="30"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        {% if error.componentName %}
+                        <p style="color: red">{{ error.componentName }}</p>
+                        {% endif %}
+                    </td>
+                </tr>
 
-                    </td>
-                </tr>
-        
                 <tr>
-                    <td><span style="font-size:16px;">Component Risk Linhs to Component Risk:</span></td>
-                    <td><input class="form-control" type="checkbox" list="comRisk" name="comRisk" size="30" align="right">
-                    </td>
+                    <td><span style="font-size:16px;">Component Risk Links to Component Risk:</span></td>
+                    {% if component.isequipmentlinked %}
+                    <td><input class="form-control" type="checkbox" list="comRisk" name="comRisk" size="30" align="right" checked></td>
+                    {% else %}
+                    <td><input class="form-control" type="checkbox" list="comRisk" name="comRisk" size="30" align="right"></td>
+                    {% endif %}
                 </tr>
                 <tr>
-                    <td><span style="font-size:16px;">Decription:</span></td>
-                    <td><textarea class="form-control" type="text"  name="decription" value="" size="30"></textarea></td>
+                    <td><span style="font-size:16px;">Description:</span></td>
+                    <td><textarea class="form-control" type="text"  name="decription"   size="30">{{ component.componentdesc }}</textarea></td>
                 </tr>
      		</table>
             </fieldset>

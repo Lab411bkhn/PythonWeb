@@ -72,11 +72,7 @@
         <table>
             <tr>
                 <td><span style="font-size: 18px">Site Name:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></td>
-                {% if obj.id != 0 %}
-                    <td><input type="text" class="form-control" name="sitename" id="sitename" size="40" value="{{ obj.sitename }}"></td>
-                {% else %}
-                    <td><input type="text" class="form-control" name="sitename" id="sitename" size="40"></td>
-                {% endif %}
+                <td><input type="text" class="form-control" name="sitename" id="sitename" size="40" value="{{ obj.sitename }}"></td>
             </tr>
             <tr>
                 <td></td>
