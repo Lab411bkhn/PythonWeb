@@ -79,33 +79,14 @@
      		<table >
                 <tr>
      				<td><span style="font-size:16px;">Equipment Number:  &emsp;&emsp; &emsp;&emsp;</span></td>
-                    <td><input type="text" class="form-control" name="equipmentNumber" value="{{ equipment.equipmentnumber }}" size="30"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.equipmentNumber %}
-                        <p style="color: red">
-                            {{ error.equipmentNumber }}
-                        </p>
-                        {% endif %}
-                    </td>
+                    <td><input type="text" class="form-control" name="equipmentNumber" value="{{ equipment.equipmentnumber }}" size="30" required></td>
                 </tr>
 
                 <tr>
                     <td><span style="font-size:16px;">Equipment Name: </span></td>
-                    <td><input  type="text" name="equipmentName" class="form-control" list="equipmentName" value="{{ equipment.equipmentname }}" size="30"></td>
+                    <td><input  type="text" name="equipmentName" class="form-control" list="equipmentName" value="{{ equipment.equipmentname }}" size="30" required></td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.equipmentName %}
-                        <p style="color: red">
-                            {{ error.equipmentName }}
-                        </p>
-                        {% endif %}
-                    </td>
-                </tr>
+
 
                 <tr>
                     <td><span style="font-size:16px;">Equipment Type: </span></td>
@@ -126,7 +107,7 @@
                 <tr>
                     <td><span style="font-size:16px;">Design Code: </span></td>
                     <td>
-                       <select class="form-control" id="exampleFormControlSelect1" name="designCode">
+                       <select class="form-control" id="exampleFormControlSelect1" name="designCode" required>
                           {% for a in designcode %}
                               {% if a.designcode == equipment.designcodeid or a.designcodeid == equipment.designcodeid_id %}
                                 <option selected>{{ a.designcode }}</option>
@@ -135,16 +116,6 @@
                               {% endif %}
                           {% endfor %}
                         </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.designcode %}
-                        <p style="color: red">
-                            {{ error.designcode }}
-                        </p>
-                        {% endif %}
                     </td>
                 </tr>
 
@@ -165,7 +136,7 @@
                 <tr>
                     <td><span style="font-size:16px;">Manufacturer:</span></td>
                     <td>
-                       <select class="form-control" id="exampleFormControlSelect1" name="manufacture">
+                       <select class="form-control" id="exampleFormControlSelect1" name="manufacture" required>
                           {% for a in manufacture %}
                               {% if a.manufacturername == equipment.manufactureid or a.manufacturerid == equipment.manufacturerid_id %}
                                 <option selected>{{ a.manufacturername }}</option>
@@ -176,37 +147,17 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.manufacture %}
-                        <p style="color: red">
-                            {{ error.manufacture }}
-                        </p>
-                        {% endif %}
-                    </td>
-                </tr>
 
                 <tr>
                     <td><span style="font-size:16px;">CommissionDate:</span></td>
                     <td>
-                         <input type="text" id="datepicker" width="auto" name="CommissionDate" data-format="yyyy-mm-dd" value="{{ commisiondate }}"/>
+                         <input type="text" id="datepicker" width="auto" name="CommissionDate" data-format="yyyy-mm-dd" value="{{ commisiondate }}" required/>
                             <script>
                                 $('#datepicker').datepicker({
                                     uiLibrary: 'bootstrap4'
                                 });
 
                             </script>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.commisiondate %}
-                        <p style="color: red">
-                            {{ error.commisiondate }}
-                        </p>
-                        {% endif %}
                     </td>
                 </tr>
 

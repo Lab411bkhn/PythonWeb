@@ -36,7 +36,7 @@
 
                 <li><a href="{% url 'login' %}" accesskey="4" title="">ADMINISTRATOR</a></li>
                 <li><a href="{% url 'contact' %}" accesskey="3" title="">CONTACT US</a></li>
-                <li><a href="{% url 'login' %}" accesskey="2" title="">RISK WISK</a></li>
+                <li><a href="{% url 'login' %}" accesskey="2" title="">RBI</a></li>
                 <li class="current_page_item"><a href="{% url 'home' %}" accesskey="1" title="">HOMEPAGE</a></li>
    </ul>
 </div>
@@ -71,16 +71,7 @@
             <table >
                 <tr>
                     <td><span style="font-size: 18px">Facility Name: </span></td>
-                    <td><input type="text" name="FacilityName" value="{{ facility.facilityname }}" size="40" class="form-control"/> </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>{% if error.facilityname %}
-                        <p style="color: red">
-                            {{ error.facilityname }}
-                        </p>
-                        {% endif %}
-                    </td>
+                    <td><input type="text" name="FacilityName" value="{{ facility.facilityname }}" size="40" class="form-control" required/> </td>
                 </tr>
 
                 <tr>
@@ -90,17 +81,7 @@
 
                 <tr>
                     <td style="font-size: 18px">Management System Factor:</td>
-                    <td><input type="number"  name="ManagementSystemFactor" value="{{ facility.managementfactor }}" size="20" min="0.1" max="10" step="0.01" class="form-control"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.managefactor %}
-                        <p style="color: red">
-                            {{ error.managefactor }}
-                        </p>
-                        {% endif %}
-                    </td>
+                    <td><input type="number"  name="ManagementSystemFactor" value="{{ facility.managementfactor }}" size="20" min="0.1" max="10" step="0.01" class="form-control" required/></td>
                 </tr>
             </table>
         </fieldset>
@@ -111,32 +92,13 @@
                      <table >
                          <tr>
                               <td style="font-size: 18px">Area(m2/year): &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
-                              <td><input type="number" step="0.01" name="Area" size="40" class="form-control" value="{{ facility.risktarget_ac }}"/> </td>
-                         </tr>
-                         <tr>
-                             <td></td>
-                             <td>
-                                 {% if error.TargetAC %}
-                                 <p style="color: red">
-                                     {{ error.TargetAC }}
-                                 </p>
-                                 {% endif %}
-                             </td>
+                              <td><input type="number" step="0.01" name="Area" size="40" class="form-control" value="{{ facility.risktarget_ac }}" required/> </td>
                          </tr>
 
                          <tr>
                              <td style="font-size: 18px">Financial($/year):&emsp;&emsp;</td>
-                             <td><input type="number" step="0.01" name="Financial" size="40" class="form-control" value="{{ facility.risktarget_fc }}"/></td>
+                             <td><input type="number" step="0.01" name="Financial" size="40" class="form-control" value="{{ facility.risktarget_fc }}" required/></td>
                          </tr>
-                        <tr>
-                            <td></td>
-                            <td>{% if error.TargetFC %}
-                            <p style="color: red">
-                                {{ error.TargetFC }}
-                            </p>
-                                {% endif %}
-                            </td>
-                        </tr>
 
                      </table>
                 </fieldset>

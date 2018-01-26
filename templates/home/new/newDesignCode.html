@@ -71,31 +71,14 @@
                 <table  cellspacing="10px" >
                     <tr>
                         <td style="font-size: 16px">Design Code Name:&emsp;&emsp;</td>
-                        <td><input class="form-control" name="design_code_name" value="{{ design.designcode }}" size="30"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            {% if error.designcode %}
-                            <p style="color: red">
-                                {{ error.designcode }}
-                            </p>
-                            {% endif %}
-                        </td>
+                        <td><input class="form-control" name="design_code_name" value="{{ design.designcode }}" size="30" required></td>
                     </tr>
 
                     <tr>
                         <td style="font-size: 16px">Design Code App: </td>
-                        <td><input class="form-control" name="design_code_app" value="{{ design.designcodeapp }}" size="30"></td>
+                        <td><input class="form-control" name="design_code_app" value="{{ design.designcodeapp }}" size="30" required></td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        {% if error.designcodeapp %}
-                        <td style="color: red">
-                            {{ error.designcodeapp }}
-                        </td>
-                        {% endif %}
-                    </tr>
+
                 </table>
             </fieldset>
             </fieldset>

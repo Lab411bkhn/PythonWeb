@@ -40,7 +40,7 @@
 
                 <li><a href="{% url 'login' %}" accesskey="4" title="">ADMINISTRATOR</a></li>
                 <li><a href="{% url 'contact' %}" accesskey="3" title="">CONTACT US</a></li>
-                <li><a href="{% url 'login' %}" accesskey="2" title="">RISK WISK</a></li>
+                <li><a href="{% url 'login' %}" accesskey="2" title="">RBI</a></li>
                 <li class="current_page_item"><a href="{% url 'home' %}" accesskey="1" title="">HOMEPAGE</a></li>
    </ul>
 </div>
@@ -72,17 +72,7 @@
         <table>
             <tr>
                 <td><span style="font-size: 18px">Site Name:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></td>
-                <td><input type="text" class="form-control" name="sitename" id="sitename" size="40" value="{{ obj.sitename }}"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    {% if error.empty %}
-                    <p style="color: red">
-                        {{ error.empty }}
-                    </p>
-                    {% endif %}
-                </td>
+                <td><input type="text" class="form-control" name="sitename" id="sitename" size="40" value="{{ obj.sitename }}" required></td>
             </tr>
         </table>
 

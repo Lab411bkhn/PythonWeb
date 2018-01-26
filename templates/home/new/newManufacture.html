@@ -71,15 +71,7 @@
                 <table  cellspacing="10px" >
                     <tr>
                         <td style="font-size: 16px">Manufacture Name:&emsp;&emsp;</td>
-                        <td><input class="form-control" name="manufacture" value="{{ manufacture.manufacturername }}" size="30"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            {% if error.manufacture %}
-                            <p style="color: red">{{ error.manufacture }}</p>
-                            {% endif %}
-                        </td>
+                        <td><input class="form-control" name="manufacture" value="{{ manufacture.manufacturername }}" size="30" required></td>
                     </tr>
                 </table>
             </fieldset>

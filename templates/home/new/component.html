@@ -96,17 +96,7 @@
                 </tr>
                 <tr>
                     <td><span style="font-size:16px;">Component Number: </span></td>
-                    <td><input class="form-control" type="text"  name="componentNumer" value="{{ component.componentnumber }}" size="30"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.componentNumber %}
-                        <p style="color: red">
-                        {{ error.componentNumber }}
-                        </p>
-                        {% endif %}
-                    </td>
+                    <td><input class="form-control" type="text"  name="componentNumer" value="{{ component.componentnumber }}" size="30" required></td>
                 </tr>
 
                 <tr>
@@ -148,15 +138,7 @@
 
                 <tr>
                     <td><span style="font-size:16px;">Component Name:</span></td>
-                    <td><input class="form-control" type="text"  name="componentName" list="componentName" value="{{ component.componentname }}" size="30"></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        {% if error.componentName %}
-                        <p style="color: red">{{ error.componentName }}</p>
-                        {% endif %}
-                    </td>
+                    <td><input class="form-control" type="text"  name="componentName" list="componentName" value="{{ component.componentname }}" size="30" required></td>
                 </tr>
 
                 <tr>

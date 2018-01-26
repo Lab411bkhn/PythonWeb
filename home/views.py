@@ -212,13 +212,353 @@ def newProposal(request, componentname):
     try:
         dataCom = ComponentMaster.objects.get(componentid= componentname)
         dataEq = EquipmentMaster.objects.get(equipmentid= dataCom.equipmentid_id)
+        dataFaci = Facility.objects.get(facilityid= dataEq.facilityid_id)
         api = ApiComponentType.objects.get(apicomponenttypeid= dataCom.apicomponenttypeid)
+        commisiondate = dataEq.commissiondate.date().strftime('%Y-%m-%d')
         data ={}
+        error = {}
+        Fluid = ["Acid","AlCl3","C1-C2","C13-C16","C17-C25","C25+","C3-C4","C5", "C6-C8","C9-C12","CO","DEE","EE","EEA","EG","EO","H2","H2S","HCl","HF","Methanol","Nitric Acid","NO2","Phosgene","PO","Pyrophoric","Steam","Styrene","TDI","Water"]
+        data['islink'] = dataCom.isequipmentlinked
         if request.method =="POST":
             data['assessmentname'] = request.POST.get('AssessmentName')
             data['assessmentdate'] = request.POST.get('assessmentdate')
             data['riskperiod']=request.POST.get('RiskAnalysisPeriod')
-            data['islink'] = 1
+            if not data['assessmentname']:
+                error['assessmentname'] = "Assessment Name does not empty"
+            if not data['assessmentdate']:
+                error['assessmentdate']= "Assesment Date does not empty!"
+
+            if request.POST.get('adminControlUpset') == "on":
+                adminControlUpset = 1
+            else:
+                adminControlUpset = 0
+
+            if request.POST.get('ContainsDeadlegs') == "on":
+                containsDeadlegs = 1
+            else:
+                containsDeadlegs = 0
+
+            if request.POST.get('Highly') == "on":
+                HighlyEffe = 1
+            else:
+                HighlyEffe = 0
+
+            if request.POST.get('CylicOper') == "on":
+                cylicOP = 1
+            else:
+                cylicOP = 0
+
+            if request.POST.get('Downtime') == "on":
+                downtime = 1
+            else:
+                downtime = 0
+
+            if request.POST.get('SteamedOut') == "on":
+                steamOut = 1
+            else:
+                steamOut = 0
+
+            if request.POST.get('HeatTraced') == "on":
+                heatTrace = 1
+            else:
+                heatTrace = 0
+
+            if request.POST.get('PWHT') == "on":
+                pwht = 1
+            else:
+                pwht = 0
+
+            if request.POST.get('InterfaceSoilWater') == "on":
+                interfaceSoilWater = 1
+            else:
+                interfaceSoilWater = 0
+
+            if request.POST.get('PressurisationControlled') == "on":
+                pressureControl = 1
+            else:
+                pressureControl = 0
+
+            if request.POST.get('LOM') == "on":
+                linerOnlineMoniter = 1
+            else:
+                linerOnlineMoniter = 0
+
+            if request.POST.get('EquOper') == "on":
+                lowestTemp = 1
+            else:
+                lowestTemp = 0
+
+            if request.POST.get('PresenceofSulphidesShutdow') == "on":
+                presentSulphidesShutdown =1
+            else:
+                presentSulphidesShutdown = 0
+
+            if request.POST.get('MFTF') == "on":
+                materialExposed = 1
+            else:
+                materialExposed = 0
+
+            if request.POST.get('PresenceofSulphides') == "on":
+                presentSulphide = 1
+            else:
+                presentSulphide = 0
+
+            data['minTemp'] = request.POST.get('Min')
+            data['ExternalEnvironment'] = request.POST.get('ExternalEnvironment')
+            data['ThermalHistory'] = request.POST.get('ThermalHistory')
+            data['OnlineMonitoring'] = request.POST.get('OnlineMonitoring')
+            data['EquipmentVolumn'] = request.POST.get('EquipmentVolume')
+
+            data['normaldiameter'] = request.POST.get('NominalDiameter')
+            data['normalthick'] = request.POST.get('NominalThickness')
+            data['currentthick'] = request.POST.get('CurrentThickness')
+            data['tmin'] = request.POST.get('tmin')
+            data['currentrate'] = request.POST.get('CurrentRate')
+            data['deltafatt'] = request.POST.get('DeltaFATT')
+
+            if request.POST.get('DFDI') == "on":
+                damageDuringInsp = 1
+            else:
+                damageDuringInsp = 0
+
+            if request.POST.get('ChemicalInjection') == "on":
+                chemicalInj = 1
+            else:
+                chemicalInj = 0
+
+            if request.POST.get('PresenceCracks') == "on":
+                crackpresent = 1
+            else:
+                crackpresent = 0
+
+            if request.POST.get('HFICI') == "on":
+                HFICI = 1
+            else:
+                HFICI = 0
+
+            if request.POST.get('TrampElements') == "on":
+                TrampElement = 1
+            else:
+                TrampElement = 0
+
+            data['MaxBrinell'] = request.POST.get('MBHW')
+            data['complex'] = request.POST.get('ComplexityProtrusions')
+            data['CylicLoad'] = request.POST.get('CLC')
+            data['branchDiameter'] = request.POST.get('BranchDiameter')
+            data['joinTypeBranch'] = request.POST.get('JTB')
+            data['numberPipe'] = request.POST.get('NFP')
+            data['pipeCondition'] = request.POST.get('PipeCondition')
+            data['prevFailure'] = request.POST.get('PreviousFailures')
+
+            if request.POST.get('VASD') == "on":
+                visibleSharkingProtect = 1
+            else:
+                visibleSharkingProtect = 0
+
+            data['shakingPipe'] = request.POST.get('ASP')
+            data['timeShakingPipe'] = request.POST.get('ATSP')
+            data['correctActionMitigate'] = request.POST.get('CAMV')
+
+            # OP condition
+            data['maxOT'] = request.POST.get('MaxOT')
+            data['maxOP'] = request.POST.get('MaxOP')
+            data['minOT'] = request.POST.get('MinOT')
+            data['minOP'] = request.POST.get('MinOP')
+            data['OpHydroPressure'] = request.POST.get('OHPP')
+            data['FlowRate'] = request.POST.get('FlowRate')
+            data['criticalTemp'] = request.POST.get('CET')
+            data['OP1'] = request.POST.get('Operating1')
+            data['OP2'] = request.POST.get('Operating2')
+            data['OP3'] = request.POST.get('Operating3')
+            data['OP4'] = request.POST.get('Operating4')
+            data['OP5'] = request.POST.get('Operating5')
+            data['OP6'] = request.POST.get('Operating6')
+            data['OP7'] = request.POST.get('Operating7')
+            data['OP8'] = request.POST.get('Operating8')
+            data['OP9'] = request.POST.get('Operating9')
+            data['OP10'] = request.POST.get('Operating10')
+
+            #material
+            data['material'] = request.POST.get('Material')
+            data['maxDesignTemp'] = request.POST.get('MaxDesignTemp')
+            data['minDesignTemp'] = request.POST.get('MinDesignTemp')
+            data['designPressure'] = request.POST.get('DesignPressure')
+            data['tempRef'] = request.POST.get('ReferenceTemperature')
+            data['allowStress'] = request.POST.get('ASAT')
+            data['BrittleFacture'] = request.POST.get('BFGT')
+            data['CA'] = request.POST.get('CorrosionAllowance')
+            data['sigmaPhase'] = request.POST.get('SigmaPhase')
+            if request.POST.get('CoLAS') == "on":
+                cacbonAlloy = 1
+            else:
+                cacbonAlloy = 0
+
+            if request.POST.get('AusteniticSteel') == "on":
+                austeniticStell = 1
+            else:
+                austeniticStell = 0
+
+            if request.POST.get('SusceptibleTemper') == "on":
+                suscepTemp = 1
+            else:
+                suscepTemp = 0
+
+            if request.POST.get('NickelAlloy') == "on":
+                nickelAlloy = 1
+            else:
+                nickelAlloy = 0
+
+            if request.POST.get('Chromium') == "on":
+                chromium = 1
+            else:
+                chromium = 0
+
+            data['sulfurContent'] = request.POST.get('SulfurContent')
+            data['heatTreatment'] = request.POST.get('heatTreatment')
+
+            if request.POST.get('MGTEHTHA') == "on":
+                materialHTHA = 1
+            else:
+                materialHTHA = 0
+
+            data['HTHAMaterialGrade'] = request.POST.get('HTHAMaterialGrade')
+
+            if request.POST.get('MaterialPTA') == "on":
+                materialPTA = 1
+            else:
+                materialPTA = 0
+
+            data['PTAMaterialGrade'] = request.POST.get('PTAMaterialGrade')
+            data['materialCostFactor'] = request.POST.get('MaterialCostFactor')
+
+            #Coating, Clading
+            if request.POST.get('InternalCoating') == "on":
+                InternalCoating = 1
+            else:
+                InternalCoating = 0
+
+            if request.POST.get('ExternalCoating') == "on":
+                ExternalCoating = 1
+            else:
+                ExternalCoating = 0
+
+            data['ExternalCoatingID'] = request.POST.get('ExternalCoatingID')
+            data['ExternalCoatingQuality'] = request.POST.get('ExternalCoatingQuality')
+
+            if request.POST.get('SCWD') == "on":
+                supportMaterial = 1
+            else:
+                supportMaterial = 0
+
+            if request.POST.get('InternalCladding') == "on":
+                InternalCladding = 1
+            else:
+                InternalCladding = 0
+
+            data['CladdingCorrosionRate'] = request.POST.get('CladdingCorrosionRate')
+
+            if request.POST.get('InternalLining') == "on":
+                InternalLining = 1
+            else:
+                InternalLining = 0
+
+            data['InternalLinerType'] = request.POST.get('InternalLinerType')
+            data['InternalLinerCondition'] = request.POST.get('InternalLinerCondition')
+
+            if request.POST.get('ExternalInsulation')== "on":
+                ExternalInsulation = 1
+            else:
+                ExternalInsulation = 0
+
+            if request.POST.get('ICC') == "on":
+                InsulationCholride = 1
+            else:
+                InsulationCholride = 0
+
+            data['ExternalInsulationType'] = request.POST.get('ExternalInsulationType')
+            data['InsulationCondition'] = request.POST.get('InsulationCondition')
+
+            # Steam
+            data['NaOHConcentration'] = request.POST.get('NaOHConcentration')
+            data['ReleasePercentToxic'] = request.POST.get('RFPT')
+            data['ChlorideIon'] = request.POST.get('ChlorideIon')
+            data['CO3'] = request.POST.get('CO3')
+            data['H2SContent'] = request.POST.get('H2SContent')
+            data['PHWater'] = request.POST.get('PHWater')
+
+            if request.POST.get('EAGTA') == "on":
+                exposureAcid = 1
+            else:
+                exposureAcid = 0
+
+            if request.POST.get('ToxicConstituents') == "on":
+                ToxicConstituents = 1
+            else:
+                ToxicConstituents = 0
+
+            data['ExposureAmine'] = request.POST.get('ExposureAmine')
+            data['AminSolution'] = request.POST.get('ASC')
+
+            if request.POST.get('APDO') == "on":
+                aquaDuringOP = 1
+            else:
+                aquaDuringOP = 0
+
+            if request.POST.get('APDSD') == "on":
+                aquaDuringShutdown = 1
+            else:
+                aquaDuringShutdown = 0
+
+            if request.POST.get('EnvironmentCH2S') == "on":
+                EnvironmentCH2S = 1
+            else:
+                EnvironmentCH2S = 0
+
+            if request.POST.get('PHA') == "on":
+                presentHF = 1
+            else:
+                presentHF = 0
+
+            if request.POST.get('PresenceCyanides') == "on":
+                presentCyanide = 1
+            else:
+                presentCyanide = 0
+
+            if request.POST.get('PCH') == "on":
+                processHydrogen = 1
+            else:
+                processHydrogen = 0
+
+            if request.POST.get('ECCAC') == "on":
+                environCaustic = 1
+            else:
+                environCaustic = 0
+
+            if request.POST.get('ESBC') == "on":
+                exposedSulfur = 1
+            else:
+                exposedSulfur = 0
+
+            if request.POST.get('MEFMSCC') == "on":
+                materialExposedFluid = 1
+            else:
+                materialExposedFluid = 0
+
+            # CA
+            data['APIFluid'] = request.POST.get('APIFluid')
+            data['MassInventory'] = request.POST.get('MassInventory')
+            data['Systerm'] = request.POST.get('Systerm')
+            data['MassComponent'] = request.POST.get('MassComponent')
+            data['EquipmentCost'] = request.POST.get('EquipmentCost')
+            data['MittigationSysterm'] = request.POST.get('MittigationSysterm')
+            data['ProductionCost'] = request.POST.get('ProductionCost')
+            data['ToxicPercent'] = request.POST.get('ToxicPercent')
+            data['InjureCost'] = request.POST.get('InjureCost')
+            data['ReleaseDuration'] = request.POST.get('ReleaseDuration')
+            data['EnvironmentCost'] = request.POST.get('EnvironmentCost')
+            data['PersonDensity'] = request.POST.get('PersonDensity')
+            data['DetectionType'] = request.POST.get('DetectionType')
+            data['IsulationType'] = request.POST.get('IsulationType')
 
             rwassessment = RwAssessment(equipmentid= dataEq, componentid= dataCom, assessmentdate=data['assessmentdate'],
                                         riskanalysisperiod=data['riskperiod'],isequipmentlinked=data['islink'],proposalname=data['assessmentname'])
@@ -227,12 +567,7 @@ def newProposal(request, componentname):
             rwequipment = RwEquipment(id= rwassessment, commissiondate= data['assessmentdate'], adminupsetmanagement= 1)
             rwequipment.save()
 
-            data['normaldiameter'] = request.POST.get('NominalDiameter')
-            data['normalthick'] = request.POST.get('NominalThickness')
-            data['currentthick'] = request.POST.get('CurrentThickness')
-            data['tmin'] = request.POST.get('tmin')
-            data['currentrate'] = request.POST.get('CurrentRate')
-            data['deltafatt'] = request.POST.get('DeltaFATT')
+
             rwcomponent =RwComponent(id = rwassessment, nominaldiameter=data['normaldiameter'], nominalthickness= data['normalthick'],
                                      minreqthickness=data['tmin'], currentcorrosionrate=data['currentrate'],deltafatt= data['deltafatt'])
             rwcomponent.save()
@@ -246,7 +581,7 @@ def newProposal(request, componentname):
             rwcoat = RwCoating(id= rwassessment)
             rwcoat.save()
 
-            data['CA'] = request.POST.get('CorrosionAllowance')
+
             rwmaterial = RwMaterial(id = rwassessment, corrosionallowance=data['CA'])
             rwmaterial.save()
 
@@ -312,7 +647,7 @@ def newProposal(request, componentname):
             return redirect('resultca', rwassessment.id)
     except ComponentMaster.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/Normal.html',{'component': dataCom , 'equipment':dataEq,'api':api})
+    return render(request, 'home/new/Normal.html',{'facility': dataFaci,'component': dataCom , 'equipment':dataEq,'api':api,'commissiondate': commisiondate,'dataLink': data['islink'], 'fluid': Fluid})
 
 ### Edit function
 def editSite(request, sitename):

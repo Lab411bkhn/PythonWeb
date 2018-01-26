@@ -35,7 +35,7 @@ class DM_CAL:
                  CUI_PERCENT_9=0, CUI_PERCENT_10=0,
                  EXTERN_CLSCC_INSP_NUM=0, EXTERN_CLSCC_INSP_EFF="E",
                  EXTERNAL_INSULATION=False, COMPONENT_INSTALL_DATE=datetime.now().date(), CRACK_PRESENT=False,
-                 EXTERNAL_EVIRONMENT="", EXTERN_COAT_QUALITY="", EXTERN_CLSCC_CUI_INSP_NUM=0,
+                 EXTERNAL_EVIRONMENT="",EXTERN_COATING = False, EXTERN_COAT_QUALITY="", EXTERN_CLSCC_CUI_INSP_NUM=0,
                  EXTERN_CLSCC_CUI_INSP_EFF="E", PIPING_COMPLEXITY="", INSULATION_CONDITION="",
                  INSULATION_CHLORIDE=False,
                  MATERIAL_SUSCEP_HTHA=False, HTHA_MATERIAL="", HTHA_NUM_INSP=0, HTHA_EFFECT="E", HTHA_PRESSURE=0,
@@ -174,6 +174,7 @@ class DM_CAL:
         self.PIPING_COMPLEXITY = PIPING_COMPLEXITY;
         self.INSULATION_CONDITION = INSULATION_CONDITION;
         self.INSULATION_CHLORIDE = INSULATION_CHLORIDE;
+        self.EXTERN_COATING = EXTERN_COATING;
 
         # HTHA input
         self.MATERIAL_SUSCEP_HTHA = MATERIAL_SUSCEP_HTHA;
@@ -1683,6 +1684,8 @@ class DM_CAL:
         return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD);
 
     def DF_CUI_CLSCC(self):
+        if not self.EXTERN_COATING:
+            return 0
         if (self.AUSTENITIC_STEEL and self.EXTERNAL_INSULATION and self.EXTERNAL_EXPOSED_FLUID_MIST and not (
                 self.MIN_OP_TEMP > 150 or self.MAX_OP_TEMP < 50)):
             return self.DFB_CUI_CLSCC() * pow(self.AGE_CLSCC(), 1.1);

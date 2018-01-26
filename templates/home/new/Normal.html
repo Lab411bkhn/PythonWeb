@@ -40,7 +40,7 @@
 
                 <li><a href="{% url 'login' %}" accesskey="4" title="">ADMINISTRATOR</a></li>
                 <li><a href="{% url 'contact' %}" accesskey="3" title="">CONTACT US</a></li>
-                <li><a href="{% url 'login' %}" accesskey="2" title="">RISK WISK</a></li>
+                <li><a href="{% url 'login' %}" accesskey="2" title="">RBI</a></li>
                 <li class="current_page_item"><a href="{% url 'home' %}" accesskey="1" title="">HOMEPAGE</a></li>
    </ul>
 </div>
@@ -60,7 +60,6 @@
     <div id="main-right" align="center">
         <form method="post" class="form-control">
             {% csrf_token %}
-
             <div id="Adiv">
             <fieldset class="scheduler-border">
                     <legend class="scheduler-border"><b>Assessment General Information</b></legend>
@@ -70,11 +69,11 @@
             <table>
                 <tr>
                     <td>Assessment Name</td>
-                    <td><input type="text" class="form-control" name="AssessmentName" value="" /></td>
+                    <td><input type="text" class="form-control" name="AssessmentName" value="" required/></td>
                 </tr>
                 <tr>
                     <td>Assessment Date</td>
-                    <td><input type="text" id="datepicker" width="auto" name="assessmentdate" data-format="yyyy-mm-dd" />
+                    <td><input type="text" id="datepicker" width="auto" name="assessmentdate" data-format="yyyy-mm-dd" required/>
                             <script>
                                 $('#datepicker').datepicker({
                                     uiLibrary: 'bootstrap4'
@@ -117,12 +116,7 @@
                             </tr>
                             <tr>
                                 <td><span style="font-size: 16px">Commission Date</span> </td>
-                                <td><input type="text" id="datepicker1" name="CommissionDate" value="{{ equipment.commissiondate }}" data-format="yyyy-mm-dd" readonly> </td>
-                                <script>
-                                    $('#datepicker1').datepicker({
-                                    uiLibrary: 'bootstrap4'
-                                });
-                                </script>
+                                <td><input type="text" class="form-control" name="CommissionDate" value="{{ commissiondate }}" data-format="yyyy-mm-dd"  readonly="readonly"> </td>
                             </tr>
                             <tr>
                                 <td><span style="font-size: 16px">Equipment Name</span> </td>
@@ -158,8 +152,11 @@
                             </tr>
                             <tr>
                                 <td><span style="font-size: 16px">Risk Links to Equipment Risk</span> </td>
-                                <td><input type="checkbox" name="RiskLinks" checked></td>
-
+                                {% if dataLink %}
+                                    <td><input type="checkbox" name="RiskLinks" checked disabled="disabled"></td>
+                                {% else %}
+                                     <td><input type="checkbox" name="RiskLinks" disabled="disabled"></td>
+                                {% endif %}
                             </tr>
                         </table>
                     </fieldset>
@@ -169,21 +166,21 @@
                     <table>
                         <tr>
                             <td><span style="font-size: 16px">Administrative Control for Upset Management</span></td>
-                            <td><input type="checkbox" list="Admin" name="Admin"  /></td>
+                            <td><input type="checkbox" name="adminControlUpset" list="Admin" /></td>
                             <td><span style="font-size: 16px">Contains Deadlegs</span></td>
                             <td><input  type="checkbox" name="ContainsDeadlegs"/></td>
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px">Highly Effective Inspection for Deadlegs</span></td>
-                            <td><input type="checkbox" value= 1 name="Highly" list="Highly" /></td>
+                            <td><input type="checkbox"  name="Highly" list="Highly" /></td>
                             <td><span style="color: red;font-size: 16px"> Cylic Operation</span></td>
-                            <td><input type="checkbox" value= 1 list="CylicOper" name="CylicOper" /></td>
+                            <td><input type="checkbox" list="CylicOper" name="CylicOper" /></td>
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px">Downtime Protection Used</span></td>
                             <td><input  type="checkbox" value= 1 list="Downtime" name="Downtime"  /></td>
                             <td><span style="font-size: 16px">Steamed Out Prior to Water Flushing</span></td>
-                            <td><input type="checkbox" value= 1 list="Steamed" name="Steamed"  /></td>
+                            <td><input type="checkbox" value= 1 list="Steamed" name="SteamedOut"  /></td>
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px">Heat Traced</span></td>
@@ -290,7 +287,7 @@
                             </tr>
                             <tr>
                                 <td><span style="font-size: 16px">System Management Factor</span></td>
-                                <td><input type="number" min="0.1" max="10" step="0.01" size="20" class="form-control" name="SystemManagement" /></td>
+                                <td><input type="number" min="0.1" max="10" step="0.01" size="20" value="{{ facility.managementfactor }}" class="form-control" name="SystemManagement" readonly/></td>
                             </tr>
                             <tr>
                                 <td><span style="font-size: 16px">Equipment Volume</span></td>
@@ -469,6 +466,7 @@
                         <tr>
                             <td ><span style="color: red;font-size: 16px">Maximum Operating Temperature</span></td>
                             <td><input type="number" class="form-control" step="0.01" name="MaxOT"/></td><td>&deg;C</td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px">Maximum Operating Pressure</span></td>
                             <td><input type="number" step="0.01" class="form-control" name="MaxOP"/></td><td>psi</td>
                         </tr>
@@ -476,12 +474,14 @@
                         <tr>
                             <td><span style="color: red;font-size: 16px">Minimum Operating Temperature</span>
                             <td><input type="number" class="form-control" step="0.01" name="MinOT"/></td><td>&deg;C</td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px">Minimum Operating Pressure</span></td>
                             <td><input type="number" class="form-control" step="0.01" name="MinOP"/></td><td>psi</td>
                         </tr>
                         <tr>
                             <td><span style="color: red;font-size: 16px">Operating Hydrogen Partial Pressure </span></td>
                             <td><input type="number" class="form-control" step="0.01" name="OHPP"/></td><td>psi</td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px">Flow Rate</span></td>
                             <td><input type="number" step="0.01" class="form-control" name="FlowRate"/></td><td>m3/hr</td>
                         </tr>
@@ -495,52 +495,52 @@
                         <table>
                             <tr>
                                 <td ><span style="font-size: 16px">% Operating at -12 &deg;C to  -8 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating1"/></td><td>%</td>
+                                <td><input type="number" step="0.01" min="0" max="100" class="form-control" name="Operating1"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at -8 &deg;C to  6 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating2"/></td><td>%</td>
+                                <td><input type="number" step="0.01" min="0" max="100" class="form-control" name="Operating2"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 6 &deg;C to  32 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating3"/></td><td>%</td>
+                                <td><input type="number" step="0.01"  min="0" max="100" class="form-control" name="Operating3"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 32 &deg;C to  71 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating4"/></td><td>%</td>
+                                <td><input type="number" step="0.01" min="0" max="100"  class="form-control" name="Operating4"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 71 &deg;C to  107 &deg;C </span></td>
-                                <td><input type="number" class="form-control" step="0.01" name="Operating5"/></td><td>%</td>
+                                <td><input type="number"  min="0" max="100" class="form-control" step="0.01" name="Operating5"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 107 &deg;C to  121 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating6"/></td><td>%</td>
+                                <td><input type="number" step="0.01" min="0" max="100"  class="form-control" name="Operating6"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 121 &deg;C to  135 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating7"/></td><td>%</td>
+                                <td><input type="number" step="0.01" min="0" max="100"  class="form-control" name="Operating7"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 135 &deg;C to  162 &deg;C </span></td>
-                                <td><input type="number" class="form-control" step="0.01" name="Operating8"/></td><td>%</td>
+                                <td><input type="number"  min="0" max="100" class="form-control" step="0.01" name="Operating8"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 162 &deg;C to  176 &deg;C </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating9"/></td><td>%</td>
+                                <td><input type="number"  min="0" max="100" step="0.01" class="form-control" name="Operating9"/></td><td>%</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">% Operating at 176 &deg;C or above </span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="Operating10"/></td><td>%</td>
+                                <td><input type="number"  min="0" max="100" step="0.01" class="form-control" name="Operating10"/></td><td>%</td>
                             </tr>
                         </table>
                     </fieldset>
@@ -556,9 +556,9 @@
 
                         <tr>
                             <td><span style="font-size: 16px;display: inline-block;">Max.Design Temperature</span></td>
-                            <td><input type="number" class="form-control" step="0.01" name="Max"/></td><td>&deg;C </td>
+                            <td><input type="number" class="form-control" step="0.01" name="MaxDesignTemp"/></td><td>&deg;C </td>
                             <td><span style="font-size: 16px">Min.Design Temperature </span></td>
-                            <td><input type="number" step="0.01" class="form-control" name="Min"/></td><td>&deg;C</td>
+                            <td><input type="number" step="0.01" class="form-control" name="MinDesignTemp"/></td><td>&deg;C</td>
                         </tr>
 
                         <tr>
@@ -579,7 +579,7 @@
                             <td><span style="font-size: 16px">Corrosion Allowance</span></td>
                             <td><input type="number" step="0.01" class="form-control" name="CorrosionAllowance"/></td><td>mm</td>
                             <td><span style="font-size: 16px">Sigma Phase </span></td>
-                            <td><input type="number" step="0.01" class="form-control" name="SigmaPhase"/></td><td>%</td>
+                            <td><input type="number" step="0.01" min="0" max="100" class="form-control" name="SigmaPhase"/></td><td>%</td>
                         </tr>
 
                         <tr>
@@ -613,7 +613,7 @@
 
                         <tr>
                             <td><span style="font-size: 16px;display: inline-block;">Heat Treatment</span></td>
-                            <td><select class="form-control" list="HeatTreatment" name="eatTreatment" >
+                            <td><select class="form-control" list="HeatTreatment" name="heatTreatment" >
                                 <option>Annealed</option>
                                 <option>None</option>
                                 <option>Normalised Temper</option>
@@ -645,7 +645,7 @@
 
                         <tr>
                             <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px"> Material Grade to Evaluate</br>Severity of PTA Cracking</span></td>
-                            <td><input type="checkbox" value= 1 list="MaterialEvaluate" name="MaterialEvaluate" size="30"/></td>
+                            <td><input type="checkbox" value= 1 list="MaterialEvaluate" name="MaterialPTA" size="30"/></td>
                         </tr>
 
                         <tr>
@@ -678,7 +678,7 @@
                                 <td><span style="font-size: 16px">Internal Coating</span></td>
                                 <td><input type="checkbox" value= 1 list="InternalCoating" name="InternalCoating"></td>
                                 <td><span style="color:red;font-size: 16px">External Coating</span></td>
-                                <td><input type="checkbox" value= 1 list="ExternalCoating" name="ExternalCoating">
+                                <td><input type="checkbox" value= 1 id="ExternalCoating" name="ExternalCoating" >
                                 </td>
 
                             </tr>
@@ -688,20 +688,55 @@
                                 <td><input type="text" id="datepicker2" width="auto" data-format="yyyy-mm-dd" name="ExternalCoatingID" /></td>
                                 <script>
                                 $('#datepicker2').datepicker({
-                                    uiLibrary: 'bootstrap4'
+                                    uiLibrary: 'bootstrap4',
+                                    value: defautDate()
                                 });
+                                function defautDate() {
+                                    var date = new Date();
+                                    var dd = date.getDate();
+                                    var mm = date.getMonth()+1; //January is 0!
+                                    var yyyy = date.getFullYear();
+                                    if(dd<10){
+                                        dd='0'+dd;
+                                    }
+                                    if(mm<10){
+                                        mm='0'+mm;
+                                    }
+                                    var today = yyyy+'-'+mm+'-'+dd;
+                                    return today
+                                }
                             </script>
                             </tr>
 
                             <tr>
                                 <td><span style="color:red;font-size: 16px">External Coating Quality</span> </td>
-                                <td><select class="form-control" list="ECQ" name="ExternalCoatingQuality">
-                                    <option>High coating quality</option>
-                                    <option>Medium coating quality</option>
-                                    <option>No coating or poor quality</option>
+                                <td><select class="form-control" list="ECQ" id ="ExternalCoatingQuality"  name="ExternalCoatingQuality">
                                 </select>
                                 </td>
                             </tr>
+
+                            <script>
+                                $(document).ready(function () {
+                                    $("#ExternalCoatingQuality").attr("disabled", true);
+                                    $("#ExternalCoatingQuality").empty();
+                                    $("#datepicker2").attr("disabled",true);
+                                    $("#ExternalCoating").click(function () {
+                                        if($("#ExternalCoating").prop("checked") == true){
+                                        $("#ExternalCoatingQuality").empty();
+                                        $("#ExternalCoatingQuality").html("<option>High coating quality</option>\n" +
+                                                                          "<option>Medium coating quality</option>\n" +
+                                                                          "<option>No coating or poor quality</option>");
+
+                                        $("#ExternalCoatingQuality").attr("disabled", false);
+                                        $("#datepicker2").attr("disabled",false);
+                                    }
+                                    else {
+                                        $("#ExternalCoatingQuality").attr("disabled", true);
+                                        $("#ExternalCoatingQuality").empty();
+                                        $("#datepicker2").attr("disabled",true);
+                                    }})
+                                })
+                            </script>
 
                             <tr>
                                 <td><span style="font-size: 16px">Support Configuration Which Does</br> Not Allow Coating Maintenance</span></td>
@@ -805,28 +840,32 @@
                         <table>
                             <tr>
                                 <td><span style="font-size: 16px">NaOH Concentration (%)</span></td>
-                                <td><input type="number" class="form-control" step="0.01" name="NaOHConcentration"/></td>
+                                <td><input type="number" class="form-control"  min="0" max="100"  step="0.01" name="NaOHConcentration"/></td>
+                                <td>&emsp;</td>
                                 <td><span style="font-size: 16px">Release Fluid Percent Toxic (%)</span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="RFPT"/></td>
+                                <td><input type="number" step="0.01"  min="0" max="100"  class="form-control" name="RFPT"/></td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">Chloride Ion (ppm)</span></td>
-                                <td><input type="number" class="form-control" step="0.01" name="ChlorideIon"/></td>
+                                <td><input type="number" class="form-control" step="0.01"  min="0" max="1000000"  name="ChlorideIon"/></td>
+                                <td>&emsp;</td>
                                 <td><span style="font-size: 16px">CO3 Concentration in Water (ppm)</span></td>
-                                <td><input type="number" class="form-control" step="0.01" name="CO3"/></td>
+                                <td><input type="number" class="form-control" step="0.01"  min="0" max="1000000" name="CO3"/></td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">H2S Content in Water (ppm)</span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="H2SContent"/></td>
+                                <td><input type="number" step="0.01" class="form-control"  min="0" max="1000000" name="H2SContent"/></td>
+                                <td>&emsp;</td>
                                 <td><span style="color: red;font-size: 16px">PH of Water</span></td>
-                                <td><input type="number" step="0.01" class="form-control" name="PHWater"/></td>
+                                <td><input type="number" step="0.01" class="form-control" min="0" max="14" value="7" name="PHWater"/></td>
                             </tr>
 
                             <tr>
                                 <td><span style="color: red;font-size: 16px">Exposed To Acid Gas Treating Amine</span></td>
                                 <td><input type="checkbox" value= 1 list="EAGTA" name="EAGTA"/>
+                                <td>&emsp;</td>
                                 <td><span style="font-size: 16px">Toxic Constituents</span> </td>
                                 <td><input type="checkbox" name="ToxicConstituents"> </td>
                             </tr>
@@ -856,8 +895,8 @@
 
                             <tr>
                                 <td><span style="color: red;font-size: 16px"> Aqueous Phase During Operation</span></td>
-                                <td><input type="checkbox" value= 1 list="APDO" name="APDO"/>
-                                </td>
+                                <td><input type="checkbox" value= 1 list="APDO" name="APDO"/></td>
+                                <td>&emsp;</td>
                                 <td><span style="color: red;font-size:16px"> Aqueous Phase During Shut Down</span></td>
                                 <td><input type="checkbox" value= 1 list="APDSD" name="APDSD"/>
                                 </td>
@@ -865,8 +904,8 @@
 
                             <tr>
                                 <td><span style="color: red;font-size:16px"> Environment Contains H2S</span></td>
-                                <td><input type="checkbox" value= 1 list="EnvironmentCH2S" name="EnvironmentCH2S"/>
-                                </td>
+                                <td><input type="checkbox" value= 1 list="EnvironmentCH2S" name="EnvironmentCH2S"/></td>
+                                <td>&emsp;</td>
                                 <td><span style="color: red;font-size:16px"> Presence of Hydrofluoric Acid</span> </td>
                                 <td><input type="checkbox" value= 1 list="PHA" name="PHA"/>
                                 </td>
@@ -875,6 +914,7 @@
                             <tr>
                                 <td><span style="font-size: 16px">Presence of Cyanides</span></td>
                                 <td><input type="checkbox" value= 1 list="PresenceCyanides" name="PresenceCyanides"/>
+                                <td>&emsp;</td>
                                 <td><span style="color: red;font-size:16px"> Process Contains Hydrogen</span></td>
                                 <td><input type="checkbox" value= 1 list="PCH" name="PCH"/>
                                 </td>
@@ -883,6 +923,7 @@
                             <tr>
                                 <td><span style="color: red;font-size:16px"> Environment Contains Caustic</br> in Any Concentration</span></td>
                                 <td><input type="checkbox" value= 1 list="ECCAC" name="ECCAC"/></td>
+                                <td>&emsp;</td>
                                 <td><span style="color: red;font-size:16px"> Exposed to Sulphur-Bearing </br>Compounds</span></td>
                                 <td><input type="checkbox" value= 1 list="ESBC" name="ESBC"/></td>
                             </tr>
@@ -899,33 +940,37 @@
                     <table>
                         <tr>
                             <td><span style="font-size: 16px">API Fluid</span> </td>
-                            <td><select class="form-control" list="Fluid" name="APIFluid" >
-                                <option></option>
+                            <td><select class="form-control" id="APIFluid" list="Fluid" name="APIFluid" >
+                                {% for a in fluid %}
+                                    <option value="{{ a }}">{{ a }}</option>
+                                {% endfor %}
                             </select>
                             </td>
                             <td></td>
-
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px;">Mass Inventory</span> </td>
-                            <td><input type="number" step="0.01" class="form-control" name="MassInventory" value="" size="20"></td><td>kg</td>
+                            <td><input type="number" step="0.01" min="0" class="form-control" name="MassInventory" value="0" size="20"></td><td>kg</td>
                         </tr>
 
                         <tr>
                             <td><span style="font-size: 16px;">Systerm</span> </td>
-                            <td><select class="form-control" list="Systerm" name="Systerm" >
-                                <option>Liquid</option>
-                                <option>Vapor</option>
-                                <option>Two-phase</option>
+                            <td><select class="form-control" id="_Systerm" name="Systerm" >
+                                <option value="Liquid">Liquid</option>
+                                <option value="Vapor">Vapor</option>
+                                <option value="Two-phase">Two-phase</option>
                             </select>
                             </td>
                             <td></td>
+                            <td>&emsp;</td>
 
                             <td><span style="font-size: 16px;">Mass Component</span> </td>
-                            <td><input type="number" class="form-control" step="0.01" list="MassComponent" name="MassComponent" value=""></td><td>kg</td>
+                            <td><input type="number" class="form-control" step="0.01" min="0" list="MassComponent" name="MassComponent" value="0"></td><td>kg</td>
                         </tr>
 
                         <tr>
                             <td><span style="font-size: 16px;">Equipment Cost</span> </td>
-                            <td><input type="number" class="form-control" step="0.01" name="EquipmentCost" value="" ></td><td>$/m2 </td>
+                            <td><input type="number" class="form-control" step="0.01" min="0" name="EquipmentCost" value="0" ></td><td>$/m2 </td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px;">Mittigation Systerm</span> </td>
                             <td><select class="form-control" name="MittigationSysterm" >
                                 <option>Fire water deluge system and monitors</option>
@@ -935,27 +980,30 @@
                             </select>
                             </td>
                         </tr>
+
                         <tr>
                             <td><span style="font-size: 16px;">Production Cost</span> </td>
-                            <td><input type="number" class="form-control" step="0.01" name="ProductionCost" value=""></td><td>$/Day
-                            </td>
+                            <td><input type="number" class="form-control" step="0.01" min="0" name="ProductionCost" value="0"></td><td>$/Day</td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px;">Toxic Percent</span> </td>
-                            <td><input list="ToxicPercent" name="ToxicPercent" class="form-control" value="" size="20"></td><td>&#37;
+                            <td><input type="number" id="ToxicPercent" name="ToxicPercent" class="form-control" min="0" max="100" step="0.01"  value="0" size="20"></td><td>&#37;
                             </td>
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px;">Injure Cost</span> </td>
-                            <td><input type="number" step="0.01" class="form-control" name="InjureCost" value="" size="20"></td><td>$/Fatality </td>
+                            <td><input type="number" step="0.01" class="form-control" name="InjureCost" value="0" size="20"></td><td>$/Fatality </td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px">Release Duration</span> </td>
-                            <td><select class="form-control" list="ReleaseDuration" name="ReleaseDuration" value="" readonly></select></td><td>minutes(s)
+                            <td><select class="form-control" id="ReleaseDuration" name="ReleaseDuration" value="0"></select></td><td>minutes(s)
                             </td>
 
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px;">Environment Cost</span> </td>
-                            <td><input type="number" class="form-control" step="0.01" name="EnvironmentCost" value="" size="20"></td><td>$/Event </td>
+                            <td><input type="number" class="form-control" step="0.01" min = '0' value = "0" name="EnvironmentCost" value="" size="20"></td><td>$/Event </td>
+                            <td>&emsp;</td>
                             <td><span style="font-size: 16px;">Person Density</span> </td>
-                            <td><input type="number" class="form-control" step="0.01" name="PersonDensity" value="" size="20"></td><td>person/m2 </td>
+                            <td><input type="number" class="form-control" step="0.01" min = "0" value = "0" name="PersonDensity" value="" size="20"></td><td>person/m2 </td>
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px;">Detection Type</span> </td>
@@ -985,6 +1033,196 @@
      	</tr>
         </table>
             </div>
+
+        <!---- API CHANGE -->
+        <script >
+            $(document).ready(function () {
+                $("#ToxicPercent").attr("readonly",true);
+                $("#ReleaseDuration").attr("disabled", true);
+                $("#ToxicPercent").val("0");
+                $("#APIFluid").change(function () {
+
+                    $("#ReleaseDuration").empty();
+                    var val = $(this).val();
+                    var system = $("#_Systerm").val();
+                    if(val == "HF" || val =="H2S"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='5'>5</option>"+
+                        "<option value='10'>10</option><option value='20'>20</option>"+
+                        "<option value='40'>40</option><option value='60'>60</option>"+
+                        "<option value='InstantaneousReleases'>Instantaneous Releases</option>");
+                    }
+                    else if(val == "Amonia" || val=="Chlorine"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='5'>5</option>"+
+                        "<option value='10'>10</option><option value='15'>15</option>"+
+                        "<option value='20'>20</option><option value='25'>25</option>"+
+                        "<option value='30'>30</option><option value='35'>35</option>"+
+                        "<option value='40'>40</option><option value='45'>45</option>"+
+                        "<option value='50'>50</option><option value='55'>55</option>"+
+                        "<option value='60'>60</option>"+
+                        "<option value='InstantaneousReleases'>Instantaneous Releases</option>");
+                    }
+                    else if(val == "AlCl3"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='All'>All</option>");
+                    }
+                    else if((val == "CO" || val=="HCL")&&(system == "Vapor")){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "Nitric Acid" || val == "NO2" || val == "Phosgene"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "TDI" && system != "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if((val == "EE" || val == "EO") && (system == "Vapor")){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value='1.5'>1.5</option><option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "PO" && system == "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "EE" && system != "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "PO" && system != "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else {
+                        $("#ReleaseDuration").empty();
+                        $("#ReleaseDuration").attr("disabled", true);
+                        $("#ToxicPercent").attr("readonly",true);
+                        $("#ToxicPercent").val("0");
+                    }
+                });
+                $("#_Systerm").change(function () {
+                    $("#ReleaseDuration").empty();
+                    var val = $("#APIFluid").val();
+                    var system = $(this).val();
+                    if(val == "HF" || val =="H2S"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='5'>5</option>"+
+                        "<option value='10'>10</option><option value='20'>20</option>"+
+                        "<option value='40'>40</option><option value='60'>60</option>"+
+                        "<option value='InstantaneousReleases'>Instantaneous Releases</option>");
+                    }
+                    else if(val == "Amonia" || val=="Chlorine"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='5'>5</option>"+
+                        "<option value='10'>10</option><option value='15'>15</option>"+
+                        "<option value='20'>20</option><option value='25'>25</option>"+
+                        "<option value='30'>30</option><option value='35'>35</option>"+
+                        "<option value='40'>40</option><option value='45'>45</option>"+
+                        "<option value='50'>50</option><option value='55'>55</option>"+
+                        "<option value='60'>60</option>"+
+                        "<option value='InstantaneousReleases'>Instantaneous Releases</option>");
+                    }
+                    else if(val == "AlCl3"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='All'>All</option>");
+                    }
+                    else if((val == "CO" || val=="HCL")&&(system == "Vapor")){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "Nitric Acid" || val == "NO2" || val == "Phosgene"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "TDI" && system != "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if((val == "EE" || val == "EO") && (system == "Vapor")){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value='1.5'>1.5</option><option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "PO" && system == "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value ='3'>3</option>"+
+                        "<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "EE" && system != "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else if(val == "PO" && system != "Vapor"){
+                        $("#ToxicPercent").attr("readonly",false);
+                        $("#ReleaseDuration").attr("disabled", false);
+                        $("#ReleaseDuration").html("<option value='5'>5</option><option value='10'>10</option>"+
+                        "<option value='20'>20</option><option value='40'>40</option>"+
+                        "<option value='60'>60</option>");
+                    }
+                    else {
+                        $("#ReleaseDuration").empty();
+                        $("#ReleaseDuration").attr("disabled", true);
+                        $("#ToxicPercent").attr("readonly",true);
+                        $("#ToxicPercent").val("0");
+                    }
+                });
+            })
+        </script>
         </form>
     </div>
 </div>

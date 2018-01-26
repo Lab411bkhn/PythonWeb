@@ -1,0 +1,1093 @@
+
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+
+    <meta charset="UTF-8">
+     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    <style type="text/css">
+        fieldset.scheduler-border {
+            border: solid 1px #DDDDDD !important;
+            padding: 0 10px 10px 10px;
+            border-bottom: none;
+        }
+
+        legend.scheduler-border {
+            width: auto !important;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+        #Adiv {
+            width:auto; height:auto;
+            margin: 0 auto;
+        }
+    </style>
+</head><!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    {% load widget_tweaks %}
+
+    <meta charset="UTF-8">
+     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
+    <style type="text/css">
+        fieldset.scheduler-border {
+            border: solid 1px #DDDDDD !important;
+            padding: 0 10px 10px 10px;
+            border-bottom: none;
+        }
+
+        legend.scheduler-border {
+            width: auto !important;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+        #Adiv {
+            width:auto; height:auto;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div id="menu_top">
+    <ul>
+
+        <li><a href="login" accesskey="4" title="">ADMINISTRATOR</a></li>
+        <li><a href="#" accesskey="3" title="">CONTACT US</a></li>
+        <li><a href="login" accesskey="2" title="">RBI</a></li>
+        <li class="current_page_item"><a href="home" accesskey="1" title="">HOMEPAGE</a></li>
+    </ul>
+</div>
+<div id="slogan">
+    <h1>CORTEK  PROJECT</h1>
+</div>
+<div id="line"></div>
+<div id="main">
+    <div id="main-left">
+        <ul>
+            <h2>Menu Site</h2>
+            <li><a href="#">Management Proposal</a></li>
+            <li><a href="#">New Proposal Tank</a></li>
+            <li><a href="#">Risk Summary</a></li>
+        </ul>
+    </div>
+<div id="main-right">
+    <div id="Adiv" align="center">
+    <form action="POST" >
+  <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border">
+              <legend class="scheduler-border" ><p><b>Assessment General Information</b></p></legend>
+            <fieldset class="scheduler-border">
+
+                <legend class="scheduler-border"><p><b>Assessment</b></p></legend></br>
+            <table>
+                <tr>
+                    <td>Assessment Name</td>
+                   <td><input type="text" class="form-control" name="AssessmentName" value=""  required/></td>
+                </tr>
+                <tr>
+                    <td>Assessment Date</td>
+                    <td><input type="text" id="datepicker" width="auto" name="assessmentdate" data-format="yyyy-mm-dd" />
+                            <script>
+                                $('#datepicker').datepicker({
+                                    uiLibrary: 'bootstrap4'
+                                });
+
+                            </script></td>
+                </tr>
+                <tr>
+                    <td>Risk Analysis Period&nbsp;</td>
+                    <td><input type="text" class="form-control" name="RiskAnalysisPeriod" value="" readonly>&ensp; </td>
+                    <td>months</td>
+                </tr>
+            </table>
+        </fieldset>
+
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Equipment</b></p></legend></br>
+               <table>
+                   <tr>
+                       <td>Equipment Number</td>
+                       <td><input type="text" class="form-control" name="EquipmentNumber" value=""  readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>Equipment Type</td>
+                       <td><input type="text" class="form-control" name="EquipmentType" value="" readonly /> </td>
+                   </tr>
+                   <tr>
+                       <td>Design Code</td>
+                       <td><input type="text" class="form-control" name="DesignCode" value=""  readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>Site</td>
+                       <td><input type="text" class="form-control" name="Plant" value="" readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>Facility</td>
+                       <td><input type="text" class="form-control" name="Facility" value="" readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>Manufacturer</td>
+                       <td><input type="text" class="form-control" name="Manufacturer" value="" readonly  /></td>
+                   </tr>
+                   <tr>
+                                <td><span style="font-size: 16px">Commission Date</span> </td>
+                                <td><input type="text" id="datepicker1" name="CommissionDate" value=""  readonly> </td>
+                                <script>
+                                    $('#datepicker1').datepicker({
+                                    uiLibrary: 'bootstrap4'
+                                });
+                                </script>
+                            </tr>
+                   <tr>
+                       <td>Equipment Name</td>
+                       <td><input type="text" class="form-control" name="EquipmentName" value="" readonly /> </td>
+                   </tr>
+                   <tr>
+                       <td>Process Desciption&emsp;</td>
+                       <td><input type="text" class="form-control" name="ProcessDesciption" value="" readonly /></td>
+                   </tr>
+               </table>
+            </fieldset>
+
+
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Component</b></p></legend></br>
+               <table>
+                   <tr>
+                       <td>Component Number</td>
+                       <td><input type="text" class="form-control" name="ComponentNumber" value="" readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>Component Type</td>
+                       <td><input type="text" class="form-control" name="ComponentType" value="" readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>API Component Type</td>
+                       <td><input type="text" class="form-control" name="APIComponentType" value="" readonly  /></td>
+                   </tr>
+                   <tr>
+                       <td>Component Name</td>
+                       <td><input type="text" class="form-control" name="ComponentName" value=""  readonly /></td>
+                   </tr>
+                   <tr>
+                       <td>Risk Links to Equipment Risk</td>
+                       <td><input type="checkbox" class="form-control" value=""  name="RLTER" /></td>
+                   </tr>
+
+               </table>
+            </fieldset>
+        </fieldset>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><p><b>Equipment Properties</b></p></legend>
+            <table >
+                <tr>
+                    <td><span>Administrative Control for Upset Management</span></td>
+                    <td><input type="checkbox" class="form-control" value="" list="Admin" name="Admin"  />
+
+                    </td>
+
+
+                    <td><span style="font-size: 16px">Component is Welded </span></td>
+                    <td><input type="checkbox" value= "" class="form-control" list="ComponentWelded" name="ComponentWelded" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Highly Effective Inspection for Deadlegs</span></td>
+                    <td><input type="checkbox" value="" class="form-control" list="Highly" name="Highly" list="Highly" />
+
+                    </td>
+                    <td><span style="color: red;font-size: 16px"> Cylic Operation</span></td>
+                    <td><input type="checkbox" class="form-control"  list="CylicOper" name="CylicOper" />
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Downtime Protection Used</span></td>
+                    <td><input type="checkbox" class="form-control"  list="Downtime" name="Downtime"  />
+
+                    </td>
+                    <td><span style="font-size: 16px">Steamed Out Prior to Water Flushing</span></td>
+                    <td><input type="checkbox" class="form-control"  list="Steamed" name="Steamed"  />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Heat Traced</span></td>
+                    <td><input type="checkbox" class="form-control" list="HeatTraced" name="HeatTraced" />
+
+                    </td>
+                    <td><span style="font-size: 16px">PWHT</span></td>
+                    <td><input type="checkbox" class="form-control"  list="PWHT" name="PWHT"  />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Interface at Soil or Water</span></td>
+                    <td><input type="checkbox" class="form-control" name="InterfaceSoilWater" list="InterfaceSoilWater"  />
+
+
+                    </td>
+                    <td><span style="font-size: 16px">Liner Online Monitoring</span></td>
+                    <td><input type="checkbox" class="form-control" list="LOM" name="LOM"  />
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td><span style="font-size: 16px">Pressurisation Controlled by Admin</span></td>
+                    <td><input type="checkbox" class="form-control"list="PressurisationControlled" name="PressurisationControlled" />
+
+                    </td>
+                    </td>
+                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Shutdown&</span></td>
+                    <td><input type="checkbox" class="form-control"  list="PresenceofSulphidesShutdow" name="PresenceofSulphidesShutdow" />
+
+
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td><span style="font-size: 16px">Equipment is Operating for Many Years at </br>Lowest Expected Temperature</span></td>
+                    <td><input type="checkbox" class="form-control" list="EquOper" name="EquOper" />
+
+                    </td>
+                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Operation</span></td>
+                    <td><input type="checkbox" class="form-control"  name="PresenceofSulphides" list="PresenceofSulphides" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="color:red;font-size: 16px">Material is Exposed to Fluids, Mists or Solids</br> Containing Chlorine Externally</span></td>
+                    <td><input type="checkbox" class="form-control"  list="MFTF" name="MFTF"/>
+
+                    </td>
+                    <td><span style="font-size: 16px">Tank Is Maintained in Accordance with API 653</span></td>
+                    <td><input type="checkbox" class="form-control" list="TMA" name="TMA"/>
+
+                    </td>
+                </tr>
+
+                <table >
+                    <tr>
+                        <td><span style="font-size: 16px">Distance To Ground Water</span></td>
+                        <td><input type="text" class="form-control" name="Distance" value="" size="16"/>
+                    </tr>
+                    <tr>
+                        <td><span style="font-size: 16px">Min. Required Temperature Before</br> Pressurisation Allowed by Admin</span></td>
+                        <td><input type="number" step="0.01" class="form-control" name="Min" value="" size="16"/>&ensp;</td>
+                        <td>&deg;C</td>
+                    </tr>
+                    <tr>
+                        <td><span style="font-size: 16px">Type of Soil</span></td>
+                        <td>
+                            <select class="form-control" name="typeofSoil">
+                                <option>Coarse Sand</option>
+                                <option>Fine Sand</option>
+                                <option>Very Fine Sand</option>
+                                <option>Silt</option>
+                                <option>Sandy Clay</option>
+                                <option>Clay</option>
+                                <option>Concrete-Asphalt</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span style="font-size: 16px">Adjustment for Settlement</span></td>
+                        <td><select class="form-control" name="AdjForSettlement">
+                            <option>Recorded settlement exceeds API 653 criteria</option>
+                            <option>Recorded settlement meets API 653 criteria</option>
+                            <option>Settlement never evaluated</option>
+                            <option>Concrete foundation, no settlement</option>
+                        </select></td>
+                    </tr>
+                <tr>
+                <td><span style="font-size: 16px">External Environment</span></td>
+                   <td><select class="form-control" name="ExternalEnvironment">
+                                        <option>Arid/dry</option>
+                                        <option>Marine</option>
+                                        <option>Severe</option>
+                                        <option>Temperate</option>
+                                </select></td>
+                </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Environment Sensitivity</span></td>
+                    <td><select class="form-control" name="EnvironmentSensitivity">
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Thermal History</span></td>
+                    <td><select  class="form-control" name="ThermalHistory" >
+
+                       <option>None</option>
+                        <option>Solution Annealed</option>
+                        <option>Stabilised After Welding</option>
+                        <option>Stabilised Before Welding</option>
+
+                    </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><span style="font-size: 16px">Online Monitoring</span></td>
+                    <td><select   class="form-control" name="OnlineMonitoring" >
+                         <option>Amine high velocity corrosion - Corrosion coupons</option>
+                                        <option>Amine high velocity corrosion - Electrical resistance probes</option>
+                                        <option>Amine high velocity corrosion - Key process variable</option>
+                                        <option>Amine low velocity corrosion - Corrosion coupons</option>
+                                        <option>Amine low velocity corrosion - Electrical resistance probes</option>
+                                        <option>Amine low velocity corrosion - Key process variable</option>
+                                        <option>HCI corrosion - Corrosion coupons</option>
+                                        <option>HCI corrosion - Electrical resistance probes</option>
+                                        <option>HCI corrosion - Key process variable</option>
+                                        <option>HCI corrosion - Key process variable & Electrical resistance probes</option>
+                                        <option>HF corrosion - Corrosion coupons</option>
+                                        <option>HF corrosion - Electrical resistance probes</option>
+                                        <option>HF corrosion - Key process variable</option>
+                                        <option>High temperature H2S/H2 corrosion - Corrosion coupons</option>
+                                        <option>High temperature H2S/H2 corrosion - Electrical resistance probes</option>
+                                        <option>High temperature H2S/H2 corrosion - Key process parameters</option>
+                                        <option>High temperature Sulfidic / Naphthenic acid corrosion - Corrosion coupons</option>
+                                        <option>High temperature Sulfidic / Naphthenic acid corrosion - Electrical resistance probes</option>
+                                        <option>High temperature Sulfidic / Naphthenic acid corrosion - Key process variable</option>
+                                        <option>No online monitoring</option>
+                                        <option>Other corrosion - Corrosion coupons</option>
+                                        <option>Other corrosion - Electrical resistance probes</option>
+                                        <option>Other corrosion - Key process variable</option>
+                                        <option>Sour water high velocity corrosion - Corrosion coupons</option>
+                                        <option>Sour water high velocity corrosion - Electrical resistance probes</option>
+                                        <option>Sour water high velocity corrosion - Key process variable</option>
+                                        <option>Sour water low velocity corrosion - Corrosion coupons</option>
+                                        <option>Sour water low velocity corrosion - Electrical resistance probes</option>
+                                        <option>Sour water low velocity corrosion - Key process variable</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion high velocity - Corrosion coupons</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion high velocity - Electrical resistance probes</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion high velocity - Key process parameters & electrical resistance probes</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion low velocity - Corrosion coupons</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion low velocity - Electrical resistance probes</option>
+                                        <option>Sulfuric acid (H2S/H2) corrosion low velocity - Key process parameters</option>
+
+
+                    </select>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">System Management Factor</span></td>
+                    <td><input type="number" class="form-control" min="0.1" max="10" step="0.01" value="SystemManagement" name="SystemManagement"/></td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Equipment Volume</span></td>
+                    <td><input type="number" min="0" step="0.01" class="form-control" value="" size="16" name="EquipmentVolume" /></td>
+                    <td>&ensp;m<sup>3</sup></td>
+                </tr>
+
+            </table>
+            </table>
+        </fieldset>
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><p><b>Component</b></p></legend>
+            <table>
+                <tr>
+                    <td><span style="font-size: 16px;">Tank Diameter</span></td>
+                    <td><input type="text" class="form-control" value="" name="TankDiameter"/>&ensp;</td>
+                    <td>in</td>
+                    <td><span style="font-size: 16px;">Nominal Thickness</span></td>
+                    <td><input type="text" class="form-control" value="" name="NominalThickness"/>&ensp;</td>
+                    <td>mm</td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Current Thickness</span></td>
+                    <td><input type="text" class="form-control" value="" name="CurrentThickness"/>&ensp;</td>
+                    <td>mm</td>
+                    <td><span style="font-size: 16px;">Min. Required Thickness</span></td>
+                    <td><input type="text" class="form-control" value="" name="Min"/>&ensp;</td>
+                    <td>mm</td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Current Corrosion Rate</span></td>
+                    <td><input type="text" class="form-control" value="" name="CurrentCorrosionRate"/>&ensp;</td>
+                    <td>mm/yr</td>
+                    <td><span style="font-size: 16px;">Number Inspection</span></td>
+                    <td><input type="text" class="form-control" value="" name="NumberInspection"/></td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Damage Found During Inspection</span></td>
+                    <td><input type="checkbox" class="form-control" list="DFDI"  name="DFDI"/>
+
+                    </td>
+                    <td><span style="font-size: 16px;">Presence of Cracks</span></td>
+                    <td><input type="checkbox" class="form-control" list="PresenceCracks"  name="PresenceCracks"/>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Tramp Elements</span></td>
+                    <td><input type="checkbox" class="form-control" list="TrampElements" name="TrampElements"/>
+
+                    </td>
+                    <td><span style="font-size: 16px;">Release Prevention Barrier</span></td>
+                    <td><input type="checkbox" class="form-control"  list="ReleasePreventionBarrier"  name="ReleasePreventionBarrier"/>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Concrete or Asphalt Foundation</span></td>
+                    <td><input type="checkbox" class="form-control" list="ConcreteFoundation"  name="ConcreteFoundation"/>
+
+                    </td>
+
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td><span style="font-size: 16px;">Maximum Brinnell Hardness</br> of Weld</span></td>
+                    <td><select class="form-control" list="MBHW" name="MBHW">
+                                <option>Below 200</option>
+                                <option>Between 200 and 237</option>
+                                <option>Greater than 237</option>
+                            </select>
+                            </td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Complexity of Protrusions</span></td>
+                    <td><select class="form-control"  name="ComplexityProtrusions">
+                                <option>Above average</option>
+                                <option>Average</option>
+                                <option>Below average</option>
+                            </select>
+                            </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Severity of Vibration</span></td>
+                    <td><select  class="form-control" name="SeverityVibration" >
+                        <option>None</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+
+
+                </tr>
+
+
+
+            </table>
+        </fieldset>
+         <fieldset class="scheduler-border">
+        <legend class="scheduler-border"><p><b>Operating Condition</b></p></legend>
+        <table >
+            <tr>
+                <td ><span style="color: red;font-size: 16px">Maximum Operating Temperature</span></td>
+                <td><input type="text" class="form-control" name="MaxOT"/>&ensp;</td>
+                <td>&deg;C</td>
+                <td><span style="font-size: 16px">Maximum Operating Pressure</span></td>
+                <td><input type="text" class="form-control" name="MaxOP"/>&ensp;</td>
+                <td>psi</td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size: 16px">Minimum Operating Temperature</span>
+                <td></span><input type="text" class="form-control" name="MinOT"/>&ensp;</td>
+                <td>&deg;C</td>
+                <td><span style="font-size: 16px">Minimum Operating Pressure</span></td>
+                <td><input type="text" class="form-control" name="MinOP"/>&ensp;</td>
+                <td>psi</td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size: 16px">Operating Hydrogen Partial Pressure </span></td>
+                <td><input type="text" class="form-control" name="OHPP"/></td>
+                <td>&ensp;psi</td>
+                <td><span style="font-size: 16px">Flow Rate</span></td>
+                <td><input type="text" class="form-control" name="FlowRate"/>&ensp;</td>
+                <td>m3/hr</td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size: 16px">Critical Exposure Temperature</span></td>
+                <td><input type="text" class="form-control" name="CET"/> &ensp;</td>
+                <td>&deg;C</td>
+            </tr>
+        </table>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><p><b><span style="font-size: 16px">Operating Temperature in Different Temperature Ranger</span></b></p></legend>
+            <table>
+                <tr>
+                    <td ><span style="font-size: 16px">% Operating at -12 &deg;C to  -8 &deg;C </span></td>
+                    <td><input type="text" class="form-control" name="Operating1"/></td>
+                    <td> %</td>
+
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at -8 &deg;C to  6 &deg;C </span></td>
+                    <td><input type="text" class="form-control" name="Operating2"/></td>
+                    <td> %</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 6 &deg;C to  32 &deg;C </span></td>
+                    <td><input type="text" class="form-control" name="Operating3"/></td>
+                    <td> %</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 32 &deg;C to  71 &deg;C </span></td>
+                    <td><input type="text" class="form-control" name="Operating4"/></td>
+                    <td> %</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 71 &deg;C to  107 &deg;C</span></td>
+                    <td><input type="text" class="form-control" name="Operating5"/> </td>
+                    <td>%</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 107 &deg;C to  121 &deg;C </span></td>
+                    <td><input type="text" class="form-control" name="Operating6"/></td>
+                    <td> %</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 121 &deg;C to  135 &deg;C</span></td>
+                    <td><input type="text" class="form-control" name="Operating7"/> </td>
+                    <td>%</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 135 &deg;C to  162 &deg;C </span></td>
+                    <td><input type="text" class="form-control" name="Operating8"/> </td>
+                    <td>%</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 162 &deg;C to  176 &deg;C</span></td>
+                    <td><input type="text" class="form-control" name="Operating9"/> </td>
+                    <td>%</td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">% Operating at 176 &deg;C or above</span></td>
+                    <td><input type="text" class="form-control" name="Operating10"/></td>
+                    <td> %</td>
+
+                </tr>
+
+            </table>
+        </fieldset>
+    </fieldset>
+         <fieldset class="scheduler-border">
+        <legend class="scheduler-border" ><p><b>Material</b></p></legend>
+        <table >
+              <tr>
+                <td><span style="font-size: 16px">Material</span></td>
+                <td><input list="Material" class="form-control" name="Material" /></td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px;display: inline-block;">Max.Design Temperature</span></td>
+                <td><input type="text" class="form-control" name="Max"/>&ensp;</td>
+                <td>&deg;C </td>
+                <td><span style="font-size: 16px">Min.Design Temperature</span></td>
+                <td><input type="text" class="form-control" name="Min"/>&ensp;</td>
+                <td>&deg;C</td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Design Pressure</span></td>
+                <td><input type="text " class="form-control" name="DesignPressure"/></td>
+                <td>&ensp;psi</td>
+                <td><span style="font-size: 16px">Reference Temperature</span></td>
+                <td><input type="text" class="form-control" name="ReferenceTemperature"/>&ensp; </td>
+                <td>&deg;C</td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Allowable Stress at</br> Assessment Temperature</span></td>
+                <td><input type="text" class="form-control" name="ASAT"/>&ensp; </td>
+                <td>psi</td>
+                <td><span style="font-size: 16px">Brittle Fracture</br> Governing Thickness</span></td>
+                <td><input type="text" class="form-control" name="BFGT"/>&nbsp;</td>
+                <td>mm</td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Corrosion Allowance</span></td>
+                <td><input type="text" class="form-control" name="CorrosionAllowance"/> </td>
+                <td>&nbsp;mm</td>
+
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size: 16px">Carbon or Low Alloy Steel</span></td>
+                <td><input type="checkbox" class="form-control" list="CoLAS" name="CoLAS"/>
+
+                </td>
+                <td><span style="color: red;font-size: 16px">Austenitic Steel</span></td>
+                <td></span><input type="checkbox" class="form-control" list="AusteniticSteel" name="AusteniticSteel"/>
+
+                </td>
+            </tr>
+            <tr>
+
+
+                </td>
+                <td><span style="color:red;font-size: 16px">Nickel-based Alloy</span></td>
+                <td><input type="checkbox" class="form-control" list="NickelAlloy" name="NickelAlloy"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size: 16px">Chromium &ge;12%</span></td>
+                <td><input type="checkbox" class="form-control" list="Chromium" name="Chromium"/>
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td><span style="font-size: 16px">Sulfur Content</span></td>
+                <td><select class="form-control" name="SulfurContent" >
+                    <option>High > 0.01%</option>
+                    <option>Low 0.002 - 0.01%</option>
+                    <option>Ultra Low < 0.002%</option>
+                </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px;display: inline-block;">Heat Treatment</span></td>
+                <td><select list="HeatTreatment" class="form-control" name="eatTreatment" >
+                                <option>Annealed</option>
+                                <option>None</option>
+                                <option>Normalised Temper</option>
+                                <option>Quench Temper</option>
+                                <option>Stress Relieved</option>
+                                <option>Sub Critical PWHT</option>
+                </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px">Material Grade to Evaluate</br>Severity of HTHA</span></td>
+                <td><input type="checkbox" class="form-control" name="MGTEHTHA"/> </td>
+            </tr>
+
+
+            <tr>
+                <td><span style="font-size: 15px">PTA Material Grade</span></td>
+                <td><select class="form-control" list="PTA" name="PTAMaterialGrade" >
+                                <option>321 Stainless Stee</option>
+                                <option>347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay</option>
+                                <option>Regular 300 series Stainless Steels and Alloys 600 and 800</option>
+                                <option>H Grade 300 series Stainless Steels</option>
+                                <option>L Grade 300 series Stainless Steels</option>
+                                <option>Not Applicable</option>
+                            </select>
+                            </td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Material Cost Factor</span></td>
+                <td><input type="text" class="form-control" name="MaterialCostFactor"/> </td>
+            </tr>
+              <tr>
+                <td><span style="font-size: 16px">Production Cost</span></td>
+                <td><input type="text" class="form-control" name="ProductionCost"/> </td>
+            </tr>
+
+        </table>
+
+    </fieldset>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><p><b>Coating, Cladding, Lining, Insulation</b></p></legend>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Coating</b></p></legend>
+                <table >
+                <tr>
+                    <td><span style="font-size: 16px">Internal Coating</span></td>
+                    <td><input type="checkbox" class="form-control" list="InternalCoating" name="InternalCoating">
+
+                </tr>
+                <tr>
+                    <td><span style="color:red;font-size: 16px">External Coating</span></td>
+                    <td><input type="checkbox" class="form-control" list="ExternalCoating" name="ExternalCoating">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Support Configuration Which Does</br> Not Allow Coating Maintenance</span></td>
+                    <td><input type="checkbox" class="form-control" list="SCWD" name="SCWD"/>
+
+                    </td>
+                </tr>
+                <tr >
+                                <td><span style="font-size: 16px">External Coating Installation Date</span></td>
+                                <td><input type="text" id="datepicker2" width="auto" data-format="yyyy-mm-dd" name="ExternalCoatingID" /></td>
+                                <script>
+                                $('#datepicker2').datepicker({
+                                    uiLibrary: 'bootstrap4'
+                                });
+                            </script>
+                            </tr>
+
+                            <tr>
+                <tr>
+                    <td><span style="color:red;font-size: 16px">External Coating Quality</span> </td>
+                   <td><select class="form-control" list="ECQ" name="ExternalCoatingQuality">
+                                    <option>High coating quality</option>
+                                    <option>Medium coating quality</option>
+                                    <option>No coating or poor quality</option>
+                                </select>
+                                </td>
+                </tr>
+                </table>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Cladding</b></p></legend>
+                <table>
+                <tr>
+                    <td><span style="font-size: 16px">Internal Cladding</span></td>
+                    <td><input type="checkbox" class="form-control" list="InternalCladding" name="InternalCladding"/>
+
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Cladding Corrosion Rate</span></td>
+                    <td><input type="text" class="form-control" name="CladdingCorrosionRate" value="" />&ensp;</td>
+                    <td>mm/yr</td>
+                </tr>
+                </table>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Lining</b></p></legend>
+                <table>
+                <tr>
+                    <td><span style="color:#ff0000;font-size: 16px">Internal Lining </span></td>
+                    <td><input type="checkbox" class="form-control"  name="InternalLining"/>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Internal Liner Type</span></td>
+                   <td><select class="form-control" list="ILT" name="InternalLinerType">
+                                    <option>Acid Brick</option>
+                                    <option>Castable refractory</option>
+                                    <option>Castable refractory severe condition</option>
+                                    <option>Fibreglass</option>
+                                    <option>Glass lined</option>
+                                    <option>Organic</option>
+                                    <option>Strip lined alloy</option>
+                                </select>
+                                </td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Internal Liner Condition</span></td>
+                    <td><select class="form-control" list="ILC" name="InternalLinerCondition">
+                                    <option>Average</option>
+                                    <option>Good</option>
+                                    <option>Poor</option>
+                                    <option>Unknown</option>
+                                </select>
+                                </td>
+                </tr>
+                </table>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Insulation</b></p></legend>
+                <table>
+               <tr>
+                    <td><span style="color: #ff0000;font-size: 16px"> External Insulation</span></td>
+                    <td><input  type="checkbox" class="form-control" list="ExternalInsulation" name="ExternalInsulation"/>
+
+
+               </tr>
+               <tr>
+                    <td><span style="font-size: 16px">Insulation Contains Chlorides&emsp;&ensp;</span></td>
+                    <td><input type="checkbox" class="form-control" list="ICC" name="ICC"/>
+
+                    </td>
+               </tr>
+               <tr>
+                    <td><span style="font-size: 16px">External Insulation Type</span></td>
+                      <td><select class="form-control" list="EIT" name="ExternalInsulationType" >
+                                    <option>Asbestos</option>
+                                    <option>Calcium Silicate</option>
+                                    <option>Fibreglass</option>
+                                    <option>Foam Glass</option>
+                                    <option>Mineral Wool</option>
+                                    <option>Pearlite</option>
+                                </select>
+                                </td>
+               </tr>
+                    <td><span style="color: #ff0000;font-size: 16px">Insulation Condition</span></td>
+                     <td><select class="form-control" list="IC" name="InsulationCondition">
+                                <option>Above average</option>
+                                <option>Average</option>
+                                <option>Below average</option>
+                            </select>
+                            </td>
+                    </tr>
+
+            </table>
+            </fieldset>
+        </fieldset>
+         <fieldset class="scheduler-border">
+            <legend class="scheduler-border"><p><b>Stream</b></p></legend>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border"><p><b>Fluid</b></p></legend>
+                <table>
+                    <tr>
+                        <td><span style="font-size: 16px;">Fluid</span></td>
+                        <td><select list="Fluid" class="form-control" name="Fluid" >
+                            <option></option>
+                        </select>
+
+                        </td>
+
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td><span style="font-size: 16px;">Fluid Height</span></td>
+                        <td><input type="text" class="form-control" name="FluidHeight" /></td>
+                        <td><span style="font-size: 16px;">Percentage of Fluid Leaving the Dike</span></td>
+                        <td><input type="text" class="form-control" name="PFLD" size="20"/></td>
+                    </tr>
+                    <tr>
+                        <td><span style="font-size: 16px;">Percentage of Fluid Leaving the Dike but Remains on Site</span></td>
+                        <td><input type="text" class="form-control" name="PFLDRS" /></td>
+                        <td><span style="font-size: 16px;">Percentage of Fluid Going offsite</span></td>
+                        <td><input type="text" class="form-control" name="PFLDGoffsite" /></td>
+                    </tr>
+                </table>
+            </fieldset>
+             <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><p><b>Stream</b></p></legend>
+            <fieldset class="scheduler-border">
+
+                <legend class="scheduler-border"><b>Environment Condition</b></legend>
+                <table >
+            <tr>
+                <td><span style="font-size: 16px">NaOH Concentration (%)</span></td>
+                <td><input type="text" class="form-control" name="NaOHConcentration"/></td>
+                <td><span style="font-size: 16px">Release Fluid Percent Toxic (%)</span></td>
+                <td><input type="text" class="form-control" name="RFPT"/></td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Chloride Ion (ppm)</span></td>
+                <td><input type="text" class="form-control" name="ChlorideIon"/></td>
+                <td><span style="font-size: 16px">CO3 Concentration in Water (ppm)</span></td>
+                <td><input type="text" class="form-control" name="CO3"/></td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">H2S Content in Water (ppm)</span></td>
+                <td><input type="text" class="form-control" name="H2SContent"/></td>
+                <td><span style="color: red;font-size: 16px">PH of Water</span></td>
+                <td><input type="text" class="form-control" name="PHWater"/></td>
+            </tr>
+            <tr>
+                  <td><span style="color: red;font-size: 16px">Exposed To Acid Gas Treating Amine</span></td>
+                  <td><input type="checkbox" class="form-control" list="EAGTA" name="EAGTA"/>
+
+            </tr>
+            <tr>
+
+                <td><span style="font-size: 16px">Amine Solution Composition</span></td>
+              <td><select class="form-control" list="ASC" name="ASC" >
+                                    <option>Diethanolamine DEA</option>
+                                    <option>Diglycolamine DGA</option>
+                                    <option>Disopropanolamine DIPA</option>
+                                    <option>Methyldiethanolamine MDEA</option>
+                                    <option>Monoethanolamine MEA</option>
+                                    <option>Sulfinol</option>
+                                </select>
+                                </td>
+
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Exposure to Amine</span></td>
+                <td><select class="form-control" name="ExposureAmine">
+                    <option>High Rich Amine</option>
+                    <option>Low Lean Amine</option>
+                    <option>None</option>
+                </select>
+
+            </td>
+            </tr>
+
+            <tr>
+                <td><span style="color: red;font-size: 16px"> Aqueous Phase During Operation</span></td>
+                <td><input type="checkbox" class="form-control"  list="APDO" name="APDO"/>
+
+                </td>
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size:16px"> Environment Contains H2S</span></td>
+                <td><input type="checkbox" class="form-control"  list="EnvironmentCH2S" name="EnvironmentCH2S"/>
+
+                </td>
+                <td><span style="color: red;font-size:16px"> Aqueous Phase During Shut Down</span></td>
+                <td><input type="checkbox" class="form-control"  list="APDSD" name="APDSD"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px">Presence of Cyanides</span></td>
+                <td><input type="checkbox" class="form-control" list="PresenceCyanides" name="PresenceCyanides"/>
+
+                </td>
+                <td><span style="color: red;font-size:16px"> Presence of Hydrofluoric Acid</span> </td>
+                <td><input type="checkbox" class="form-control" list="PHA" name="PHA"/>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size:16px"> Environment Contains Caustic</br> in Any Concentration</span></td>
+                <td><input type="checkbox" class="form-control" list="ECCAC" name="ECCAC"/>
+
+
+                </td>
+                <td><span style="color: red;font-size:16px"> Process Contains Hydrogen</span></td>
+                <td><input type="checkbox" class="form-control" list="PCH" name="PCH"/>
+
+                </td>
+            </tr>
+            <tr>
+                <td><span style="color: red;font-size:16px"> Material is Exposed to Fluids, Mists, or</br> Solids Containing Chlorine Internally</span> </td>
+                <td><input type="checkbox" class="form-control"  list="MEFMSCC" name="MEFMSCC"/>
+
+                </td>
+                <td><span style="color: red;font-size:16px"> Exposed to Sulphur-Bearing </br>Compounds</span></td>
+                <td><input type="checkbox" class="form-control" list="ESBC" name="ESBC"/>
+
+                </td>
+            </tr>
+
+        </table>
+    </fieldset>
+ </fieldset>
+         </fieldset>
+ <fieldset class="scheduler-border">
+        <legend class="scheduler-border"><p><b>Consequence Analysis for Tank</b></p></legend>
+        <table>
+            <tr>
+                <td><span style="font-size: 16px;">Fluid Phase</span> </td>
+                <td><select name="FluidPhase" value="" class="form-control">
+                    <option></option>
+                </select>
+
+                </td>
+                <td></td>
+
+                <td><span style="font-size: 16px;">Mass Invert</span> </td>
+                <td><input type="number" step="0.01" name="MassInvert" value="" class="form-control"> </td>
+                <td>kg</td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px;">Meterial Cost</span> </td>
+                <td><input list="MeterialCost" name="MeterialCost" value="" class="form-control"></td>
+                <td>&ensp;$ </td>
+
+                <td><span style="font-size: 16px;">Mass Component</span> </td>
+                <td><input list="MassComponent" name="MassComponent" value="" class="form-control">&ensp; </td>
+                <td>kg</td>
+            </tr>
+            <tr>
+
+                <td><span style="font-size: 16px;">Production Cost</span> </td>
+                <td><input type="number" step="0.01" name="ProductionCost" value="" class="form-control">
+
+                </td>
+                <td>$/Day</td>
+
+                <td><span style="font-size: 16px;">Mittigation System</span> </td>
+                <td><select list="MassInvert" name="MassInvert" value="" class="form-control">
+                    <option></option>
+                </select>
+
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px;">API Component Type Name</span> </td>
+                <td><select class="form-control" name="API" value="" >
+                    <option>A</option>
+                    <option>B</option>
+                </select>
+                </td>
+                <td></td>
+
+
+                <td><span style="font-size: 16px;">Stored Pressure</span> </td>
+                <td><input type="text" name="StoredPressure" value="" class="form-control"> </td>
+                <td>&ensp;psi</td>
+            </tr>
+            <tr>
+                <td><span style="font-size: 16px;">Detection Type</span> </td>
+                <td><select name="DetectionType" value="" class="form-control">
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+
+                </td>
+                <td></td>
+
+
+                <td><span style="font-size: 16px;">Isulation Type</span> </td>
+                <td><select name="IsulationType" value="" class="form-control">
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+
+                <td><span style="font-size: 16px;">Stored Temperature</span> </td>
+                <td><input type="text" name="StoredTemperature" value="" class="form-control">&ensp; </td>
+                <td>&deg;C</td>
+            </tr>
+
+        </table>
+    </fieldset>
+  </fieldset>
+       <table style="text-align: right">
+         <tr>
+                    <td><button type="submit" class="btn btn-info" >Submit</button></td>
+       				<!-- <td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="submit" value="Close" class="button"></td> -->
+     	</tr>
+     </table>
+
+    </form>
+
+</div>
+</div>
+</div>
+</body>
+</html>
+

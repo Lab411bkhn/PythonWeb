@@ -29,6 +29,7 @@ class CA_NORMAL:
         self.EQUIPMENT_COST = EQUIPMENT_COST;
         self.TOXIC_PHASE = TOXIC_PHASE;
 
+
     def FC_Category(self, fc):
         if (fc <= 10000):
             return "A";
