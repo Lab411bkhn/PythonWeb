@@ -499,7 +499,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.CAUSTIC_INSP_NUM) + self.CAUSTIC_INSP_EFF;
             DFB_CAUSTIC = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CAUSTIC(), FIELD);
-            return DFB_CAUSTIC * pow(age, 1.1);
+            return DFB_CAUSTIC[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -552,7 +552,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.AMINE_INSP_NUM) + self.AMINE_INSP_EFF;
             DFB_AMIN = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_AMINE(), FIELD);
-            return DFB_AMIN * pow(age, 1.1);
+            return DFB_AMIN[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -645,7 +645,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.SULPHIDE_INSP_NUM) + self.SULPHIDE_INSP_EFF;
             DFB_SULPHIDE = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_SULPHIDE(), FIELD);
-            return DFB_SULPHIDE * pow(age, 1.1);
+            return DFB_SULPHIDE[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -748,7 +748,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.SULPHIDE_INSP_NUM) + self.SULFUR_INSP_NUM;
             DFB_SULFUR = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HICSOHIC_H2S(), FIELD);
-            return DFB_SULFUR * pow(age, 1.1);
+            return DFB_SULFUR[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -797,7 +797,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.CACBONATE_INSP_NUM) + self.CACBONATE_INSP_EFF;
             DFB_CACBONATE = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CARBONATE(), FIELD);
-            return DFB_CACBONATE * pow(age, 1.1);
+            return DFB_CACBONATE[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -897,7 +897,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.PTA_INSP_NUM) + self.PTA_INSP_EFF;
             DFB_PTA = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_PTA(), FIELD);
-            return DFB_PTA * pow(age, 1.1);
+            return DFB_PTA[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -952,7 +952,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.CLSCC_INSP_NUM) + self.CLSCC_INSP_EFF;
             DFB_CLSCC = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CLSCC(), FIELD);
-            return DFB_CLSCC * pow(age, 1.1);
+            return DFB_CLSCC[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -997,7 +997,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.HSC_HF_INSP_NUM) + self.HSC_HF_INSP_EFF;
             DFB_HSCHF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HSCHF(), FIELD);
-            return DFB_HSCHF * pow(age, 1.1);
+            return DFB_HSCHF[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1038,7 +1038,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.HICSOHIC_INSP_NUM) + self.HICSOHIC_INSP_EFF;
             DFB_HICSOHIC_HF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HICSOHIC_HF(), FIELD);
-            return DFB_HICSOHIC_HF * pow(age, 1.1);
+            return DFB_HICSOHIC_HF[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1087,7 +1087,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.CACBONATE_INSP_NUM) + self.CACBONATE_INSP_EFF;
             DFB_CACBONATE = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CARBONATE(), FIELD);
-            return DFB_CACBONATE * pow(age, 1.1);
+            return DFB_CACBONATE[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1181,7 +1181,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.PTA_INSP_NUM) + self.PTA_INSP_EFF;
             DFB_PTA = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_PTA(), FIELD);
-            return DFB_PTA * pow(age, 1.1);
+            return DFB_PTA[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1236,7 +1236,7 @@ class DM_CAL:
             else:
                 FILED = str(self.CLSCC_INSP_NUM) + self.CLSCC_INSP_EFF;
             DFB_CLSCC = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CLSCC(), FIELD);
-            return DFB_CLSCC * pow(age, 1.1);
+            return DFB_CLSCC[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1275,13 +1275,12 @@ class DM_CAL:
 
     def DF_HSCHF(self, age):
         if (self.CARBON_ALLOY or self.HF_PRESENT):
-            FIELD = "E";
             if (self.HSC_HF_INSP_EFF == "E" or self.HSC_HF_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.HSC_HF_INSP_NUM) + self.HSC_HF_INSP_EFF;
             DFB_HSCHF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HSCHF(), FIELD);
-            return DFB_HSCHF * pow(age, 1.1);
+            return DFB_HSCHF[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1322,7 +1321,7 @@ class DM_CAL:
             else:
                 FIELD = str(self.HICSOHIC_INSP_NUM) + self.HICSOHIC_INSP_EFF;
             DFB_HICSOHIC_HF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HICSOHIC_HF(), FIELD);
-            return DFB_HICSOHIC_HF * pow(age, 1.1);
+            return DFB_HICSOHIC_HF[0] * pow(age, 1.1);
         else:
             return 0;
 
@@ -1569,7 +1568,7 @@ class DM_CAL:
         else:
             FIELD = str(self.EXTERN_CLSCC_INSP_NUM) + self.EXTERN_CLSCC_INSP_EFF;
 
-        return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD);
+        return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD)[0];
 
     def DF_EXTERN_CLSCC(self):
         if (self.AUSTENITIC_STEEL and self.EXTERNAL_EXPOSED_FLUID_MIST and not (
@@ -1681,7 +1680,7 @@ class DM_CAL:
             FIELD = "E";
         else:
             FIELD = str(self.EXTERN_CLSCC_CUI_INSP_NUM) + self.EXTERN_CLSCC_CUI_INSP_EFF;
-        return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD);
+        return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD)[0];
 
     def DF_CUI_CLSCC(self):
         if not self.EXTERN_COATING:
