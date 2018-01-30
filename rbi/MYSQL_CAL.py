@@ -237,11 +237,11 @@ class MySQL_CAL:
             print("Error! Execute sql from table 71 fail");
         return data;
 
-    def GET_API_COM( APIComponentTypeName):
+    def GET_API_COM(APIComponentTypeName):
         data = np.zeros(13);
         Cursor = conn.cursor();
         try:
-            sql = "SELECT * FROM `api_component_type` WHERE `APIComponentTypeName` = '"+APIComponentTypeName+"'";
+            sql = "SELECT * FROM `api_component_type` WHERE `APIComponentTypeName` = '"+str(APIComponentTypeName)+"'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[2];

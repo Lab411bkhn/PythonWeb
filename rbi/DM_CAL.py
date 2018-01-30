@@ -219,7 +219,7 @@ class DM_CAL:
         self.BRANCH_DIAMETER = BRANCH_DIAMETER;
 
     # PoF convert cataloge
-    def PoFCategory(DF_total):
+    def PoFCategory(self, DF_total):
         if DF_total <= 2:
             return "1";
         elif DF_total <= 20:
@@ -1784,7 +1784,7 @@ class DM_CAL:
 
     def DF_HTHA(self, age):
         if (self.MATERIAL_SUSCEP_HTHA):
-            if (self.CRITICAL_TEMP <= 204 and self.HTHA_PRESSURE <= 80.06):
+            if (self.CRITICAL_TEMP <= 204 and self.HTHA_PRESSURE <= 0.552):
                 return 1;
             else:
                 return self.API_DF_HTHA(age);

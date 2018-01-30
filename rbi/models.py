@@ -542,7 +542,7 @@ class RwInputCaLevel1(models.Model):
     release_duration = models.CharField(db_column='Release_Duration', max_length=50, blank=True, null=True)  # Field name made lowercase.
     detection_type = models.CharField(db_column='Detection_Type', max_length=50, blank=True, null=True)  # Field name made lowercase.
     isulation_type = models.CharField(db_column='Isulation_Type', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    mitigation_system = models.CharField(db_column='Mitigation_System', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    mitigation_system = models.CharField(db_column='Mitigation_System', max_length=150, blank=True, null=True)  # Field name made lowercase.
     equipment_cost = models.FloatField(db_column='Equipment_Cost', blank=True, null=True)  # Field name made lowercase.
     injure_cost = models.FloatField(db_column='Injure_Cost', blank=True, null=True)  # Field name made lowercase.
     evironment_cost = models.FloatField(db_column='Evironment_Cost', blank=True, null=True)  # Field name made lowercase.

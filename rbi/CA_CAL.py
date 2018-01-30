@@ -165,8 +165,7 @@ class CA_NORMAL:
         return 180 * min(wn, wmax8);
 
     def mass_availn(self, i):
-        massaddn = self.mass_addn(i);
-        return min(self.MASS_COMPONENT + massaddn, self.MASS_INVERT);
+        return min(float(self.MASS_COMPONENT + self.mass_addn(i)), float(self.MASS_INVERT))
 
     def t_n(self, i):
         wn = self.W_n(i);
@@ -450,12 +449,11 @@ class CA_NORMAL:
         return self.TOXIC_PERCENT * self.W_n(i) / 100;
 
     def mass_tox_n(self, i):
-        return self.TOXIC_PERCENT * self.mass_tox_n(i) / 100;
+        return self.TOXIC_PERCENT * self.mass_n(i) / 100;
 
     def GET_TOXIC(self):
-        a = [0 , 0];
         TOXIC_PHASE = "Liquid";
-        if(self.FLUID_PHASE == "Vapor"):
+        if(self.FLUID_PHASE == "Vapor" or self.FLUID_PHASE == "Two-phase"):
             TOXIC_PHASE = "Gas";
         if(self.FLUID == "HF"):
             if(self.RELEASE_DURATION == 5):
@@ -731,7 +729,6 @@ class CA_NORMAL:
             self.RELEASE_DURATION == "Instantaneous Releases";
         a = self.GET_TOXIC();
         if(self.FLUID == "HF" or self.FLUID == "H2S"):
-            log = 0;
             if(releasetype == "Continuous"):
                 log = a[0] + math.log10(C4 * self.rate_tox_n(i)) + a[1];
             else:
@@ -782,13 +779,14 @@ class CA_NORMAL:
         return check;
 
     def ca_inj_tox(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME)
         if(not self.checkToxic()):
             return 0;
         else:
-            t = obj[0]*self.ca_inj_tox(1) + obj[1]*self.ca_injn_tox(2) + obj[2]*self.ca_injn_tox(3) + obj[3]*self.ca_injn_tox(4);
+            t = obj[0]*self.ca_injn_tox(1) + obj[1]*self.ca_injn_tox(2) + obj[2]*self.ca_injn_tox(3) + obj[3]*self.ca_injn_tox(4);
             ca_inj_tox = t / obj[4];
-            return math.fabs(ca_inj_tox);
+            print(str(self.ca_injn_tox(1)) + " " + str(self.ca_injn_tox(2)) + " " + str(self.ca_injn_tox(3)) + " " + str(self.ca_injn_tox(2)))
+            return abs(ca_inj_tox);
 
     #Step 10 non flammable non toxic consequence
 
@@ -865,9 +863,12 @@ class CA_NORMAL:
         return t / obj[4];
 
     def outage_affa(self):
-        fcaffa = math.fabs(self.fc_affa());
-        b = 1.242 + 0.585 * math.log10(fcaffa * pow(10, -6));
-        return pow(10, b);
+        fcaffa = abs(self.fc_affa())
+        if fcaffa != 0:
+            b = 1.242 + 0.585 * math.log10(fcaffa * pow(10, -6))
+        else:
+            b = 0
+        return pow(10, b)
 
     def fc_prod(self):
         return (self.outage_cmd() + self.outage_affa()) * self.PRODUCTION_COST;
