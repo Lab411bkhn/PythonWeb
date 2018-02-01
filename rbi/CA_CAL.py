@@ -112,7 +112,6 @@ class CA_NORMAL:
         an = self.a_n(i);
         mw = data[0];
         gc = 1;
-        wn = 0;
         if (self.FLUID_PHASE == "Liquid" or self.FLUID_PHASE == "Two-phase" or self.FLUID_PHASE == "Powder"):
             if(data[1] == 0):
                 wn = 0;
@@ -260,11 +259,10 @@ class CA_NORMAL:
     def rate_n(self, i):
         wn = self.W_n(i);
         factdi = self.fact_di();
-        rate_n = wn * (1 - factdi);
-        if(rate_n == 0):
-            return 0;
-        else:
-            return rate_n;
+        rate = wn * (1 - factdi);
+        print("wn" + str(wn))
+        return rate;
+
     def ld_n(self, i):
         ldmax = self.ld_n_max(i);
         if(self.rate_n(i) == 0):
@@ -785,7 +783,6 @@ class CA_NORMAL:
         else:
             t = obj[0]*self.ca_injn_tox(1) + obj[1]*self.ca_injn_tox(2) + obj[2]*self.ca_injn_tox(3) + obj[3]*self.ca_injn_tox(4);
             ca_inj_tox = t / obj[4];
-            print(str(self.ca_injn_tox(1)) + " " + str(self.ca_injn_tox(2)) + " " + str(self.ca_injn_tox(3)) + " " + str(self.ca_injn_tox(2)))
             return abs(ca_inj_tox);
 
     #Step 10 non flammable non toxic consequence
@@ -1303,13 +1300,3 @@ class CA_TANK_BOTTOM:
 
     def FC_total_bottom(self):
         return self.FC_cmd_bottom() + self.FC_environ_bottom() + self.FC_PROD_BOTTOM();
-
-
-
-
-ca_cal = CA_NORMAL(NominalDiametter = 97.625, MATERIAL_COST = 1, FLUID = "C3-C4", FLUID_PHASE = "Liquid", API_COMPONENT_TYPE_NAME ="COLBTM", DETECTION_TYPE = "C",
-                 ISULATION_TYPE = "C", STORED_PRESSURE = 102, ATMOSPHERIC_PRESSURE = 101, STORED_TEMP = 27, MASS_INVERT = 181528,
-                 MASS_COMPONENT = 12194, MITIGATION_SYSTEM = "", TOXIC_PERCENT = 0, RELEASE_DURATION = "", PRODUCTION_COST = 50000,
-                 INJURE_COST = 5000000, ENVIRON_COST = 0, PERSON_DENSITY = 0.0005, EQUIPMENT_COST = 12000, TOXIC_PHASE = "")
-
-print("FC cmd: %s" %ca_cal.fc_affa() )

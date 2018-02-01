@@ -44,17 +44,15 @@
    </ul>
 </div>
 <div id="slogan">
-     <h1>CORTERK  PROJECT</h1>
+     <h1>CORTEK  PROJECT</h1>
 </div>
 <div id="line"></div>
 <div id="main">
     <div id="main-left">
         <ul>
-            <h2>Risk Factor Management</h2>
-            <li><a href="#">Proposal List</a></li>
-            <li><a href="#">New Proposal</a></li>
-            <li><a href="#">Risk Summary</a></li>
-            <li><a href="{% url 'resultdf' obj.id_id %}">DF Factor</a></li>
+            <h2>FC Result</h2>
+            <li><a href="{% url 'resultpof' obj.id_id %}">DF Result</a></li>
+            <li><a href="{% url 'proposalDisplay' assess.componentid_id  %}">Back to Component</a></li>
         </ul>
     </div>
     <div id="main-right" align="center">
@@ -62,7 +60,7 @@
      <form method="post">
          {% csrf_token %}
      	<fieldset class="scheduler-border">
-            <legend class="scheduler-border"><b>Consequence of Failure anh Category</b></legend>
+            <legend class="scheduler-border"><b>Consequence of Failure</b></legend>
 
      		<table >
                 <tr>

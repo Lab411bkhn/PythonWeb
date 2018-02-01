@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <style type="text/css">
-        #Adiv {
+            #Adiv {
             width:auto; height:auto;
             margin: 0 auto;
         }
@@ -54,52 +54,49 @@
 <div id="main">
     <div id="main-left">
         <ul>
-            <h2>Equipment Management</h2>
-            <li><a href="{% url 'equipment_display' facilityid %}">Equipment List</a></li>
-            <li><a href="{% url 'equipment' facilityid %}">New Equipment</a></li>
-            <li><a href="{% url 'designcodeDisplay' facilityid %}">Design Code Management</a> </li>
-            <li><a href="{% url 'manufactureDisplay' facilityid %}">Manufacture Management</a> </li>
-            <li><a href="#">Risk Summary</a></li>
-            <li><a href="{% url 'facilityDisplay' sitename %}">Back To Facility</a> </li>
+            <h2>Proposal Management</h2>
+            <li><a href="{% url 'proposalDisplay' component.componentid %}">Proposal List</a></li>
+            <li><a href="{% url 'newProposal' component.componentid%}">New Proposal</a></li>
+            <li><a href="{% url 'component_display' component.equipmentid_id %}">Back To Component</a> </li>
         </ul>
     </div>
     <div id="main-right" align="center">
-    <div id="Adiv">
-    <br>
+    <div id = Adiv>
     <form class="form-control" method="post">
     {% csrf_token %}
-    <caption><b style="font-size: 20px; color: darkblue">EQUIPMENTS LIST</b></caption>
-        <table id="t01" class="table">
-            <thead>
+        <caption><b style="font-size: 20px; color: darkblue">COMPONENTS LIST</b></caption>
+        <table id = "t01"><br>
+        <thead>
             <tr>
-                <th width="100px" ><input type="checkbox" id = "chkHeader"></th>
-                <th width="200px" >Equipment Number</th>
-                <th width="200px" >Equipment Name</th>
-                <th width="200px" >Facility Name</th>
-                <th width="200px" >Site Name</th>
+                <th width="50px"><input type="checkbox" id="chkHeader"></th>
+                <th width="100px">Proposal Name</th>
+                <th width="100px">Gff Total</th>
+                <th width="100px">FMS</th>
+                <th width="100px">Current DF</th>
+                <th width="100px">Current FC ($)</th>
+                <th width="100px">Current Risk ($/year)</th>
             </tr>
-            </thead>
+        </thead>
 
         <tbody>
-            {% for a in obj %}
+            {% for data,a in obj %}
 
              <tr >
-                 <td align="center"><input type="checkbox" name="{{ a.equipmentid }}"></td>
-                 <td align="center"><a href="{% url 'component_display' a.equipmentid %}">{{ a.equipmentnumber }}</a></td>
-                   <td align="center">{{ a.equipmentname }}</td>
-{#                  hien thi ten site name (chi ap dung cho djnago)#}
-                 <td align="center">{{ a.facilityid }}</td>
-                 <td align="center">{{ a.siteid }}</td>
-
+                <td align="center"><input type="checkbox" name="{{ a.id }}"></td>
+                 <td align="center"><a href="{% url 'resultpof' a.id %}">{{ a.proposalname }}</a></td>
+                 <td align="center">{{ data.gff }} </td>
+                 <td align="center">{{ data.fms }}</td>
+                 <td align="center">{{ data.DF }}</td>
+                 <td align="center">{{ data.FC }}</td>
+                 <td align="center">{{ data.risk }}</td>
              </tr>
 
             {% endfor %}
         </tbody>
-        </table>
+         </table>
     <br>
         <table style="text-align: right">
             <td>
-                <button class="btn btn-info" type="submit" name="_edit">Edit Selected</button>
                 <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
             </td>
         </table>
@@ -118,7 +115,3 @@
 </div>
 </body>
 </html>
-
-
-
-

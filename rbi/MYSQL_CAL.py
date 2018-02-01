@@ -106,20 +106,20 @@ class MySQL_CAL:
             print("Error! Execute data from Table 213 Fail");
         return data;
 
-    def GET_TBL_204( susceptibility):
+    def GET_TBL_204(susceptibility):
         Cursor = conn.cursor();
         data = np.zeros(7);
         try:
             sql = "SELECT * FROM `TBL_204_DM_HTHA` WHERE `Susceptibility` = '"+susceptibility+"'";
             Cursor.execute(sql);
             for r in Cursor:
-                data[0] = r[1];
-                data[1] = r[2];
-                data[2] = r[3];
-                data[3] = r[4];
-                data[4] = r[5];
-                data[5] = r[6];
-                data[6] = r[7];
+                data[0] = r[2];
+                data[1] = r[3];
+                data[2] = r[4];
+                data[3] = r[5];
+                data[4] = r[6];
+                data[5] = r[7];
+                data[6] = r[8];
         except pymysql.InternalError as Error:
             print("Error! Execute sql from table 204 Fail");
         return data;

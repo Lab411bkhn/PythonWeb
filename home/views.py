@@ -694,6 +694,7 @@ def newProposal(request, componentname):
                                     dm_cal.DF_CUI(age['cui'] + 6),
                                     dm_cal.DF_EXTERN_CLSCC(), dm_cal.DF_CUI_CLSCC())
 
+
             DF_BRIT_TOTAL = max(dm_cal.DF_BRITTLE() + dm_cal.DF_TEMP_EMBRITTLE(), dm_cal.DF_SIGMA(), dm_cal.DF_885())
 
             DF_HTHA_API1 = dm_cal.DF_HTHA(age['htha'])
@@ -758,6 +759,17 @@ def newProposal(request, componentname):
     except ComponentMaster.DoesNotExist:
         raise Http404
     return render(request, 'home/new/Normal.html',{'facility': dataFaci,'component': dataCom , 'equipment':dataEq,'api':api,'commissiondate': commisiondate,'dataLink': data['islink'], 'fluid': Fluid})
+
+def newProposalTank(request, componentname):
+    try:
+        dataCom = ComponentMaster.objects.get(componentid= componentname)
+        dataEq = EquipmentMaster.objects.get(equipmentid=dataCom.equipmentid_id)
+        dataFaci = Facility.objects.get(facilityid=dataEq.facilityid_id)
+        api = ApiComponentType.objects.get(apicomponenttypeid=dataCom.apicomponenttypeid)
+        commisiondate = dataEq.commissiondate.date().strftime('%Y-%m-%d')
+    except ComponentMaster.DoesNotExist:
+        raise Http404
+    return render(request, 'home/new/newAllTank.html')
 
 ### Edit function
 def editSite(request, sitename):
@@ -1067,8 +1079,44 @@ def manufactureDisplay(request, facilityname):
 
 def displayCA(request, proposalname):
     ca = RwCaLevel1.objects.get(id= proposalname)
-    return render(request, 'display/CA.html', {'obj': ca})
+    rwAss = RwAssessment.objects.get(id=proposalname)
+    return render(request, 'display/CA.html', {'obj': ca, 'assess':rwAss})
 
 def displayDF(request, proposalname):
     df = RwFullPof.objects.get(id= proposalname)
     return render(request, 'display/dfThinning.html', {'obj':df})
+
+def displayFullDF(request, proposalname):
+    df = RwFullPof.objects.get(id=proposalname)
+    rwAss = RwAssessment.objects.get(id = proposalname)
+    return render(request, 'display/dfThinningFull.html', {'obj':df, 'assess': rwAss})
+
+def displayProposal(request, componentname):
+    proposal = RwAssessment.objects.filter(componentid= componentname)
+    datafull = []
+    component = ComponentMaster.objects.get(componentid= componentname)
+    for a in proposal:
+        df = RwFullPof.objects.filter(id= a.id)
+        fc = RwFullFcof.objects.filter(id = a.id)
+        data = {}
+        if df.count() != 0:
+            data['DF'] = df[0].totaldfap1
+            data['gff'] = df[0].gfftotal
+            data['fms'] = df[0].fms
+        else:
+            data['DF'] = 0
+            data['gff'] = 0
+            data['fms'] = 0
+        if fc.count() != 0:
+            data['FC'] = fc[0].fcofvalue
+        else:
+            data['FC'] = 0
+        data['risk'] = data['DF']*data['gff']*data['fms']*data['FC']
+        datafull.append(data)
+    zipped = zip(datafull,proposal)
+    if "_delete" in request.POST:
+        for a in proposal:
+            if request.POST.get('%d' % a.id):
+                a.delete()
+        return redirect('proposalDisplay', componentname)
+    return render(request, 'display/proposalDisplay.html', {'obj': zipped, 'componentid': componentname, 'component':component})

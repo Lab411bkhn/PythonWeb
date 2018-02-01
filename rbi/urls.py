@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^facility/(?P<facilityname>\d+)/designcode/new/$', views.newDesigncode, name='newdesigncode'),
     url(r'^facility/(?P<facilityname>\d+)/manufacture/new/$', views.newManufacture, name='newmanufacture'),
     url(r'^component/(?P<componentname>\d+)/proposal/new/$', views.newProposal , name='newProposal'),
+    url(r'^component/(?P<componentname>\d+)/tank/proposal/new/$', views.newProposalTank, name='newProposalTank'),
     # Edit URL
     url(r'^site/(?P<sitename>\w+)/edit/$', views.editSite, name='editsite'),
     url(r'^site/(?P<sitename>\d+)/facility/(?P<facilityname>\d+)/edit/$', views.editFacility, name='editfacility'),
@@ -52,7 +53,8 @@ urlpatterns = [
     url(r'^facility/(?P<facilityname>\d+)/manufacture/$', views.manufactureDisplay, name='manufactureDisplay'),
     url(r'^proposal/(?P<proposalname>\d+)/result/CA/$', views.displayCA, name='resultca'),
     url(r'^proposal/(?P<proposalname>\d+)/result/DF/$', views.displayDF, name='resultdf'),
-
+    url(r'^proposal/(?P<proposalname>\d+)/result/POF/$', views.displayFullDF, name='resultpof'),
+    url(r'^component/(?P<componentname>\d+)/proposal/display/$', views.displayProposal, name= 'proposalDisplay'),
     # Proposal URL( RBI 581 calculate URL)
 
 ]

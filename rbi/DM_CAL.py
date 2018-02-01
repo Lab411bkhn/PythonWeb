@@ -424,8 +424,6 @@ class DM_CAL:
 
     def DF_LINNING(self, age):
         if (self.INTERNAL_LINNING):
-            Fdl = 1;
-            Fom = 1;
             if (self.LINNER_CONDITION == "Poor"):
                 Fdl = 10;
             elif (self.LINNER_CONDITION == "Average"):
@@ -438,7 +436,7 @@ class DM_CAL:
             else:
                 Fom = 1;
 
-            return self.DFB_LINNING(age) * Fdl * Fom;
+            return self.DFB_LINNING(age)[0] * Fdl * Fom;
         else:
             return 0;
 
@@ -1553,8 +1551,6 @@ class DM_CAL:
         return sus;
 
     def DFB_EXTERN_CLSCC(self):
-        SVI = 1;
-        FIELD = "E";
         sus = self.CLSCC_SUSCEP();
         if (sus == "High"):
             SVI = 50;
@@ -1862,10 +1858,10 @@ class DM_CAL:
             TEMP_EMBRITTLE = min(self.MIN_DESIGN_TEMP, self.MIN_OP_TEMP) - (self.REF_TEMP + self.DELTA_FATT);
             if (self.PWHT):
                 return DAL_CAL.MySQL_CAL.GET_TBL_215(self.API_TEMP(TEMP_EMBRITTLE),
-                                                     self.API_SIZE_BRITTLE(self.BRITTLE_THICK));
+                                                     self.API_SIZE_BRITTLE(self.BRITTLE_THICK))[0];
             else:
                 return DAL_CAL.MySQL_CAL.GET_TBL_214(self.API_TEMP(TEMP_EMBRITTLE),
-                                                     self.API_SIZE_BRITTLE(self.BRITTLE_THICK));
+                                                     self.API_SIZE_BRITTLE(self.BRITTLE_THICK))[0];
         else:
             return 0;
 
@@ -2090,48 +2086,3 @@ class DM_CAL:
             return self.DFB_PIPE() * FCA * FPC * FCP * FJB * FBD;
         else:
             return 0;
-
-
-dm_cal = DM_CAL(APIComponentType="COLBTM",
-                Diametter=97.62, NomalThick=19.05,
-                CurrentThick=19.05, MinThickReq=17.68,
-                CorrosionRate=0.29, CA=3.17,
-                ProtectedBarrier=False, CladdingCorrosionRate=0, InternalCladding=False, NoINSP_THINNING=1,
-                EFF_THIN="B", OnlineMonitoring="", HighlyEffectDeadleg=False, ContainsDeadlegs=False,
-                TankMaintain653=False, AdjustmentSettle="", ComponentIsWeld=False,
-                LinningType="", LINNER_ONLINE=False, LINNER_CONDITION="", YEAR_IN_SERVICE=0, INTERNAL_LINNING=False,
-                CAUSTIC_INSP_EFF="E", CAUSTIC_INSP_NUM=0, HEAT_TREATMENT="", NaOHConcentration=0, HEAT_TRACE=False,
-                STEAM_OUT=False,
-                AMINE_INSP_EFF="E", AMINE_INSP_NUM=0, AMINE_EXPOSED=False, AMINE_SOLUTION="",
-                ENVIRONMENT_H2S_CONTENT=False, AQUEOUS_OPERATOR=False, AQUEOUS_SHUTDOWN=False, SULPHIDE_INSP_EFF="E",
-                SULPHIDE_INSP_NUM=0, H2SContent=0, PH=0, PRESENT_CYANIDE=False, BRINNEL_HARDNESS="",
-                SULFUR_INSP_EFF="E", SULFUR_INSP_NUM=0, SULFUR_CONTENT="",
-                CACBONATE_INSP_EFF="E", CACBONATE_INSP_NUM=0, CO3_CONTENT=0,
-                PTA_SUSCEP=False, NICKEL_ALLOY=False, EXPOSED_SULFUR=False, PTA_INSP_EFF="E", PTA_INSP_NUM=0,
-                ExposedSH2OOperation=False, ExposedSH2OShutdown=False, ThermalHistory="", PTAMaterial="",
-                DOWNTIME_PROTECTED=False,
-                INTERNAL_EXPOSED_FLUID_MIST=False, EXTERNAL_EXPOSED_FLUID_MIST=False, CHLORIDE_ION_CONTENT=0,
-                CLSCC_INSP_EFF="E", CLSCC_INSP_NUM=0,
-                HSC_HF_INSP_EFF="E", HSC_HF_INSP_NUM=0,
-                HICSOHIC_INSP_EFF="E", HICSOHIC_INSP_NUM=0, HF_PRESENT=False,
-                EXTERNAL_INSP_NUM=0, EXTERNAL_INSP_EFF="E",
-                INTERFACE_SOIL_WATER=False, SUPPORT_COATING=False, INSULATION_TYPE="", CUI_INSP_NUM=0,
-                CUI_INSP_EFF="E", CUI_INSP_DATE=datetime.now().date(), CUI_PERCENT_1=0, CUI_PERCENT_2=0,
-                CUI_PERCENT_3=0, CUI_PERCENT_4=0, CUI_PERCENT_5=0, CUI_PERCENT_6=0, CUI_PERCENT_7=0, CUI_PERCENT_8=0,
-                CUI_PERCENT_9=0, CUI_PERCENT_10=0,
-                EXTERN_CLSCC_INSP_NUM=0, EXTERN_CLSCC_INSP_EFF="E",
-                EXTERNAL_INSULATION=False, COMPONENT_INSTALL_DATE=datetime.now().date(), CRACK_PRESENT=False,
-                EXTERNAL_EVIRONMENT="", EXTERN_COAT_QUALITY="", EXTERN_CLSCC_CUI_INSP_NUM=0,
-                EXTERN_CLSCC_CUI_INSP_EFF="E", PIPING_COMPLEXITY="", INSULATION_CONDITION="",
-                INSULATION_CHLORIDE=False,
-                MATERIAL_SUSCEP_HTHA=False, HTHA_MATERIAL="", HTHA_NUM_INSP=0, HTHA_EFFECT="E", HTHA_PRESSURE=0,
-                CRITICAL_TEMP=0, DAMAGE_FOUND=False,
-                LOWEST_TEMP=False,
-                TEMPER_SUSCEP=False, PWHT=False, BRITTLE_THICK=0, CARBON_ALLOY=False, DELTA_FATT=0,
-                MAX_OP_TEMP=0, CHROMIUM_12=False, MIN_OP_TEMP=0, MIN_DESIGN_TEMP=0, REF_TEMP=0,
-                AUSTENITIC_STEEL=False, PERCENT_SIGMA=0,
-                EquipmentType="", PREVIOUS_FAIL="", AMOUNT_SHAKING="", TIME_SHAKING="", CYLIC_LOAD="",
-                CORRECT_ACTION="", NUM_PIPE="", PIPE_CONDITION="", JOINT_TYPE="", BRANCH_DIAMETER="")
-
-print(dm_cal.DF_THIN(5.08))
-print(dm_cal.Art(5))

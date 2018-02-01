@@ -5,42 +5,14 @@
     {% load widget_tweaks %}
 
     <meta charset="UTF-8">
-     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
-    <style type="text/css">
-        fieldset.scheduler-border {
-            border: solid 1px #DDDDDD !important;
-            padding: 0 10px 10px 10px;
-            border-bottom: none;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-        legend.scheduler-border {
-            width: auto !important;
-            border: none;
-            font-size: 18px;
-            font-weight: bold;
-            color: blue;
-        }
-        #Adiv {
-            width:auto; height:auto;
-            margin: 0 auto;
-        }
-    </style>
-</head><!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load staticfiles %}
-    {% load widget_tweaks %}
-
-    <meta charset="UTF-8">
-     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/gijgo/1.7.2/combined/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
     <style type="text/css">
         fieldset.scheduler-border {
             border: solid 1px #DDDDDD !important;
@@ -86,7 +58,7 @@
     </div>
 <div id="main-right">
     <div id="Adiv" align="center">
-    <form action="POST" >
+    <form method="post" class="form-control">
   <fieldset class="scheduler-border">
         <fieldset class="scheduler-border">
               <legend class="scheduler-border" ><p><b>Assessment General Information</b></p></legend>
@@ -96,13 +68,13 @@
             <table>
                 <tr>
                     <td>Assessment Name</td>
-                   <td><input type="text" class="form-control" name="AssessmentName" value=""  required/></td>
+                   <td><input type="text" class="form-control" name="AssessmentName" value="" /></td>
                 </tr>
                 <tr>
                     <td>Assessment Date</td>
-                    <td><input type="text" id="datepicker" width="auto" name="assessmentdate" data-format="yyyy-mm-dd" />
+                    <td><input type="text" id="datepicker1" name="assessmentdate" data-format="yyyy-mm-dd" />
                             <script>
-                                $('#datepicker').datepicker({
+                                $('#datepicker1').datepicker({
                                     uiLibrary: 'bootstrap4'
                                 });
 
@@ -145,9 +117,9 @@
                    </tr>
                    <tr>
                                 <td><span style="font-size: 16px">Commission Date</span> </td>
-                                <td><input type="text" id="datepicker1" name="CommissionDate" value=""  readonly> </td>
+                                <td><input type="text" id="datepicker" name="CommissionDate" value=""  data-format="yyyy-mm-dd" readonly> </td>
                                 <script>
-                                    $('#datepicker1').datepicker({
+                                    $('#datepicker').datepicker({
                                     uiLibrary: 'bootstrap4'
                                 });
                                 </script>
@@ -200,103 +172,57 @@
 
                     </td>
 
-
-                    <td><span style="font-size: 16px">Component is Welded </span></td>
-                    <td><input type="checkbox" value= "" class="form-control" list="ComponentWelded" name="ComponentWelded" />
-
-                    </td>
-                </tr>
-                <tr>
-                    <td><span style="font-size: 16px">Highly Effective Inspection for Deadlegs</span></td>
-                    <td><input type="checkbox" value="" class="form-control" list="Highly" name="Highly" list="Highly" />
-
                     </td>
                     <td><span style="color: red;font-size: 16px"> Cylic Operation</span></td>
                     <td><input type="checkbox" class="form-control"  list="CylicOper" name="CylicOper" />
 
 
                     </td>
+
+
                 </tr>
                 <tr>
-                    <td><span style="font-size: 16px">Downtime Protection Used</span></td>
-                    <td><input type="checkbox" class="form-control"  list="Downtime" name="Downtime"  />
+                    <td><span style="font-size: 16px">Highly Effective Inspection for Deadlegs</span></td>
+                    <td><input type="checkbox" value="" class="form-control" list="Highly" name="Highly" list="Highly" />
 
-                    </td>
+
                     <td><span style="font-size: 16px">Steamed Out Prior to Water Flushing</span></td>
                     <td><input type="checkbox" class="form-control"  list="Steamed" name="Steamed"  />
 
                     </td>
                 </tr>
                 <tr>
-                    <td><span style="font-size: 16px">Heat Traced</span></td>
-                    <td><input type="checkbox" class="form-control" list="HeatTraced" name="HeatTraced" />
+                     <td><span style="font-size: 16px">Downtime Protection Used</span></td>
+                    <td><input type="checkbox" class="form-control"  list="Downtime" name="Downtime"  />
 
                     </td>
+
                     <td><span style="font-size: 16px">PWHT</span></td>
                     <td><input type="checkbox" class="form-control"  list="PWHT" name="PWHT"  />
 
                     </td>
                 </tr>
                 <tr>
+                      <td><span style="font-size: 16px">Heat Traced</span></td>
+                    <td><input type="checkbox" class="form-control" list="HeatTraced" name="HeatTraced" />
+
+
+                    </td>
+                    <td><span style="font-size: 16px">Distance To Ground Water</span></td>
+                    <td><input type="number" step="0.01" class="form-control" min="0" name="Distance" value="0" />
+                    <td><span style="font-size: 16px">m</span> </td>
+                </tr>
+                <tr>
                     <td><span style="font-size: 16px">Interface at Soil or Water</span></td>
                     <td><input type="checkbox" class="form-control" name="InterfaceSoilWater" list="InterfaceSoilWater"  />
-
-
                     </td>
-                    <td><span style="font-size: 16px">Liner Online Monitoring</span></td>
-                    <td><input type="checkbox" class="form-control" list="LOM" name="LOM"  />
 
-                    </td>
                 </tr>
-
-
+            </table>
+            <br>
+            <table>
                 <tr>
-                    <td><span style="font-size: 16px">Pressurisation Controlled by Admin</span></td>
-                    <td><input type="checkbox" class="form-control"list="PressurisationControlled" name="PressurisationControlled" />
-
-                    </td>
-                    </td>
-                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Shutdown&</span></td>
-                    <td><input type="checkbox" class="form-control"  list="PresenceofSulphidesShutdow" name="PresenceofSulphidesShutdow" />
-
-
-                    </td>
-
-                </tr>
-
-                <tr>
-                    <td><span style="font-size: 16px">Equipment is Operating for Many Years at </br>Lowest Expected Temperature</span></td>
-                    <td><input type="checkbox" class="form-control" list="EquOper" name="EquOper" />
-
-                    </td>
-                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Operation</span></td>
-                    <td><input type="checkbox" class="form-control"  name="PresenceofSulphides" list="PresenceofSulphides" />
-
-                    </td>
-                </tr>
-                <tr>
-                    <td><span style="color:red;font-size: 16px">Material is Exposed to Fluids, Mists or Solids</br> Containing Chlorine Externally</span></td>
-                    <td><input type="checkbox" class="form-control"  list="MFTF" name="MFTF"/>
-
-                    </td>
-                    <td><span style="font-size: 16px">Tank Is Maintained in Accordance with API 653</span></td>
-                    <td><input type="checkbox" class="form-control" list="TMA" name="TMA"/>
-
-                    </td>
-                </tr>
-
-                <table >
-                    <tr>
-                        <td><span style="font-size: 16px">Distance To Ground Water</span></td>
-                        <td><input type="text" class="form-control" name="Distance" value="" size="16"/>
-                    </tr>
-                    <tr>
-                        <td><span style="font-size: 16px">Min. Required Temperature Before</br> Pressurisation Allowed by Admin</span></td>
-                        <td><input type="number" step="0.01" class="form-control" name="Min" value="" size="16"/>&ensp;</td>
-                        <td>&deg;C</td>
-                    </tr>
-                    <tr>
-                        <td><span style="font-size: 16px">Type of Soil</span></td>
+                     <td><span style="font-size: 16px">Type of Soil</span></td>
                         <td>
                             <select class="form-control" name="typeofSoil">
                                 <option>Coarse Sand</option>
@@ -308,7 +234,61 @@
                                 <option>Concrete-Asphalt</option>
                             </select>
                         </td>
-                    </tr>
+                </tr>
+            </table>
+            <br>
+            <table>
+                <tr>
+                    <td><span style="font-size: 16px">Pressurisation Controlled by Admin</span></td>
+                    <td><input type="checkbox" class="form-control"list="PressurisationControlled" name="PressurisationControlled" /></td>
+                    <td><span style="font-size: 16px">Min. Required Temperature Before<br> Pressurisation Allowed by Admin</span></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Min" value="0" /></td>
+                    <td>&deg;C</td>
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Equipment is Operating for Many Years at </br>Lowest Expected Temperature</span></td>
+                    <td><input type="checkbox" class="form-control" list="EquOper" name="EquOper" />
+                </tr>
+                <tr>
+                     <td><span style="color:red;font-size: 16px">Material is Exposed to Fluids, Mists or Solids</br> Containing Chlorine Externally</span></td>
+                    <td><input type="checkbox" class="form-control"  list="MFTF" name="MFTF"/>
+
+                    </td>
+                     <td><span style="font-size: 16px">Liner Online Monitoring</span></td>
+                    <td><input type="checkbox" class="form-control" list="LOM" name="LOM"  />
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Operation</span></td>
+                    <td><input type="checkbox" class="form-control"  name="PresenceofSulphides" list="PresenceofSulphides" />
+
+                    </td>
+                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Shutdown&</span></td>
+                    <td><input type="checkbox" class="form-control"  list="PresenceofSulphidesShutdow" name="PresenceofSulphidesShutdow" />
+
+
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td><span style="font-size: 16px">Component is Welded </span></td>
+                    <td><input type="checkbox" value= "" class="form-control" list="ComponentWelded" name="ComponentWelded" />
+
+                    </td>
+
+                    <td><span style="font-size: 16px">Tank Is Maintained in Accordance with API 653</span></td>
+                    <td><input type="checkbox" class="form-control" list="TMA" name="TMA"/>
+
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table>
                     <tr>
                         <td><span style="font-size: 16px">Adjustment for Settlement</span></td>
                         <td><select class="form-control" name="AdjForSettlement">
@@ -318,7 +298,7 @@
                             <option>Concrete foundation, no settlement</option>
                         </select></td>
                     </tr>
-                <tr>
+
                 <td><span style="font-size: 16px">External Environment</span></td>
                    <td><select class="form-control" name="ExternalEnvironment">
                                         <option>Arid/dry</option>
@@ -405,35 +385,42 @@
                     <td>&ensp;m<sup>3</sup></td>
                 </tr>
 
-            </table>
+
             </table>
         </fieldset>
           <fieldset class="scheduler-border">
-            <legend class="scheduler-border"><p><b>Component</b></p></legend>
+            <legend class="scheduler-border"><p><b>Component Properties </b></p></legend>
             <table>
                 <tr>
                     <td><span style="font-size: 16px;">Tank Diameter</span></td>
-                    <td><input type="text" class="form-control" value="" name="TankDiameter"/>&ensp;</td>
+                    <td><input type="number" step="0.01" class="form-control" value="" name="TankDiameter"/>&ensp;</td>
                     <td>in</td>
                     <td><span style="font-size: 16px;">Nominal Thickness</span></td>
-                    <td><input type="text" class="form-control" value="" name="NominalThickness"/>&ensp;</td>
+                    <td><input type="number" step="0.01" class="form-control" value="" name="NominalThickness"/>&ensp;</td>
                     <td>mm</td>
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px;">Current Thickness</span></td>
-                    <td><input type="text" class="form-control" value="" name="CurrentThickness"/>&ensp;</td>
+                    <td><input type="number" step="0.01" class="form-control" value="" name="CurrentThickness"/>&ensp;</td>
                     <td>mm</td>
                     <td><span style="font-size: 16px;">Min. Required Thickness</span></td>
-                    <td><input type="text" class="form-control" value="" name="Min"/>&ensp;</td>
+                    <td><input type="number" step="0.01" class="form-control" value="" name="Min"/>&ensp;</td>
                     <td>mm</td>
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px;">Current Corrosion Rate</span></td>
-                    <td><input type="text" class="form-control" value="" name="CurrentCorrosionRate"/>&ensp;</td>
+                    <td><input type="number" step="0.01" min="0" class="form-control" value="0" name="CurrentCorrosionRate"/>&ensp;</td>
                     <td>mm/yr</td>
-                    <td><span style="font-size: 16px;">Number Inspection</span></td>
-                    <td><input type="text" class="form-control" value="" name="NumberInspection"/></td>
+
                 </tr>
+                <tr>
+                    <td><span style="font-size: 16px;">Shell Course Height</span></td>
+                    <td><input type="number" step="0.01" class="form-control" value="0" min="0" name="CurrentCorrosionRate"/>&ensp;</td>
+                    <td>m</td>
+                </tr>
+            </table>
+              <br>
+              <table>
                 <tr>
                     <td><span style="font-size: 16px;">Damage Found During Inspection</span></td>
                     <td><input type="checkbox" class="form-control" list="DFDI"  name="DFDI"/>
@@ -445,16 +432,18 @@
                     </td>
                 </tr>
                 <tr>
+
                     <td><span style="font-size: 16px;">Tramp Elements</span></td>
                     <td><input type="checkbox" class="form-control" list="TrampElements" name="TrampElements"/>
 
                     </td>
+                </tr>
+                <tr>
                     <td><span style="font-size: 16px;">Release Prevention Barrier</span></td>
                     <td><input type="checkbox" class="form-control"  list="ReleasePreventionBarrier"  name="ReleasePreventionBarrier"/>
 
                     </td>
-                </tr>
-                <tr>
+
                     <td><span style="font-size: 16px;">Concrete or Asphalt Foundation</span></td>
                     <td><input type="checkbox" class="form-control" list="ConcreteFoundation"  name="ConcreteFoundation"/>
 
@@ -462,6 +451,7 @@
 
                 </tr>
             </table>
+              <br>
             <table>
                 <tr>
                     <td><span style="font-size: 16px;">Maximum Brinnell Hardness</br> of Weld</span></td>
@@ -500,98 +490,97 @@
         </fieldset>
          <fieldset class="scheduler-border">
         <legend class="scheduler-border"><p><b>Operating Condition</b></p></legend>
-        <table >
-            <tr>
-                <td ><span style="color: red;font-size: 16px">Maximum Operating Temperature</span></td>
-                <td><input type="text" class="form-control" name="MaxOT"/>&ensp;</td>
-                <td>&deg;C</td>
-                <td><span style="font-size: 16px">Maximum Operating Pressure</span></td>
-                <td><input type="text" class="form-control" name="MaxOP"/>&ensp;</td>
-                <td>psi</td>
-            </tr>
-            <tr>
-                <td><span style="color: red;font-size: 16px">Minimum Operating Temperature</span>
-                <td></span><input type="text" class="form-control" name="MinOT"/>&ensp;</td>
-                <td>&deg;C</td>
-                <td><span style="font-size: 16px">Minimum Operating Pressure</span></td>
-                <td><input type="text" class="form-control" name="MinOP"/>&ensp;</td>
-                <td>psi</td>
-            </tr>
-            <tr>
-                <td><span style="color: red;font-size: 16px">Operating Hydrogen Partial Pressure </span></td>
-                <td><input type="text" class="form-control" name="OHPP"/></td>
-                <td>&ensp;psi</td>
-                <td><span style="font-size: 16px">Flow Rate</span></td>
-                <td><input type="text" class="form-control" name="FlowRate"/>&ensp;</td>
-                <td>m3/hr</td>
-            </tr>
-            <tr>
-                <td><span style="color: red;font-size: 16px">Critical Exposure Temperature</span></td>
-                <td><input type="text" class="form-control" name="CET"/> &ensp;</td>
-                <td>&deg;C</td>
-            </tr>
-        </table>
+        <table>
+                        <tr>
+                            <td ><span style="color: red;font-size: 16px">Maximum Operating Temperature</span></td>
+                            <td><input type="number" class="form-control" step="0.01" name="MaxOT"/></td><td>&deg;C</td>
+
+
+                            <td><span style="font-size: 16px">Maximum Operating Pressure</span></td>
+                            <td><input type="number" step="0.01" class="form-control" name="MaxOP"/></td><td>psi</td>
+                        </tr>
+
+                        <tr>
+                            <td><span style="color: red;font-size: 16px">Min.Operating Temperature</span>
+                            <td><input type="number" class="form-control" step="0.01" name="MinOT"/></td><td>&deg;C</td>
+
+                            <td><span style="font-size: 16px">Min.Operating Pressure</span></td>
+                            <td><input type="number" class="form-control" step="0.01" name="MinOP"/></td><td>psi</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color: red;font-size: 16px">Operating Hydrogen Partial Pressure </span></td>
+                            <td><input type="number" class="form-control" step="0.01" name="OHPP"/></td><td>psi</td>
+
+
+                            <td><span style="font-size: 16px">Flow Rate</span></td>
+                            <td><input type="number" step="0.01" class="form-control" name="FlowRate"/></td><td>m3/hr</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color: red;font-size: 16px">Critical Exposure Temperature</span></td>
+                            <td><input type="number" class="form-control" step="0.01" name="CET"/></td><td>&deg;C</td>
+                        </tr>
+                    </table>
         <fieldset class="scheduler-border">
             <legend class="scheduler-border"><p><b><span style="font-size: 16px">Operating Temperature in Different Temperature Ranger</span></b></p></legend>
             <table>
                 <tr>
                     <td ><span style="font-size: 16px">% Operating at -12 &deg;C to  -8 &deg;C </span></td>
-                    <td><input type="text" class="form-control" name="Operating1"/></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating1"/></td>
                     <td> %</td>
 
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at -8 &deg;C to  6 &deg;C </span></td>
-                    <td><input type="text" class="form-control" name="Operating2"/></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating2"/></td>
                     <td> %</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 6 &deg;C to  32 &deg;C </span></td>
-                    <td><input type="text" class="form-control" name="Operating3"/></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating3"/></td>
                     <td> %</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 32 &deg;C to  71 &deg;C </span></td>
-                    <td><input type="text" class="form-control" name="Operating4"/></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating4"/></td>
                     <td> %</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 71 &deg;C to  107 &deg;C</span></td>
-                    <td><input type="text" class="form-control" name="Operating5"/> </td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating5"/> </td>
                     <td>%</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 107 &deg;C to  121 &deg;C </span></td>
-                    <td><input type="text" class="form-control" name="Operating6"/></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating6"/></td>
                     <td> %</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 121 &deg;C to  135 &deg;C</span></td>
-                    <td><input type="text" class="form-control" name="Operating7"/> </td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating7"/> </td>
                     <td>%</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 135 &deg;C to  162 &deg;C </span></td>
-                    <td><input type="text" class="form-control" name="Operating8"/> </td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating8"/> </td>
                     <td>%</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 162 &deg;C to  176 &deg;C</span></td>
-                    <td><input type="text" class="form-control" name="Operating9"/> </td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating9"/> </td>
                     <td>%</td>
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">% Operating at 176 &deg;C or above</span></td>
-                    <td><input type="text" class="form-control" name="Operating10"/></td>
+                    <td><input type="number" step="0.01" class="form-control" name="Operating10"/></td>
                     <td> %</td>
 
                 </tr>
@@ -604,38 +593,43 @@
         <table >
               <tr>
                 <td><span style="font-size: 16px">Material</span></td>
-                <td><input list="Material" class="form-control" name="Material" /></td>
+                 <td><input class="form-control" type="text" name="materialname"></td>
             </tr>
+        </table>
+        <table>
             <tr>
                 <td><span style="font-size: 16px;display: inline-block;">Max.Design Temperature</span></td>
-                <td><input type="text" class="form-control" name="Max"/>&ensp;</td>
-                <td>&deg;C </td>
+                <td><input type="number" step="0.01" class="form-control" name="Max"/></td>
+                <td>&deg;C</td>
                 <td><span style="font-size: 16px">Min.Design Temperature</span></td>
-                <td><input type="text" class="form-control" name="Min"/>&ensp;</td>
+                <td><input type="number" step="0.01" class="form-control" name="Min"/></td>
                 <td>&deg;C</td>
             </tr>
             <tr>
                 <td><span style="font-size: 16px">Design Pressure</span></td>
-                <td><input type="text " class="form-control" name="DesignPressure"/></td>
+                <td><input type="number "step="0.01" class="form-control" name="DesignPressure"/></td>
                 <td>&ensp;psi</td>
                 <td><span style="font-size: 16px">Reference Temperature</span></td>
-                <td><input type="text" class="form-control" name="ReferenceTemperature"/>&ensp; </td>
+                <td><input type="number" step="0.01" class="form-control" name="ReferenceTemperature"/></td>
                 <td>&deg;C</td>
             </tr>
             <tr>
                 <td><span style="font-size: 16px">Allowable Stress at</br> Assessment Temperature</span></td>
-                <td><input type="text" class="form-control" name="ASAT"/>&ensp; </td>
+                <td><input type="number" step="0.01" class="form-control" name="ASAT"/></td>
                 <td>psi</td>
                 <td><span style="font-size: 16px">Brittle Fracture</br> Governing Thickness</span></td>
-                <td><input type="text" class="form-control" name="BFGT"/>&nbsp;</td>
+                <td><input type="number" step="0.01" class="form-control" name="BFGT"/></td>
                 <td>mm</td>
             </tr>
             <tr>
                 <td><span style="font-size: 16px">Corrosion Allowance</span></td>
-                <td><input type="text" class="form-control" name="CorrosionAllowance"/> </td>
+                <td><input type="number" step="0.01" class="form-control" name="CorrosionAllowance"/></td>
                 <td>&nbsp;mm</td>
 
             </tr>
+        </table>
+        <br>
+        <table>
             <tr>
                 <td><span style="color: red;font-size: 16px">Carbon or Low Alloy Steel</span></td>
                 <td><input type="checkbox" class="form-control" list="CoLAS" name="CoLAS"/>
@@ -661,17 +655,16 @@
 
                 </td>
             </tr>
-
-
+        </table>
+             <br>
+        <table>
             <tr>
                 <td><span style="font-size: 16px">Sulfur Content</span></td>
                 <td><select class="form-control" name="SulfurContent" >
                     <option>High > 0.01%</option>
                     <option>Low 0.002 - 0.01%</option>
                     <option>Ultra Low < 0.002%</option>
-                </select>
-
-                </td>
+                </select></td>
             </tr>
             <tr>
                 <td><span style="font-size: 16px;display: inline-block;">Heat Treatment</span></td>
@@ -682,17 +675,14 @@
                                 <option>Quench Temper</option>
                                 <option>Stress Relieved</option>
                                 <option>Sub Critical PWHT</option>
-                </select>
-
-                </td>
+                </select></td>
             </tr>
             <tr>
-                <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px">Material Grade to Evaluate</br>Severity of HTHA</span></td>
+                <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px">Material Grade to Evaluate</br>Severity of PTA</span></td>
                 <td><input type="checkbox" class="form-control" name="MGTEHTHA"/> </td>
             </tr>
-
-
             <tr>
+
                 <td><span style="font-size: 15px">PTA Material Grade</span></td>
                 <td><select class="form-control" list="PTA" name="PTAMaterialGrade" >
                                 <option>321 Stainless Stee</option>
@@ -706,57 +696,57 @@
             </tr>
             <tr>
                 <td><span style="font-size: 16px">Material Cost Factor</span></td>
-                <td><input type="text" class="form-control" name="MaterialCostFactor"/> </td>
+                <td><input type="text" class="form-control" name="MaterialCostFactor"/></td>
             </tr>
-              <tr>
+            <tr>
                 <td><span style="font-size: 16px">Production Cost</span></td>
-                <td><input type="text" class="form-control" name="ProductionCost"/> </td>
+                <td><input type="text" class="form-control" name="ProductionCost"/></td>
+                <td>$/day</td>
             </tr>
 
-        </table>
+
+</table>
 
     </fieldset>
         <fieldset class="scheduler-border">
             <legend class="scheduler-border"><p><b>Coating, Cladding, Lining, Insulation</b></p></legend>
             <fieldset class="scheduler-border">
                 <legend class="scheduler-border"><p><b>Coating</b></p></legend>
+                <table>
+                    <tr>
+                        <td><span style="font-size: 16px">Internal Coating</span></td>
+                        <td><input type="checkbox" class="form-control" list="InternalCoating" name="InternalCoating">
+                        <td><span style="color:red;font-size: 16px">External Coating</span></td>
+                        <td><input type="checkbox" class="form-control" list="ExternalCoating" name="ExternalCoating">
+                        </td>
+                    </tr>
+                </table>
                 <table >
-                <tr>
-                    <td><span style="font-size: 16px">Internal Coating</span></td>
-                    <td><input type="checkbox" class="form-control" list="InternalCoating" name="InternalCoating">
+                    <tr>
 
-                </tr>
-                <tr>
-                    <td><span style="color:red;font-size: 16px">External Coating</span></td>
-                    <td><input type="checkbox" class="form-control" list="ExternalCoating" name="ExternalCoating">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td><span style="font-size: 16px">Support Configuration Which Does</br> Not Allow Coating Maintenance</span></td>
-                    <td><input type="checkbox" class="form-control" list="SCWD" name="SCWD"/>
-
-                    </td>
-                </tr>
-                <tr >
                                 <td><span style="font-size: 16px">External Coating Installation Date</span></td>
-                                <td><input type="text" id="datepicker2" width="auto" data-format="yyyy-mm-dd" name="ExternalCoatingID" /></td>
+                                <td><input type="text" id="datepicker2" data-format="yyyy-mm-dd" name="ExternalCoatingID" /></td>
                                 <script>
                                 $('#datepicker2').datepicker({
                                     uiLibrary: 'bootstrap4'
                                 });
                             </script>
-                            </tr>
-
-                            <tr>
-                <tr>
-                    <td><span style="color:red;font-size: 16px">External Coating Quality</span> </td>
-                   <td><select class="form-control" list="ECQ" name="ExternalCoatingQuality">
+                    </tr>
+                    <tr>
+                     <td><span style="color:red;font-size: 16px">External Coating Quality</span> </td>
+                        <td><select class="form-control" list="ECQ" name="ExternalCoatingQuality">
                                     <option>High coating quality</option>
                                     <option>Medium coating quality</option>
                                     <option>No coating or poor quality</option>
                                 </select>
                                 </td>
+                    </tr>
+
+                <tr>
+                    <td><span style="font-size: 16px">Support Configuration Which Does</br> Not Allow Coating Maintenance</span></td>
+                    <td><input type="checkbox" class="form-control" list="SCWD" name="SCWD"/>
+
+                    </td>
                 </tr>
                 </table>
             </fieldset>
@@ -765,13 +755,13 @@
                 <table>
                 <tr>
                     <td><span style="font-size: 16px">Internal Cladding</span></td>
-                    <td><input type="checkbox" class="form-control" list="InternalCladding" name="InternalCladding"/>
+                    <td><input type="checkbox" class="form-control" list="InternalCladding" name="InternalCladding"/></td>
 
 
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">Cladding Corrosion Rate</span></td>
-                    <td><input type="text" class="form-control" name="CladdingCorrosionRate" value="" />&ensp;</td>
+                    <td><input type="text" class="form-control" name="CladdingCorrosionRate" value="" /></td>
                     <td>mm/yr</td>
                 </tr>
                 </table>
@@ -781,9 +771,7 @@
                 <table>
                 <tr>
                     <td><span style="color:#ff0000;font-size: 16px">Internal Lining </span></td>
-                    <td><input type="checkbox" class="form-control"  name="InternalLining"/>
-                    </td>
-
+                    <td><input type="checkbox" class="form-control"  name="InternalLining"/></td>
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">Internal Liner Type</span></td>
@@ -818,13 +806,13 @@
                     <td><input  type="checkbox" class="form-control" list="ExternalInsulation" name="ExternalInsulation"/>
 
 
-               </tr>
-               <tr>
                     <td><span style="font-size: 16px">Insulation Contains Chlorides&emsp;&ensp;</span></td>
                     <td><input type="checkbox" class="form-control" list="ICC" name="ICC"/>
 
                     </td>
                </tr>
+                </table>
+                <table>
                <tr>
                     <td><span style="font-size: 16px">External Insulation Type</span></td>
                       <td><select class="form-control" list="EIT" name="ExternalInsulationType" >
@@ -867,15 +855,15 @@
                 <table>
                     <tr>
                         <td><span style="font-size: 16px;">Fluid Height</span></td>
-                        <td><input type="text" class="form-control" name="FluidHeight" /></td>
+                        <td><input type="number" step="0.01" class="form-control" name="FluidHeight" /></td>
                         <td><span style="font-size: 16px;">Percentage of Fluid Leaving the Dike</span></td>
-                        <td><input type="text" class="form-control" name="PFLD" size="20"/></td>
+                        <td><input type="number" step="0.01" class="form-control" name="PFLD" /></td>
                     </tr>
                     <tr>
                         <td><span style="font-size: 16px;">Percentage of Fluid Leaving the Dike but Remains on Site</span></td>
-                        <td><input type="text" class="form-control" name="PFLDRS" /></td>
+                        <td><input type="number" step="0.01" class="form-control" name="PFLDRS" /></td>
                         <td><span style="font-size: 16px;">Percentage of Fluid Going offsite</span></td>
-                        <td><input type="text" class="form-control" name="PFLDGoffsite" /></td>
+                        <td><input type="number" step="0.01" class="form-control" name="PFLDGoffsite" /></td>
                     </tr>
                 </table>
             </fieldset>
@@ -887,27 +875,29 @@
                 <table >
             <tr>
                 <td><span style="font-size: 16px">NaOH Concentration (%)</span></td>
-                <td><input type="text" class="form-control" name="NaOHConcentration"/></td>
+                <td><input type="number"step="0.01" class="form-control" name="NaOHConcentration"/></td>
                 <td><span style="font-size: 16px">Release Fluid Percent Toxic (%)</span></td>
-                <td><input type="text" class="form-control" name="RFPT"/></td>
+                <td><input type="number" step="0.01" class="form-control" name="RFPT"/></td>
             </tr>
             <tr>
                 <td><span style="font-size: 16px">Chloride Ion (ppm)</span></td>
-                <td><input type="text" class="form-control" name="ChlorideIon"/></td>
+                <td><input type="number" step="0.01" class="form-control" name="ChlorideIon"/></td>
                 <td><span style="font-size: 16px">CO3 Concentration in Water (ppm)</span></td>
-                <td><input type="text" class="form-control" name="CO3"/></td>
+                <td><input type="number" step="0.01" class="form-control" name="CO3"/></td>
             </tr>
             <tr>
                 <td><span style="font-size: 16px">H2S Content in Water (ppm)</span></td>
-                <td><input type="text" class="form-control" name="H2SContent"/></td>
+                <td><input type="number" step="0.01" class="form-control" name="H2SContent"/></td>
                 <td><span style="color: red;font-size: 16px">PH of Water</span></td>
-                <td><input type="text" class="form-control" name="PHWater"/></td>
+                <td><input type="number" step="0.01" class="form-control" name="PHWater"/></td>
             </tr>
             <tr>
                   <td><span style="color: red;font-size: 16px">Exposed To Acid Gas Treating Amine</span></td>
                   <td><input type="checkbox" class="form-control" list="EAGTA" name="EAGTA"/>
 
             </tr>
+                </table>
+                <table>
             <tr>
 
                 <td><span style="font-size: 16px">Amine Solution Composition</span></td>
@@ -932,6 +922,8 @@
 
             </td>
             </tr>
+                </table>
+                <table>
 
             <tr>
                 <td><span style="color: red;font-size: 16px"> Aqueous Phase During Operation</span></td>
@@ -988,94 +980,7 @@
     </fieldset>
  </fieldset>
          </fieldset>
- <fieldset class="scheduler-border">
-        <legend class="scheduler-border"><p><b>Consequence Analysis for Tank</b></p></legend>
-        <table>
-            <tr>
-                <td><span style="font-size: 16px;">Fluid Phase</span> </td>
-                <td><select name="FluidPhase" value="" class="form-control">
-                    <option></option>
-                </select>
-
-                </td>
-                <td></td>
-
-                <td><span style="font-size: 16px;">Mass Invert</span> </td>
-                <td><input type="number" step="0.01" name="MassInvert" value="" class="form-control"> </td>
-                <td>kg</td>
-            </tr>
-            <tr>
-                <td><span style="font-size: 16px;">Meterial Cost</span> </td>
-                <td><input list="MeterialCost" name="MeterialCost" value="" class="form-control"></td>
-                <td>&ensp;$ </td>
-
-                <td><span style="font-size: 16px;">Mass Component</span> </td>
-                <td><input list="MassComponent" name="MassComponent" value="" class="form-control">&ensp; </td>
-                <td>kg</td>
-            </tr>
-            <tr>
-
-                <td><span style="font-size: 16px;">Production Cost</span> </td>
-                <td><input type="number" step="0.01" name="ProductionCost" value="" class="form-control">
-
-                </td>
-                <td>$/Day</td>
-
-                <td><span style="font-size: 16px;">Mittigation System</span> </td>
-                <td><select list="MassInvert" name="MassInvert" value="" class="form-control">
-                    <option></option>
-                </select>
-
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><span style="font-size: 16px;">API Component Type Name</span> </td>
-                <td><select class="form-control" name="API" value="" >
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-                </td>
-                <td></td>
-
-
-                <td><span style="font-size: 16px;">Stored Pressure</span> </td>
-                <td><input type="text" name="StoredPressure" value="" class="form-control"> </td>
-                <td>&ensp;psi</td>
-            </tr>
-            <tr>
-                <td><span style="font-size: 16px;">Detection Type</span> </td>
-                <td><select name="DetectionType" value="" class="form-control">
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
-                </select>
-
-                </td>
-                <td></td>
-
-
-                <td><span style="font-size: 16px;">Isulation Type</span> </td>
-                <td><select name="IsulationType" value="" class="form-control">
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
-                </select>
-
-                </td>
-                <td>
-                </td>
-            </tr>
-            <tr>
-
-                <td><span style="font-size: 16px;">Stored Temperature</span> </td>
-                <td><input type="text" name="StoredTemperature" value="" class="form-control">&ensp; </td>
-                <td>&deg;C</td>
-            </tr>
-
-        </table>
-    </fieldset>
-  </fieldset>
+ 
        <table style="text-align: right">
          <tr>
                     <td><button type="submit" class="btn btn-info" >Submit</button></td>
