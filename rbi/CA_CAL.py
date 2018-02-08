@@ -934,7 +934,6 @@ class CA_SHELL:
         self.PRODUCTION_COST = PRODUCTION_COST;
 
     def d_n_shell(self, i):
-        dn = 0;
         if (i == 1):
             dn = 3.175;
         elif (i == 2):
@@ -952,6 +951,9 @@ class CA_SHELL:
         C32 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(32);
         return C32 * 0.61 * self.a_n_shell(i) * math.sqrt(2 * self.FLUID_HEIGHT);
 
+    def Bbl_total_shell(self):
+        return math.pi * pow(self.TANK_DIAMETER,2) * self.FLUID_HEIGHT / (4* DAL_CAL.MySQL_CAL.GET_TBL_3B21(13))
+
     def Bbl_avail(self, i):
         C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
         return math.pi * pow(self.TANK_DIAMETER, 2) * (self.FLUID_HEIGHT - (i - 1) * self.SHELL_COURSE_HEIGHT) / (4 * C13);
@@ -963,10 +965,7 @@ class CA_SHELL:
             return 1;
 
     def Bbl_leak_n(self, i):
-        if(self.d_n_shell(i) <= 50.8):
-            return min(self.W_n_Tank(i) * self.ld_tank(i), self.Bbl_avail(i));
-        else:
-            return 1;
+        return min(self.W_n_Tank(i) * self.ld_tank(i), self.Bbl_avail(i));
 
     def getCost(self):
         costTANK = [0, 0, 0, 0, 0, 0];

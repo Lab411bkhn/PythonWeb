@@ -19,17 +19,14 @@ mpmath==1.0.0
 mysqlclient==1.3.12
 nltk==3.2.5
 numpy==1.13.3
-opencv-python==3.3.0.10
 parso==0.1.1
 pickleshare==0.7.4
 prompt-toolkit==1.0.15
 protobuf==3.5.0.post1
-pygame==1.9.3
 pyglet==1.3.0
 Pygments==2.2.0
 PyMySQL==0.8.0
 pyparsing==2.2.0
-PyQt5==5.9.2
 python-dateutil==2.6.1
 pytz==2017.3
 scipy==1.0.0
@@ -37,8 +34,6 @@ simplegeneric==0.8.1
 sip==4.19.6
 six==1.11.0
 sympy==1.1.1
-tensorflow==1.4.0
-tensorflow-tensorboard==0.4.0rc3
 traitlets==4.3.2
 wcwidth==0.1.7
 Werkzeug==0.13

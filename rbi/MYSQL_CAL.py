@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta;
 import numpy as np;
 conn = pymysql.connect(host ='localhost',user = 'root', password = 'root', db = 'djangorbi');
 class MySQL_CAL:
-    def GET_TBL_52( fluid):
+    def GET_TBL_52(fluid):
         row = np.zeros(10);
         Cursor = conn.cursor();
         try:
@@ -25,7 +25,7 @@ class MySQL_CAL:
             print("Error! execute table 5.2");
         return row;
 
-    def GET_RELEASE_PHASE( fluid):
+    def GET_RELEASE_PHASE(fluid):
         data = "Liquid";
         Cursor = conn.cursor();
         try:
@@ -223,7 +223,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 3B21 fail");
         return data;
 
-    def GET_TBL_71_PROPERTIES( FluidTank):
+    def GET_TBL_71_PROPERTIES(FluidTank):
         data = np.zeros(3);
         Cursor = conn.cursor();
         try:
@@ -260,3 +260,19 @@ class MySQL_CAL:
         except pymysql.InternalError as Error:
             print("Error! Execute sql table API_COMPONENT_TYPE fail");
         return data;
+
+    def GET_LAST_INSP(ComponentNumber, DamageName, CommissionDate):
+        Cursor = conn.cursor()
+        try:
+            sql = "SELECT MAX(InspectionDate) FROM `rw_inspection_history` WHERE `ComponentNumber` = '"+str(ComponentNumber)+"' AND `DM` = '"+str(DamageName)+"'"
+            Cursor.execute(sql)
+            data = Cursor.fetchone()
+            if data[0] is None:
+                date = CommissionDate
+            else:
+                date = data[0]
+        except pymysql.InternalError as Error:
+            print("Error! Excute sql table INSPECTION HISTORY fail")
+        return date
+
+    def GET_MAX_INSP(ComponentNumber, ):

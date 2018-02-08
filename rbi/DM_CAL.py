@@ -2042,8 +2042,17 @@ class DM_CAL:
 
         return max(DFB_PF, max(DFB_AS * FFB_AS, DFB_CF));
 
+    def checkPiping(self):
+        pip = ["PIPE-1", "PIPE-2", "PIPE-4", "PIPE-6", "PIPE-8", "PIPE-10", "PIPE-12","PIPE-16", "PIPEGT16"]
+        check = False
+        for a in pip:
+            if self.APIComponentType == a:
+                check = True
+                break
+        return check
+
     def DF_PIPE(self):
-        if (self.EquipmentType == "Piping"):
+        if (self.checkPiping()):
             FCA = 1;
             FPC = 1;
             FCP = 1;
