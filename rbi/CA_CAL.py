@@ -876,7 +876,6 @@ class CA_NORMAL:
     def vol_n_env(self, i):
         massn = self.mass_n(i);
         C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
-        frac_evap = 1;
         if(self.FLUID == "C6-C8" or self.FLUID == "Acid"):
             frac_evap = 0.9;
         elif(self.FLUID == "C9-C12"):

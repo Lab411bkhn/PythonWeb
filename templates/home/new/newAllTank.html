@@ -67,7 +67,7 @@
                 <legend class="scheduler-border"><p><b>Assessment</b></p></legend></br>
             <table>
                 <tr>
-                    <td>Assessment Name</td>
+                    <td>Assessment Name&emsp;&emsp;&emsp;&ensp;</td>
                    <td><input type="text" class="form-control" name="AssessmentName" value="" required/></td>
                 </tr>
                 <tr>
@@ -94,6 +94,7 @@
                    <tr>
                        <td>Equipment Number</td>
                        <td><input type="text" class="form-control" name="EquipmentNumber" value="{{ equipment.equipmentnumber }}"  readonly /></td>
+                       <td></td>
                    </tr>
                    <tr>
                        <td>Equipment Type</td>
@@ -137,6 +138,7 @@
                    <tr>
                        <td>Component Number</td>
                        <td><input type="text" class="form-control" name="ComponentNumber" value="{{ component.componentnumber }}" readonly /></td>
+                       <td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;</td>
                    </tr>
                    <tr>
                        <td>Component Type</td>
@@ -157,6 +159,7 @@
                        {% else %}
                         <td><input type="checkbox" class="form-control" name="RLTER" disabled="disabled"/></td>
                        {% endif %}
+                       <td>&emsp;</td>
                    </tr>
                </table>
             </fieldset>
@@ -170,15 +173,15 @@
                     <td><input type="checkbox" class="form-control" value="" list="Admin" name="Admin"  />
                     </td>
 
-                    </td>
-                    <td><span style="color: red;font-size: 16px">Cylic Operation</span></td>
+
+                    <td><span style="color: red;font-size: 16px">&emsp;&emsp;Cylic Operation</span></td>
                     <td><input type="checkbox" class="form-control"  list="CylicOper" name="CylicOper" />
                     </td>
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px">Highly Effective Inspection for Deadlegs</span></td>
                     <td><input type="checkbox"  class="form-control" list="Highly" name="Highly"  />
-                    <td><span style="font-size: 16px">Steamed Out Prior to Water Flushing</span></td>
+                    <td><span style="font-size: 16px">&emsp;&emsp;Steamed Out Prior to Water Flushing</span></td>
                     <td><input type="checkbox" class="form-control"  list="Steamed" name="Steamed"  />
 
                     </td>
@@ -189,30 +192,33 @@
 
                     </td>
 
-                    <td><span style="font-size: 16px">PWHT</span></td>
+                    <td><span style="font-size: 16px">&emsp;&emsp;PWHT</span></td>
                     <td><input type="checkbox" class="form-control"  list="PWHT" name="PWHT"  />
 
                     </td>
                 </tr>
                 <tr>
-                      <td><span style="font-size: 16px">Heat Traced</span></td>
+                    <td><span style="font-size: 16px">Heat Traced</span></td>
                     <td><input type="checkbox" class="form-control" list="HeatTraced" name="HeatTraced" />
 
 
                     </td>
-                    <td><span style="font-size: 16px">Distance To Ground Water</span></td>
-                    <td><input type="number" step="0.01" class="form-control" min="0" name="Distance" value="0" />
-                    <td><span style="font-size: 16px">m</span> </td>
-                </tr>
-                <tr>
-                    <td><span style="font-size: 16px">Interface at Soil or Water</span></td>
+                    <td><span style="font-size: 16px">&emsp;&emsp;Interface at Soil or Water</span></td>
                     <td><input type="checkbox" class="form-control" name="InterfaceSoilWater" list="InterfaceSoilWater"  />
                     </td>
 
                 </tr>
+
             </table>
             <br>
             <table>
+                <tr>
+
+                    <td><span style="font-size: 16px">Distance To Ground Water</span></td>
+                    <td><input type="number" step="0.01" class="form-control" min="0" name="Distance" value="0" />
+                    <td><span style="font-size: 16px">m</span> </td>
+
+                </tr>
                 <tr>
                      <td><span style="font-size: 16px">Type of Soil</span></td>
                         <td>
@@ -227,26 +233,27 @@
                             </select>
                         </td>
                 </tr>
+                <tr>
+                <td><span style="font-size: 16px">Min. Required Temperature Before<br> Pressurisation Allowed by Admin</span></td>
+                    <td><input type="number" step="0.01" class="form-control" name="MinReq" value="0" /></td>
+                    <td>&deg;C</td>
+                </tr>
             </table>
             <br>
             <table>
                 <tr>
                     <td><span style="font-size: 16px">Pressurisation Controlled by Admin</span></td>
                     <td><input type="checkbox" class="form-control"list="PressurisationControlled" name="PressurisationControlled" /></td>
-                    <td><span style="font-size: 16px">Min. Required Temperature Before<br> Pressurisation Allowed by Admin</span></td>
-                    <td><input type="number" step="0.01" class="form-control" name="MinReq" value="0" /></td>
-                    <td>&deg;C</td>
-                </tr>
-                <tr>
-                    <td><span style="font-size: 16px">Equipment is Operating for Many Years at </br>Lowest Expected Temperature</span></td>
+                    <td><span style="font-size: 16px">&emsp;&emsp;Equipment is Operating for Many Years at </br>&emsp;&emsp;Lowest Expected Temperature</span></td>
                     <td><input type="checkbox" class="form-control"  name="lowestTemp" />
                 </tr>
+
                 <tr>
                      <td><span style="color:red;font-size: 16px">Material is Exposed to Fluids, Mists or Solids</br> Containing Chlorine Externally</span></td>
                     <td><input type="checkbox" class="form-control"  list="MFTF" name="MFTF"/>
 
                     </td>
-                     <td><span style="font-size: 16px">Liner Online Monitoring</span></td>
+                     <td><span style="font-size: 16px">&emsp;&emsp;Liner Online Monitoring</span></td>
                     <td><input type="checkbox" class="form-control" list="LOM" name="LOM"  />
 
                     </td>
@@ -257,7 +264,7 @@
                     <td><input type="checkbox" class="form-control"  name="PresenceofSulphides" list="PresenceofSulphides" />
 
                     </td>
-                    <td><span style="font-size: 16px">Presence of Sulphides, Moisture </br>and Oxygen During Shutdown</span></td>
+                    <td><span style="font-size: 16px">&emsp;&emsp;Presence of Sulphides, Moisture </br>&emsp;&emsp;and Oxygen During Shutdown</span></td>
                     <td><input type="checkbox" class="form-control"  list="PresenceofSulphidesShutdow" name="PresenceofSulphidesShutdow" />
                     </td>
                 </tr>
@@ -268,7 +275,7 @@
                     <td><input type="checkbox" class="form-control" list="ComponentWelded" name="ComponentWelded" />
                     </td>
 
-                    <td><span style="font-size: 16px">Tank Is Maintained in Accordance with API 653</span></td>
+                    <td><span style="font-size: 16px">&emsp;&emsp;Tank Is Maintained in Accordance with API 653</span></td>
                     <td><input type="checkbox" class="form-control" list="TMA" name="TMA"/>
                     </td>
                 </tr>
@@ -276,7 +283,7 @@
             <br>
             <table>
                     <tr>
-                        <td><span style="font-size: 16px">Adjustment for Settlement</span></td>
+                        <td><span style="font-size: 16px">Adjustment for Settlement&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></td>
                         <td><select class="form-control" name="AdjForSettlement">
                             <option>Recorded settlement exceeds API 653 criteria</option>
                             <option>Recorded settlement meets API 653 criteria</option>
@@ -401,6 +408,7 @@
                 <tr>
                     <td><span style="font-size: 16px;">Damage Found During Inspection</span></td>
                     <td><input type="checkbox" class="form-control" list="DFDI"  name="DFDI"/></td>
+                    <td>&emsp;&emsp;&emsp;</td>
                     <td><span style="font-size: 16px;">Presence of Cracks</span></td>
                     <td><input type="checkbox" class="form-control" list="PresenceCracks"  name="PresenceCracks"/></td>
                 </tr>
@@ -411,7 +419,7 @@
                 <tr>
                     <td><span style="font-size: 16px;">Release Prevention Barrier</span></td>
                     <td><input type="checkbox" class="form-control"  list="ReleasePreventionBarrier"  name="ReleasePreventionBarrier"/></td>
-
+                    <td>&emsp;</td>
                     <td><span style="font-size: 16px;">Concrete or Asphalt Foundation</span></td>
                     <td><input type="checkbox" class="form-control" list="ConcreteFoundation"  name="ConcreteFoundation"/></td>
                 </tr>
@@ -426,6 +434,7 @@
                                 <option>Greater than 237</option>
                             </select>
                             </td>
+                    <td>&emsp;&emsp;&emsp;&nbsp;</td>
                 </tr>
                 <tr>
                     <td><span style="font-size: 16px;">Complexity of Protrusions</span></td>
@@ -454,7 +463,7 @@
                         <tr>
                             <td ><span style="color: red;font-size: 16px">Maximum Operating Temperature</span></td>
                             <td><input type="number" class="form-control" step="0.01" value="0" name="MaxOT"/></td><td>&deg;C</td>
-                            <td></td>
+                            <td>&emsp;</td>
 
                             <td><span style="font-size: 16px">Maximum Operating Pressure</span></td>
                             <td><input type="number" step="0.01" class="form-control" value="0" name="MaxOP"/></td><td>psi</td>
@@ -551,6 +560,7 @@
               <tr>
                 <td><span style="font-size: 16px">Material</span></td>
                  <td><input class="form-control" type="text" name="materialname"></td>
+                 <td>&emsp;</td>
             </tr>
         </table>
         <table>
@@ -592,7 +602,8 @@
             <tr>
                 <td><span style="color: red;font-size: 16px">Carbon or Low Alloy Steel</span></td>
                 <td><input type="checkbox" class="form-control" list="CoLAS" name="CoLAS"/></td>
-                <td><span style="color: red;font-size: 16px">Austenitic Steel</span></td>
+                <td>&emsp;&emsp;&ensp;</td>
+                <td><span style="color: red;font-size: 16px">&emsp;&emsp;&emsp;Austenitic Steel</span></td>
                 <td></span><input type="checkbox" class="form-control" list="AusteniticSteel" name="AusteniticSteel"/>
 
                 </td>
@@ -601,11 +612,11 @@
                 <td><span style="color:red;font-size: 16px">Nickel-based Alloy</span></td>
                 <td><input type="checkbox" class="form-control" list="NickelAlloy" name="NickelAlloy"/>
                 </td>
-            </tr>
-            <tr>
-                <td><span style="color: red;font-size: 16px">Chromium &ge;12%</span></td>
+                <td>&emsp;&emsp;&ensp;</td>
+                <td><span style="color: red;font-size: 16px">&emsp;&emsp;&emsp;Chromium &ge;12%</span></td>
                 <td><input type="checkbox" class="form-control" list="Chromium" name="Chromium"/></td>
             </tr>
+
         </table>
              <br>
         <table>
@@ -628,6 +639,8 @@
                                 <option>Sub Critical PWHT</option>
                 </select></td>
             </tr>
+
+
             <tr>
                 <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px">Material Grade to Evaluate</br>Severity of PTA</span></td>
                 <td><input type="checkbox" class="form-control" name="MGTEPTA"/> </td>
@@ -665,12 +678,13 @@
                     <tr>
                         <td><span style="font-size: 16px">Internal Coating</span></td>
                         <td><input type="checkbox" class="form-control" list="InternalCoating" name="InternalCoating">
+                    </tr>
+                    <tr>
                         <td><span style="color:red;font-size: 16px">External Coating</span></td>
                         <td><input type="checkbox" class="form-control" list="ExternalCoating" name="ExternalCoating">
                         </td>
                     </tr>
-                </table>
-                <table >
+
                     <tr>
 
                                 <td><span style="font-size: 16px">External Coating Installation Date</span></td>
@@ -748,13 +762,13 @@
                 <table>
                <tr>
                     <td><span style="color: #ff0000;font-size: 16px"> External Insulation</span></td>
-                    <td><input  type="checkbox" class="form-control" list="ExternalInsulation" name="ExternalInsulation"/>
-
+                   <td><input  type="checkbox" class="form-control" list="ExternalInsulation" name="ExternalInsulation"/></td>
+               </tr>
+               <tr>
                     <td><span style="font-size: 16px">Insulation Contains Chlorides&emsp;&ensp;</span></td>
                     <td><input type="checkbox" class="form-control" list="ICC" name="ICC"/></td>
                </tr>
-                </table>
-                <table>
+
                <tr>
                     <td><span style="font-size: 16px">External Insulation Type</span></td>
                       <td><select class="form-control" list="EIT" name="ExternalInsulationType" >
@@ -786,6 +800,7 @@
                 <table>
                     <tr>
                         <td><span style="font-size: 16px;">Fluid</span></td>
+                        <td>&emsp;&ensp;&nbsp;</td>
                         <td><select list="Fluid" class="form-control" name="Fluid" >
                             <option>Gasoline</option>
                             <option>Light Diesel Oil</option>
@@ -796,6 +811,7 @@
                             <option>Heavy Crude Oil</option>
                         </select>
                         </td>
+
                     </tr>
                 </table>
                 <table>
@@ -890,9 +906,9 @@
             <tr>
                 <td><span style="color: red;font-size:16px"> Environment Contains H2S</span></td>
                 <td><input type="checkbox" class="form-control"  list="EnvironmentCH2S" name="EnvironmentCH2S"/>
-
                 </td>
-                <td><span style="color: red;font-size:16px"> Aqueous Phase During Shut Down</span></td>
+
+                <td><span style="color: red;font-size:16px"> &emsp;&emsp;&emsp;Aqueous Phase During Shut Down</span></td>
                 <td><input type="checkbox" class="form-control"  list="APDSD" name="APDSD"/>
 
                 </td>
@@ -900,19 +916,19 @@
             <tr>
                 <td><span style="font-size: 16px">Presence of Cyanides</span></td>
                 <td><input type="checkbox" class="form-control" list="PresenceCyanides" name="PresenceCyanides"/></td>
-                <td><span style="color: red;font-size:16px"> Presence of Hydrofluoric Acid</span> </td>
+                <td><span style="color: red;font-size:16px">&emsp;&emsp;&emsp;Presence of Hydrofluoric Acid</span> </td>
                 <td><input type="checkbox" class="form-control" list="PHA" name="presenceHF"/></td>
             </tr>
             <tr>
                 <td><span style="color: red;font-size:16px"> Environment Contains Caustic</br> in Any Concentration</span></td>
                 <td><input type="checkbox" class="form-control" list="ECCAC" name="ECCAC"/></td>
-                <td><span style="color: red;font-size:16px"> Process Contains Hydrogen</span></td>
+                <td><span style="color: red;font-size:16px">&emsp;&emsp;&emsp;Process Contains Hydrogen</span></td>
                 <td><input type="checkbox" class="form-control" list="PCH" name="PCH"/></td>
             </tr>
             <tr>
                 <td><span style="color: red;font-size:16px"> Material is Exposed to Fluids, Mists, or</br> Solids Containing Chlorine Internally</span> </td>
                 <td><input type="checkbox" class="form-control"  list="MEFMSCC" name="MEFMSCC"/></td>
-                <td><span style="color: red;font-size:16px"> Exposed to Sulphur-Bearing </br>Compounds</span></td>
+                <td><span style="color: red;font-size:16px">&emsp;&emsp;&emsp;Exposed to Sulphur-Bearing </br>&emsp;&emsp;&emsp;Compounds</span></td>
                 <td><input type="checkbox" class="form-control" list="ESBC" name="ESBC"/></td>
             </tr>
 

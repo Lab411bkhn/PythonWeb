@@ -37,7 +37,7 @@ class MySQL_CAL:
             print("Error! get Release Phase from table 5.2");
         return data;
 
-    def GET_TBL_58( fluid):
+    def GET_TBL_58(fluid):
         data = np.zeros(16);
         Cursor = conn.cursor();
         try:
@@ -64,7 +64,7 @@ class MySQL_CAL:
             print("Error! execute data from table 5.8 error!");
         return data;
 
-    def GET_TBL_59( fluid):
+    def GET_TBL_59(fluid):
         Cursor = conn.cursor();
         data = np.zeros(16);
         try:
@@ -91,7 +91,7 @@ class MySQL_CAL:
             print("Error! Execute data Table 5.9 Fail");
         return data;
 
-    def GET_TBL_213( thickness):
+    def GET_TBL_213(thickness):
         Cursor = conn.cursor();
         data = np.zeros(4);
         try:
@@ -124,7 +124,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 204 Fail");
         return data;
 
-    def GET_TBL_214( DeltaT, size):
+    def GET_TBL_214(DeltaT, size):
         Cursor = conn.cursor();
         data = 0.0;
         try:
@@ -136,7 +136,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 214 Fail");
         return data;
 
-    def GET_TBL_215( DeltaT, size):
+    def GET_TBL_215(DeltaT, size):
         Cursor = conn.cursor();
         data = 0;
         try:
@@ -163,7 +163,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 511 Fail");
         return data[0];
 
-    def GET_TBL_512( ART, Effective):
+    def GET_TBL_512(ART, Effective):
         data = 0;
         Cursor = conn.cursor();
         try:
@@ -175,7 +175,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 512 fail!");
         return data;
 
-    def GET_TBL_64( YEAR, Suscep):
+    def GET_TBL_64(YEAR, Suscep):
         data = 0;
         Cursor = conn.cursor();
         try:
@@ -187,7 +187,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 64 fail!");
         return data;
 
-    def GET_TBL_65( YEAR, Suscep):
+    def GET_TBL_65(YEAR, Suscep):
         data = 0;
         Cursor = conn.cursor();
         try:
@@ -199,7 +199,7 @@ class MySQL_CAL:
             print("Error! Execute sql from table 65 fail");
         return data;
 
-    def GET_TBL_74( SVI, field):
+    def GET_TBL_74(SVI, field):
         data = 0;
         Cursor = conn.cursor();
         try:
@@ -275,4 +275,41 @@ class MySQL_CAL:
             print("Error! Excute sql table INSPECTION HISTORY fail")
         return date
 
-    def GET_MAX_INSP(ComponentNumber, ):
+    def GET_MAX_INSP(ComponentNumber, DamageName):
+        Cursor = conn.cursor()
+        try:
+            sql = "SELECT MIN(InspectionEffective) FROM `rw_inspection_history` WHERE `ComponentNumber` = '"+str(ComponentNumber)+"' AND `DM` = '"+str(DamageName)+"'"
+            Cursor.execute(sql)
+            data = Cursor.fetchone()
+            if data[0] is None:
+                eff = "E"
+            else:
+                eff = str(data[0])
+        except pymysql.InternalError as Error:
+            print("Error! Excute sql table INSPECTION HISTORY fail")
+        return eff
+
+    def GET_NUMBER_INSP(ComponentNumber, DamageName):
+        Cursor = conn.cursor()
+        try:
+            sql = "SELECT COUNT(InspectionEffective) FROM `rw_inspection_history` WHERE `ComponentNumber` = '"+str(ComponentNumber)+"' AND `DM` = '"+str(DamageName)+"'"
+            Cursor.execute(sql)
+            data = Cursor.fetchone()
+        except pymysql.InternalError as Error:
+            print("Error! Excute sql table INSPECTION HISTORY fail")
+        return data[0]
+
+    def GET_AGE_INSP(ComponentNumber, DamageName, CommissionDate, AssessmentDate):
+        Cursor = conn.cursor()
+        try:
+            sql = "SELECT MAX(InspectionDate) FROM `rw_inspection_history` WHERE `ComponentNumber` = '" + str(
+                ComponentNumber) + "' AND `DM` = '" + str(DamageName) + "'"
+            Cursor.execute(sql)
+            data = Cursor.fetchone()
+            if data[0] is None:
+                date = CommissionDate
+            else:
+                date = data[0]
+        except:
+            print("Error!")
+        return (AssessmentDate.date() - date.date()).days/365

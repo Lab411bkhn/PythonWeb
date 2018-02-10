@@ -1,6 +1,7 @@
 import time;
 import math;
 from datetime import datetime;
+import  numpy as np
 from dateutil.relativedelta import relativedelta;
 from pathlib import _Selector
 from rbi import MYSQL_CAL as DAL_CAL;
@@ -8,7 +9,7 @@ from rbi import MYSQL_CAL as DAL_CAL;
 
 class DM_CAL:
     # ham khoi tao
-    def __init__(self, APIComponentType="",
+    def __init__(self,ComponentNumber = "",Commissiondate = datetime.now(), AssessmentDate = datetime.now(), APIComponentType="",
                  Diametter=0, NomalThick=0, CurrentThick=0, MinThickReq=0, CorrosionRate=0, CA=0,
                  ProtectedBarrier=False, CladdingCorrosionRate=0, InternalCladding=False, NoINSP_THINNING=0,
                  EFF_THIN="E", OnlineMonitoring="", HighlyEffectDeadleg=False, ContainsDeadlegs=False,
@@ -30,7 +31,7 @@ class DM_CAL:
                  HICSOHIC_INSP_EFF="E", HICSOHIC_INSP_NUM=0, HF_PRESENT=False,
                  EXTERNAL_INSP_NUM=0, EXTERNAL_INSP_EFF="E",
                  INTERFACE_SOIL_WATER=False, SUPPORT_COATING=False, INSULATION_TYPE="", CUI_INSP_NUM=0,
-                 CUI_INSP_EFF="E", CUI_INSP_DATE=datetime.now().date(), CUI_PERCENT_1=0, CUI_PERCENT_2=0,
+                 CUI_INSP_EFF="E", CUI_PERCENT_1=0, CUI_PERCENT_2=0,
                  CUI_PERCENT_3=0, CUI_PERCENT_4=0, CUI_PERCENT_5=0, CUI_PERCENT_6=0, CUI_PERCENT_7=0, CUI_PERCENT_8=0,
                  CUI_PERCENT_9=0, CUI_PERCENT_10=0,
                  EXTERN_CLSCC_INSP_NUM=0, EXTERN_CLSCC_INSP_EFF="E",
@@ -47,6 +48,9 @@ class DM_CAL:
                  EquipmentType="", PREVIOUS_FAIL="", AMOUNT_SHAKING="", TIME_SHAKING="", CYLIC_LOAD="",
                  CORRECT_ACTION="", NUM_PIPE="", PIPE_CONDITION="", JOINT_TYPE="", BRANCH_DIAMETER=""):
 
+        self.ComponentNumber = ComponentNumber
+        self.CommissionDate = Commissiondate
+        self.AssesmentDate = AssessmentDate
         self.APIComponentType = APIComponentType;
         # Thinning input
         self.Diametter = Diametter;
@@ -147,7 +151,6 @@ class DM_CAL:
         self.INSULATION_TYPE = INSULATION_TYPE;
         self.CUI_INSP_NUM = CUI_INSP_NUM;
         self.CUI_INSP_EFF = CUI_INSP_EFF;
-        self.CUI_INSP_DATE = CUI_INSP_DATE;
         self.CUI_PERCENT_1 = CUI_PERCENT_1;
         self.CUI_PERCENT_2 = CUI_PERCENT_2;
         self.CUI_PERCENT_3 = CUI_PERCENT_3;
@@ -231,6 +234,15 @@ class DM_CAL:
         else:
             return "5";
 
+    # DF LIST
+    DM_Name = ["Internal Thinning", "Internal Lining Degradation", "Caustic Stress Corrosion Cracking",
+               "Amine Stress Corrosion Cracking", "Sulphide Stress Corrosion Cracking (H2S)", "HIC/SOHIC-H2S",
+               "Carbonate Stress Corrosion Cracking", "Polythionic Acid Stress Corrosion Cracking",
+               "Chloride Stress Corrosion Cracking", "Hydrogen Stress Cracking (HF)", "HF Produced HIC/SOHIC",
+               "External Corrosion", "Corrosion Under Insulation", "External Chloride Stress Corrosion Cracking",
+               "Chloride Stress Corrosion Cracking Under Insulation", "High Temperature Hydrogen Attack",
+               "Brittle Fracture", "Temper Embrittlement", "885F Embrittlement", "Sigma Phase Embrittlement",
+               "Vibration-Induced Mechanical Fatigue"];
     # calculate Thinning Damage Factor
     def getTmin(self):
         if self.APIComponentType == "TANKBOTTOM":
@@ -339,8 +351,11 @@ class DM_CAL:
                 return data[19];
 
     def DFB_THIN(self, age):
-        if (self.EFF_THIN == "" or self.NoINSP_THINNING == 0):
-            self.EFF_THIN = "E";
+        self.EFF_THIN = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[0])
+        self.NoINSP_THINNING = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber,self.DM_Name[0])
+
+        # if (self.EFF_THIN == "" or self.NoINSP_THINNING == 0):
+        #     self.EFF_THIN = "E";
 
         if (self.APIComponentType == "TANKBOTTOM"):
             if (self.NomalThick == 0 or self.CurrentThick == 0):
@@ -354,12 +369,9 @@ class DM_CAL:
                 return DAL_CAL.MySQL_CAL.GET_TBL_511(self.API_ART(self.Art(age)), self.NoINSP_THINNING, self.EFF_THIN);
 
     def DF_THIN(self, age):
-        Fip = 1;
-        Fdl = 1;
         Fwd = 1;
         Fam = 1;
         Fsm = 1;
-        Fom = 1;
         if (self.HighlyEffectDeadleg):
             Fip = 3;
         else:
@@ -410,7 +422,6 @@ class DM_CAL:
 
     # Calculate Linning:
     def DFB_LINNING(self, age):
-        SUSCEP_LINNING = "MoreThan6Years";
         if (self.LinningType == "Organic"):
             if (age <= 3):
                 SUSCEP_LINNING = "WithinLast3Years";
@@ -418,6 +429,7 @@ class DM_CAL:
                 SUSCEP_LINNING = "WithinLast6Years";
             else:
                 SUSCEP_LINNING = "MoreThan6Years";
+            self.YEAR_IN_SERVICE = int(self.GET_AGE()[1])
             return DAL_CAL.MySQL_CAL.GET_TBL_65(self.YEAR_IN_SERVICE, SUSCEP_LINNING);
         else:
             return DAL_CAL.MySQL_CAL.GET_TBL_64(int(round(age)), self.LinningType);
@@ -442,7 +454,6 @@ class DM_CAL:
 
     # Calculate Caustic:
     def plotinArea(self):
-        k = 'B';
         if (self.MAX_OP_TEMP < 75):
             k = 'A';
         else:
@@ -450,7 +461,6 @@ class DM_CAL:
         return k;
 
     def getSusceptibility_Caustic(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             sus = "High";
         elif (self.HEAT_TREATMENT == "Stress Relieved"):
@@ -478,7 +488,6 @@ class DM_CAL:
         return sus;
 
     def SVI_CAUSTIC(self):
-        sev = 1;
         if (self.getSusceptibility_Caustic() == "High"):
             sev = 5000;
         elif (self.getSusceptibility_Caustic() == "Medium"):
@@ -491,7 +500,8 @@ class DM_CAL:
 
     def DF_CAUSTIC(self, age):
         if (self.CARBON_ALLOY):
-            FIELD = "E";
+            self.CAUSTIC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[2])
+            self.CACBONATE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[2])
             if (self.CAUSTIC_INSP_EFF == "E" or self.CAUSTIC_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -503,7 +513,6 @@ class DM_CAL:
 
     # Calculate SCC AMINE:
     def getSusceptibility_Amine(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             sus = "High";
         elif (self.HEAT_TREATMENT == "Stress Relieved"):
@@ -544,7 +553,8 @@ class DM_CAL:
 
     def DF_AMINE(self, age):
         if (self.CARBON_ALLOY):
-            FIELD = "E";
+            self.AMINE_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[3])
+            self.AMINE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[3])
             if (self.AMINE_INSP_EFF == "E" or self.AMINE_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -556,7 +566,6 @@ class DM_CAL:
 
     # Calculate Sulphide Stress Cracking
     def GET_ENVIRONMENTAL_SEVERITY(self):
-        env = "Low";
         if (self.PH < 5.5):
             if (self.H2SContent < 50):
                 env = "Low";
@@ -593,7 +602,6 @@ class DM_CAL:
         return env;
 
     def GET_SUSCEPTIBILITY_SULPHIDE(self):
-        sus = "None";
         env = self.GET_ENVIRONMENTAL_SEVERITY();
         if (self.CRACK_PRESENT):
             sus = "High";
@@ -637,7 +645,8 @@ class DM_CAL:
 
     def DF_SULPHIDE(self, age):
         if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and self.ENVIRONMENT_H2S_CONTENT):
-            FIELD = "E";
+            self.SULPHIDE_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[4])
+            self.SULPHIDE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber,self.DM_Name[4])
             if (self.SULPHIDE_INSP_EFF == "E" or self.SULPHIDE_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -649,7 +658,6 @@ class DM_CAL:
 
     # Calculate HIC/SOHIC-H2S
     def GET_ENVIROMENTAL_HICSOHIC_H2S(self):
-        env = "None";
         if (self.PH < 5.5):
             if (self.H2SContent < 50):
                 env = "Low";
@@ -686,7 +694,6 @@ class DM_CAL:
         return env;
 
     def GET_SUSCEPTIBILITY_HICSOHIC_H2S(self):
-        sus = "None";
         env = self.GET_ENVIROMENTAL_HICSOHIC_H2S();
         if (self.CRACK_PRESENT):
             sus = "High";
@@ -740,7 +747,8 @@ class DM_CAL:
 
     def DF_HICSOHIC_H2S(self, age):
         if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and self.ENVIRONMENT_H2S_CONTENT):
-            FIELD = "E";
+            self.SULFUR_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[5])
+            self.SULFUR_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[5])
             if (self.SULFUR_INSP_EFF == "E" or self.SULFUR_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -752,7 +760,6 @@ class DM_CAL:
 
     # Calculate Cacbonate Cracking
     def GET_SUSCEPTIBILITY_CARBONATE(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             sus = "High";
         else:
@@ -789,7 +796,8 @@ class DM_CAL:
 
     def DF_CACBONATE(self, age):
         if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and self.PH >= 7.5):
-            FIELD = "E";
+            self.CACBONATE_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[6])
+            self.CACBONATE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[6])
             if (self.CACBONATE_INSP_EFF == "E" or self.CACBONATE_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -801,7 +809,6 @@ class DM_CAL:
 
     # Calculate PTA Cracking
     def GET_SUSCEPTIBILITY_PTA(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             sus = "High";
             return sus;
@@ -889,7 +896,8 @@ class DM_CAL:
 
     def DF_PTA(self, age):
         if (self.PTA_SUSCEP or ((self.CARBON_ALLOY or self.NICKEL_ALLOY) and self.EXPOSED_SULFUR)):
-            FIELD = "E";
+            self.PTA_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[7])
+            self.PTA_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[7])
             if (self.PTA_INSP_EFF == "E" or self.PTA_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -901,7 +909,6 @@ class DM_CAL:
 
     # Calculate CLSCC
     def GET_SUSCEPTIBILITY_CLSCC(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             sus = "High";
             return sus;
@@ -944,7 +951,8 @@ class DM_CAL:
 
     def DF_CLSCC(self, age):
         if (self.INTERNAL_EXPOSED_FLUID_MIST and self.AUSTENITIC_STEEL and self.MAX_OP_TEMP > 38):
-            FIELD = "E";
+            self.CLSCC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[8])
+            self.CLSCC_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[8])
             if (self.CLSCC_INSP_EFF == "E" or self.CLSCC_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -956,7 +964,6 @@ class DM_CAL:
 
     # Calculate HSC-HF
     def GET_SUSCEPTIBILITY_HSCHF(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             sus = "High";
             return sus;
@@ -989,7 +996,8 @@ class DM_CAL:
 
     def DF_HSCHF(self, age):
         if (self.CARBON_ALLOY and self.HF_PRESENT):
-            FIELD = "E";
+            self.HSC_HF_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[9])
+            self.HSC_HF_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[9])
             if (self.HSC_HF_INSP_EFF == "E" or self.HSC_HF_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -1001,7 +1009,6 @@ class DM_CAL:
 
     # Calculate HICSOHIC-HF
     def GET_SUSCEPTIBILITY_HICSOHIC_HF(self):
-        sus = "None";
         if (self.CRACK_PRESENT):
             return "High";
         if (not self.HF_PRESENT or not self.CARBON_ALLOY):
@@ -1030,290 +1037,8 @@ class DM_CAL:
 
     def DF_HIC_SOHIC_HF(self, age):
         if (self.CARBON_ALLOY and self.HF_PRESENT):
-            FIELD = "E";
-            if (self.HICSOHIC_INSP_EFF == "E" or self.HICSOHIC_INSP_NUM == 0):
-                FIELD = "E";
-            else:
-                FIELD = str(self.HICSOHIC_INSP_NUM) + self.HICSOHIC_INSP_EFF;
-            DFB_HICSOHIC_HF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HICSOHIC_HF(), FIELD);
-            return DFB_HICSOHIC_HF[0] * pow(age, 1.1);
-        else:
-            return 0;
-
-    # Calculate Cacbonate Cracking:
-    def GET_SUSCEPTIBILITY_CARBONATE(self):
-        sus = "None";
-        if (self.CRACK_PRESENT):
-            sus = "High";
-        else:
-            if (self.CO3_CONTENT < 100):
-                sus = "Low";
-            elif (self.CO3_CONTENT <= 500):
-                if (self.PH >= 9.0):
-                    sus = "Medium";
-                else:
-                    sus = "Low";
-            elif (self.CO3_CONTENT <= 1000):
-                if (self.PH >= 9.0):
-                    sus = "High";
-                elif (self.PH > 8.3):
-                    sus = "Medium";
-                else:
-                    sus = "Low";
-            else:
-                if (self.PH >= 7.6 and self.PH <= 8.3):
-                    sus = "Medium";
-                else:
-                    sus = "High";
-        return sus;
-
-    def SVI_CARBONATE(self):
-        if (self.GET_SUSCEPTIBILITY_CARBONATE() == "High"):
-            return 1000;
-        elif (self.GET_SUSCEPTIBILITY_CARBONATE() == "Medium"):
-            return 100;
-        elif (self.GET_SUSCEPTIBILITY_CARBONATE() == "Low"):
-            return 10;
-        else:
-            return 1;
-
-    def DF_CACBONATE(self, age):
-        if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and (self.PH >= 7.5)):
-            FIELD = "E";
-            if (self.CACBONATE_INSP_EFF == "E" or self.CACBONATE_INSP_NUM == 0):
-                FIELD = "E";
-            else:
-                FIELD = str(self.CACBONATE_INSP_NUM) + self.CACBONATE_INSP_EFF;
-            DFB_CACBONATE = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CARBONATE(), FIELD);
-            return DFB_CACBONATE[0] * pow(age, 1.1);
-        else:
-            return 0;
-
-    # Calculate PTA Cracking:
-    def GET_SUSCEPTIBILITY_PTA(self):
-        sus = "None";
-        if (self.CRACK_PRESENT):
-            sus = "High";
-            return sus;
-        if (not self.ExposedSH2OOperation and not self.ExposedSH2OShutdown):
-            sus = "None";
-        else:
-            if (self.MAX_OP_TEMP < 427):
-                if (self.ThermalHistory == "Solution Annealed"):
-                    if (
-                            self.PTAMaterial == "Regular 300 series Stainless Steels and Alloys 600 and 800" or self.PTAMaterial == "321 Stainless Steel"):
-                        sus = "Medium";
-                    elif (self.PTAMaterial == "H Grade 300 series Stainless Steels"):
-                        sus = "High";
-                    elif (
-                            self.PTAMaterial == "L Grade 300 series Stainless Steels" or self.PTAMaterial == "347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay"):
-                        sus = "Low";
-                    else:
-                        sus = "None";
-                elif (self.ThermalHistory == "Stabilised Before Welding"):
-                    if (self.PTAMaterial == "321 Stainless Steel"):
-                        sus = "Medium";
-                    elif (self.PTAMaterial == "347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay"):
-                        sus = "Low";
-                    else:
-                        sus = "None";
-                elif (self.ThermalHistory == "Stabilised After Welding"):
-                    if (
-                            self.PTAMaterial == "321 Stainless Steel" or self.PTAMaterial == "347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay"):
-                        sus = "Low";
-                    else:
-                        sus = "None";
-                else:
-                    sus = "None";
-            else:
-                if (self.ThermalHistory == "Solution Annealed"):
-                    if (
-                                self.PTAMaterial == "Regular 300 series Stainless Steels and Alloys 600 and 800" or self.PTAMaterial == "H Grade 300 series Stainless Steels" or self.PTAMaterial == "321 Stainless Steel"):
-                        sus = "High";
-                    elif (
-                            self.PTAMaterial == "L Grade 300 series Stainless Steels" or self.PTAMaterial == "347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay"):
-                        sus = "Medium";
-                    else:
-                        sus = "None";
-                elif (self.ThermalHistory == "Stabilised Before Welding"):
-                    if (self.PTAMaterial == "321 Stainless Steel"):
-                        sus = "High";
-                    elif (self.PTAMaterial == "347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay"):
-                        sus = "Low";
-                    else:
-                        sus = "None";
-                elif (self.ThermalHistory == "Stabilised After Welding"):
-                    if (
-                            self.PTAMaterial == "321 Stainless Steel" or self.PTAMaterial == "347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay"):
-                        sus = "Low";
-                    else:
-                        sus = "None";
-                else:
-                    sus = "None";
-
-        if (self.DOWNTIME_PROTECTED):
-            if (sus == "High"):
-                sus = "Medium";
-            elif (sus == "Medium"):
-                sus = "Low";
-            else:
-                sus = "None";
-
-        return sus;
-
-    def SVI_PTA(self):
-        if (self.GET_SUSCEPTIBILITY_PTA() == "High"):
-            return 5000;
-        elif (self.GET_SUSCEPTIBILITY_PTA() == "Medium"):
-            return 500;
-        elif (self.GET_SUSCEPTIBILITY_PTA() == "Low"):
-            return 50;
-        else:
-            return 1;
-
-    def DF_PTA(self, age):
-        if (self.PTA_SUSCEP or ((self.AUSTENITIC_STEEL or self.NICKEL_ALLOY) and self.EXPOSED_SULFUR)):
-            FIELD = "E";
-            if (self.PTA_INSP_EFF == "E" or self.PTA_INSP_NUM == 0):
-                FIELD = "E";
-            else:
-                FIELD = str(self.PTA_INSP_NUM) + self.PTA_INSP_EFF;
-            DFB_PTA = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_PTA(), FIELD);
-            return DFB_PTA[0] * pow(age, 1.1);
-        else:
-            return 0;
-
-    # Calculate CLSCC
-    def GET_SUSCEPTIBILITY_CLSCC(self):
-        sus = "None";
-        if (self.CRACK_PRESENT):
-            sus = "High";
-            return sus;
-        if (self.PH > 10):
-            if (self.MAX_OP_TEMP >= 93 and self.MAX_OP_TEMP <= 149 and self.CHLORIDE_ION_CONTENT > 1000):
-                sus = "Medium";
-            else:
-                sus = "Low";
-        else:
-            if (self.MAX_OP_TEMP <= 66 and self.MAX_OP_TEMP > 38):
-                if (self.CHLORIDE_ION_CONTENT <= 10):
-                    sus = "Low";
-                elif (self.CHLORIDE_ION_CONTENT <= 1000):
-                    sus = "Medium";
-                else:
-                    sus = "High";
-            elif (self.MAX_OP_TEMP <= 93 and self.MAX_OP_TEMP > 66):
-                if (self.CHLORIDE_ION_CONTENT <= 100):
-                    sus = "Medium";
-                else:
-                    sus = "High";
-            elif (self.MAX_OP_TEMP > 93 and self.MAX_OP_TEMP <= 149):
-                if (self.CHLORIDE_ION_CONTENT < 10):
-                    sus = "Medium";
-                else:
-                    sus = "High";
-            else:
-                sus = "None";
-        return sus;
-
-    def SVI_CLSCC(self):
-        if (self.GET_SUSCEPTIBILITY_CLSCC() == "High"):
-            return 5000;
-        elif (self.GET_SUSCEPTIBILITY_CLSCC() == "Medium"):
-            return 500;
-        elif (self.GET_SUSCEPTIBILITY_CLSCC() == "Low"):
-            return 50;
-        else:
-            return 1;
-
-    def DF_CLSCC(self, age):
-        if (self.INTERNAL_EXPOSED_FLUID_MIST and self.AUSTENITIC_STEEL and self.MAX_OP_TEMP > 38):
-            FIELD = "E";
-            if (self.CLSCC_INSP_EFF == "E" or self.CLSCC_INSP_NUM == 0):
-                FIELD = "E";
-            else:
-                FILED = str(self.CLSCC_INSP_NUM) + self.CLSCC_INSP_EFF;
-            DFB_CLSCC = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CLSCC(), FIELD);
-            return DFB_CLSCC[0] * pow(age, 1.1);
-        else:
-            return 0;
-
-    # Calculate HSC-HF
-    def GET_SUSCEPTIBILITY_HSCHF(self):
-        sus = "None";
-        if (self.CRACK_PRESENT):
-            sus = "High";
-            return sus;
-        if (not self.HF_PRESENT or not self.CARBON_ALLOY):
-            sus = "None";
-        else:
-            if (self.PWHT):
-                if (self.BRINNEL_HARDNESS == "Below 200"):
-                    sus = "None";
-                elif (self.BRINNEL_HARDNESS == "Between 200 and 237"):
-                    sus = "Low";
-                else:
-                    sus = "High";
-            else:
-                if (self.BRINNEL_HARDNESS == "Below 200"):
-                    sus = "Low";
-                elif (self.BRINNEL_HARDNESS == "Between 200 and 237"):
-                    sus = "Medium";
-                else:
-                    sus = "High";
-        return sus;
-
-    def SVI_HSCHF(self):
-        if (self.GET_SUSCEPTIBILITY_HSCHF() == "High"):
-            return 100;
-        elif (self.GET_SUSCEPTIBILITY_HSCHF() == "Medium"):
-            return 10;
-        else:
-            return 1;
-
-    def DF_HSCHF(self, age):
-        if (self.CARBON_ALLOY or self.HF_PRESENT):
-            if (self.HSC_HF_INSP_EFF == "E" or self.HSC_HF_INSP_NUM == 0):
-                FIELD = "E";
-            else:
-                FIELD = str(self.HSC_HF_INSP_NUM) + self.HSC_HF_INSP_EFF;
-            DFB_HSCHF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HSCHF(), FIELD);
-            return DFB_HSCHF[0] * pow(age, 1.1);
-        else:
-            return 0;
-
-    # Calculate HIC/SOHIC-HF
-    def GET_SUSCEPTIBILITY_HICSOHIC_HF(self):
-        sus = "None";
-        if (self.CRACK_PRESENT):
-            return "High";
-        if (not self.HF_PRESENT or not self.CARBON_ALLOY):
-            return "None";
-        if (self.PWHT):
-            if (self.SULFUR_CONTENT == "High > 0.01%"):
-                sus = "High";
-            elif (self.SULFUR_CONTENT == "Low 0.002 - 0.01%"):
-                sus = "Medium";
-            else:
-                sus = "Low";
-        else:
-            if (self.SULFUR_CONTENT == "High > 0.01%" or self.SULFUR_CONTENT == "Low 0.002 - 0.01%"):
-                sus = "High";
-            else:
-                sus = "Low";
-        return sus;
-
-    def SVI_HICSOHIC_HF(self):
-        if (self.GET_SUSCEPTIBILITY_HICSOHIC_HF() == "High"):
-            return 100;
-        elif (self.GET_SUSCEPTIBILITY_HICSOHIC_HF() == "Medium"):
-            return 10;
-        else:
-            return 1;
-
-    def DF_HIC_SOHIC_HF(self, age):
-        if (self.CARBON_ALLOY and self.HF_PRESENT):
-            FIELD = "E";
+            self.HICSOHIC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[10])
+            self.HICSOHIC_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[10])
             if (self.HICSOHIC_INSP_EFF == "E" or self.HICSOHIC_INSP_NUM == 0):
                 FIELD = "E";
             else:
@@ -1325,11 +1050,10 @@ class DM_CAL:
 
     # Calculate EXTERNAL CORROSION
     def AGE_CLSCC(self):
-        AGE_COAT = datetime.now().date();
         if (self.EXTERN_COAT_QUALITY == "High coating quality"):
-            AGE_COAT = self.COMPONENT_INSTALL_DATE + relativedelta(years=15);  # Age + 15
+            AGE_COAT = self.COMPONENT_INSTALL_DATE + relativedelta(years=+15);  # Age + 15
         elif (self.EXTERN_COAT_QUALITY == "Medium coating quality"):
-            AGE_COAT = self.COMPONENT_INSTALL_DATE + relativedelta(years=5);  # Age + 5
+            AGE_COAT = self.COMPONENT_INSTALL_DATE + relativedelta(years=+5);  # Age + 5
         else:
             AGE_COAT = self.COMPONENT_INSTALL_DATE;
         TICK_SPAN = abs((datetime.now().date() - AGE_COAT).days);
@@ -1346,7 +1070,6 @@ class DM_CAL:
 
     def API_EXTERNAL_CORROSION_RATE(self):
         EXTERNAL_TEMP = self.API_EXTERNAL_CORROSION_TEMP();
-        CR_EXTERN = 0;
         if (self.EXTERNAL_EVIRONMENT == "Arid/dry"):
             if (EXTERNAL_TEMP == -12 or EXTERNAL_TEMP == -8 or EXTERNAL_TEMP == 107 or EXTERNAL_TEMP == 121):
                 CR_EXTERN = 0;
@@ -1378,8 +1101,6 @@ class DM_CAL:
         return CR_EXTERN;
 
     def API_ART_EXTERNAL(self, age):
-        FPS = 1;
-        FIP = 1;
         if (self.SUPPORT_COATING):
             FPS = 2;
         else:
@@ -1395,6 +1116,8 @@ class DM_CAL:
     def DF_EXTERNAL_CORROSION(self, age):
         if (self.EXTERNAL_EXPOSED_FLUID_MIST or (
             self.CARBON_ALLOY and not (self.MAX_OP_TEMP < -23 or self.MIN_OP_TEMP > 121))):
+            self.EXTERNAL_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[11])
+            self.EXTERNAL_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
             if (self.EXTERNAL_INSP_EFF == "" or self.EXTERNAL_INSP_NUM == 0):
                 self.EXTERNAL_INSP_EFF = "E";
             if (self.APIComponentType == "TANKBOTTOM"):
@@ -1420,7 +1143,6 @@ class DM_CAL:
 
     def API_CORROSION_RATE(self):
         CUI_TEMP = self.API_CUI_TEMP();
-        CR_CUI = 0;
         if (self.EXTERNAL_EVIRONMENT == "Arid/dry"):
             if (CUI_TEMP == -12 or CUI_TEMP == -8 or CUI_TEMP == 135 or CUI_TEMP == 162 or CUI_TEMP == 176):
                 CR_CUI = 0;
@@ -1464,11 +1186,6 @@ class DM_CAL:
         return CR_CUI;
 
     def API_ART_CUI(self, age):
-        FIN = 1;
-        FCM = 1;
-        FIC = 1;
-        FPS = 1;
-        FIP = 1;
         if (
                         self.INSULATION_TYPE == "Asbestos" or self.INSULATION_TYPE == "Calcium Silicate" or self.INSULATION_TYPE == "Mineral Wool" or self.INSULATION_TYPE == "Fibreglass"):
             FIN = 1.25;
@@ -1506,6 +1223,8 @@ class DM_CAL:
         return self.API_ART(ART_CUI);
 
     def DF_CUI(self, age):
+        self.CUI_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[12])
+        self.CUI_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[12])
         if (self.CUI_INSP_EFF == "" or self.CUI_INSP_NUM == 0):
             self.CUI_INSP_EFF = "E";
         if (self.APIComponentType == "TANKBOTTOM"):
@@ -1521,7 +1240,6 @@ class DM_CAL:
 
     # cal EXTERNAL CLSCC
     def CLSCC_SUSCEP(self):
-        sus = "Not";
         if (self.CRACK_PRESENT):
             sus = "High";
         else:
@@ -1558,12 +1276,12 @@ class DM_CAL:
             SVI = 10;
         else:
             SVI = 1;
-
+        self.EXTERN_CLSCC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[13])
+        self.EXTERN_CLSCC_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[14])
         if (self.EXTERN_CLSCC_INSP_EFF == "E" or self.EXTERN_CLSCC_INSP_NUM == 0):
             FIELD = "E";
         else:
             FIELD = str(self.EXTERN_CLSCC_INSP_NUM) + self.EXTERN_CLSCC_INSP_EFF;
-
         return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD)[0];
 
     def DF_EXTERN_CLSCC(self):
@@ -1575,7 +1293,6 @@ class DM_CAL:
 
     # Calculate EXTERN CUI CLSCC
     def CUI_CLSCC_SUSCEP(self):
-        sus = "Not";
         if (self.CRACK_PRESENT):
             sus = "High";
         else:
@@ -1609,12 +1326,12 @@ class DM_CAL:
 
     def ADJUST_COMPLEXITY(self):
         SCP = self.CUI_CLSCC_SUSCEP();
-        if (self.SCP == "High"):
+        if (SCP == "High"):
             if (self.PIPING_COMPLEXITY == "Below average"):
                 SCP = "Medium";
             else:
                 SCP = "High";
-        elif (self.SCP == "Medium"):
+        elif (SCP == "Medium"):
             if (self.PIPING_COMPLEXITY == "Below average"):
                 SCP = "Low";
             elif (self.PIPING_COMPLEXITY == "Above average"):
@@ -1630,12 +1347,12 @@ class DM_CAL:
 
     def ADJUST_ISULATION(self):
         SCP = self.ADJUST_COMPLEXITY();
-        if (self.SCP == "High"):
+        if (SCP == "High"):
             if (self.INSULATION_CONDITION == "Above average"):
                 SCP = "Medium";
             else:
                 SCP = "High";
-        elif (self.SCP == "Medium"):
+        elif (SCP == "Medium"):
             if (self.INSULATION_CONDITION == "Above average"):
                 SCP = "Low";
             elif (self.INSULATION_CONDITION == "Below average"):
@@ -1663,15 +1380,16 @@ class DM_CAL:
         return SCP;
 
     def DFB_CUI_CLSCC(self):
-        FIELD = "E";
         SCP = self.ADJUST_CHLORIDE_INSULATION();
-        SVI = 1;
         if (SCP == "High"):
             SVI = 50;
         elif (SCP == "Medium"):
             SVI = 10;
         else:
             SVI = 1;
+        self.EXTERN_CLSCC_CUI_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[14])
+        self.EXTERN_CLSCC_CUI_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[14])
+
         if (self.EXTERN_CLSCC_CUI_INSP_EFF == "E" or self.EXTERN_CLSCC_CUI_INSP_NUM == 0):
             FIELD = "E";
         else:
@@ -1696,7 +1414,6 @@ class DM_CAL:
 
     def HTHA_SUSCEP(self, age):
         PV = self.HTHA_PV(age);
-        SUSCEP = "Not";
         if (self.HTHA_PRESSURE > 8.274):
             self.HTHA_MATERIAL = "1.25Cr-0.5Mo";
         if (self.HTHA_MATERIAL == "Carbon Steel"):
@@ -1759,6 +1476,11 @@ class DM_CAL:
 
     def API_DF_HTHA(self, age):
         API_HTHA = DAL_CAL.MySQL_CAL.GET_TBL_204(self.HTHA_SUSCEP(age));
+        self.HTHA_EFFECT = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[15])
+        self.HTHA_NUM_INSP = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[15])
+        if self.HTHA_NUM_INSP > 2:
+            self.HTHA_NUM_INSP = 2
+
         if (self.DAMAGE_FOUND):
             return 2000;
         else:
@@ -1897,7 +1619,6 @@ class DM_CAL:
 
     # Calculate SIGMA
     def API_TEMP_SIGMA(self):
-        TEMP = 0;
         DATA = [-46, -18, 10, 38, 66, 93, 204, 316, 427, 538, 649];
         if (self.MIN_OP_TEMP < (DATA[0] + DATA[1]) / 2):
             TEMP = DATA[0];
@@ -1926,7 +1647,6 @@ class DM_CAL:
     def DF_SIGMA(self):
         if (self.AUSTENITIC_STEEL and not (self.MIN_OP_TEMP > 927 or self.MAX_OP_TEMP < 593)):
             TEMP = self.API_TEMP_SIGMA();
-            DFB_SIGMA = 0;
             if (TEMP == 649):
                 if (self.PERCENT_SIGMA < 10):
                     DFB_SIGMA = 0;
@@ -2006,10 +1726,6 @@ class DM_CAL:
 
     # Calculate Pipping
     def DFB_PIPE(self):
-        DFB_PF = 1;
-        DFB_AS = 1;
-        FFB_AS = 1;
-        DFB_CF = 1;
         if (self.PREVIOUS_FAIL == "Greater than one"):
             DFB_PF = 500;
         elif (self.PREVIOUS_FAIL == "One"):
@@ -2053,11 +1769,6 @@ class DM_CAL:
 
     def DF_PIPE(self):
         if (self.checkPiping()):
-            FCA = 1;
-            FPC = 1;
-            FCP = 1;
-            FJB = 1;
-            FBD = 1;
             if (self.CORRECT_ACTION == "Engineering Analysis"):
                 FCA = 0.002;
             elif (self.CORRECT_ACTION == "Experience"):
@@ -2095,3 +1806,123 @@ class DM_CAL:
             return self.DFB_PIPE() * FCA * FPC * FCP * FJB * FBD;
         else:
             return 0;
+
+
+    ##################################################################################
+
+    def GET_AGE(self):
+        age = np.zeros(14)
+        for a in range(0,14):
+            age[a] = DAL_CAL.MySQL_CAL.GET_AGE_INSP(self.ComponentNumber,self.DM_Name[a],self.CommissionDate, self.AssesmentDate)
+        return age
+
+    def DF_THINNING_API(self, i):
+        return self.DF_THIN(self.GET_AGE()[0] + i)
+
+    def DF_LINNING_API(self, i):
+        return self.DF_LINNING(self.GET_AGE()[1] + i)
+
+    def DF_CAUTISC_API(self, i):
+        return self.DF_CAUSTIC(self.GET_AGE()[2] + i)
+
+    def DF_AMINE_API(self, i):
+        return self.DF_AMINE(self.GET_AGE()[3] + i)
+
+    def DF_SULPHIDE_API(self, i):
+        return self.DF_SULPHIDE(self.GET_AGE()[4] + i)
+
+    def DF_HICSOHIC_H2S_API(self, i):
+        return self.DF_HICSOHIC_H2S(self.GET_AGE()[5] + i)
+
+    def DF_CACBONATE_API(self,i):
+        return self.DF_CACBONATE(self.GET_AGE()[6] + i)
+
+    def DF_PTA_API(self,i):
+        return self.DF_PTA(self.GET_AGE()[7] + i)
+
+    def DF_CLSCC_API(self,i):
+        return self.DF_CLSCC(self.GET_AGE()[8] + i)
+
+    def DF_HSCHF_API(self, i):
+        return self.DF_HSCHF(self.GET_AGE()[9] + i)
+
+    def DF_HIC_SOHIC_HF_API(self, i):
+        return self.DF_HIC_SOHIC_HF(self.GET_AGE()[10] + i)
+
+    def DF_EXTERNAL_CORROSION_API(self, i):
+        return self.DF_EXTERNAL_CORROSION(self.GET_AGE()[11] + i)
+
+    def DF_CUI_API(self, i):
+        return self.DF_CUI(self.GET_AGE()[12] + i)
+
+    def DF_EXTERN_CLSCC_API(self):
+        return self.DF_EXTERN_CLSCC()
+
+    def DF_CUI_CLSCC_API(self):
+        return self.DF_CUI_CLSCC()
+
+    def DF_HTHA_API(self, i):
+        return self.DF_HTHA(self.GET_AGE()[13] + i)
+
+    def DF_BRITTLE_API(self):
+        return  self.DF_BRITTLE()
+
+    def DF_TEMP_EMBRITTLE_API(self):
+        return self.DF_TEMP_EMBRITTLE()
+
+    def DF_885_API(self):
+        return self.DF_885()
+
+    def DF_SIGMA_API(self):
+        return self.DF_SIGMA()
+
+    def DF_PIPE_API(self):
+        return self.DF_PIPE()
+
+    # TOTAL ---------------------
+    def DF_SSC_TOTAL_API(self, i):
+        DF_SCC = max(self.DF_CAUTISC_API(i), self.DF_AMINE_API(i), self.DF_SULPHIDE_API(i), self.DF_HIC_SOHIC_HF_API(i), self.DF_HICSOHIC_H2S_API(i),
+                     self.DF_CACBONATE_API(i), self.DF_PTA_API(i), self.DF_CLSCC_API(i), self.DF_HSCHF(i))
+        return DF_SCC
+
+    def DF_EXT_TOTAL_API(self, i):
+        DF_EXT = max(self.DF_EXTERNAL_CORROSION_API(i), self.DF_CUI_API(i),self.DF_EXTERN_CLSCC_API(), self.DF_CUI_CLSCC_API())
+        return DF_EXT
+
+    def DF_BRIT_TOTAL_API(self):
+        DF_BRIT = max(self.DF_BRITTLE_API() + self.DF_TEMP_EMBRITTLE_API(), self.DF_SIGMA_API(), self.DF_885_API())
+        return DF_BRIT
+
+    def DF_THINNING_TOTAL_API(self, i):
+        if self.INTERNAL_LINNING and (self.DF_LINNING_API(i) != 0):
+            DF_THINNING_TOTAL = min(self.DF_THINNING_API(i), self.DF_LINNING_API(i))
+        else:
+            DF_THINNING_TOTAL = self.DF_THINNING_API(i)
+        return DF_THINNING_TOTAL
+
+    def DF_TOTAL_API(self,i):
+        TOTAL_DF_API = max(self.DF_THINNING_TOTAL_API(i),self.DF_EXT_TOTAL_API(i)) + self.DF_SSC_TOTAL_API(i) + self.DF_HTHA_API(i) + self.DF_BRIT_TOTAL_API() + self.DF_PIPE_API()
+        return TOTAL_DF_API
+
+    def INSP_DUE_DATE(self, PoF_Total, Risk_Target):
+        DF_TARGET = Risk_Target/PoF_Total
+        for a in range(1,16):
+            if self.DF_TOTAL_API(a) > DF_TARGET:
+                break
+        print(self.AssesmentDate + relativedelta(years= a))
+        return self.AssesmentDate + relativedelta(years= a)
+
+    def ISDF(self):
+         DM_ID = [8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10]
+         DM_VALUES =[self.DF_THINNING_API(0),self.DF_THINNING_API(3),self.DF_THINNING_API(6),
+                     self.DF_LINNING_API(0),self.DF_LINNING_API(3),self.DF_LINNING_API(6),
+                     self.DF_CAUTISC_API(0),self.DF_CAUTISC_API(3),self.DF_CAUTISC_API(6),
+                     self.DF_AMINE_API(0),self.DF_AMINE_API(3),self.DF_AMINE_API(6),
+                     self.DF_SULPHIDE_API(0),self.DF_SULPHIDE_API(3),self.DF_SULPHIDE_API(6),
+                     self.DF_HICSOHIC_H2S_API(0),self.DF_HICSOHIC_H2S_API(3),self.DF_HICSOHIC_H2S_API(6),
+                     self.DF_CACBONATE_API(0),self.DF_CACBONATE_API(3),self.DF_CACBONATE_API(6),
+                     self.DF_PTA_API(0),self.DF_PTA_API(3),self.DF_PTA_API(6),
+                     ]
+         data = {}
+    #     for a in range(0,61,3):
+    #         if

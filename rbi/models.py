@@ -926,3 +926,28 @@ class Tbl74SccDmPwht(models.Model):
         managed = False
         db_table = 'tbl_74_scc_dm_pwht'
         verbose_name = "Table 7.4 – SCC Damage Factors – All SCC Mechanism"
+
+class RwDamageMechanism(models.Model):
+    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)
+    dmitemid = models.ForeignKey(DmItems, on_delete=models.CASCADE, db_column='DMItemID', primary_key=True)
+    isactive = models.IntegerField(default=1, db_column='IsActive')
+    notes = models.TextField(db_column='Notes', null=True)
+    expectedtypeid = models.IntegerField(default=0, db_column='ExpectedTypeID')
+    isel = models.IntegerField(default=0, db_column='IsEL')
+    elvalue = models.IntegerField(default=0, db_column='ELValue')
+    isdf = models.IntegerField(default= 1, db_column='IsDF')
+    isuserdisabled = models.IntegerField(default=0, db_column='IsUserDisabled')
+    df1 = models.FloatField(db_column='DF1')
+    df2 = models.FloatField(db_column='DF2')
+    df3 = models.FloatField(db_column='DF3')
+    dfbase = models.FloatField(db_column='DFBase')
+    rli = models.FloatField(db_column='RLI', default=0)
+    highestinspectioneffectiveness = models.TextField(max_length=50, db_column='HighestInspectionEffectiveness')
+    secondinspectioneffectiveness = models.TextField(max_length=50, db_column='SecondInspectionEffectiveness', null=True)
+    numberofinspections = models.IntegerField(db_column='NumberOfInspections')
+    lastinspdate = models.DateTimeField(db_column='LastInspDate', blank=True)
+    inspduedate = models.DateTimeField(db_column='InspDueDate', blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'rw_damage_mechanism'

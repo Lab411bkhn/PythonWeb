@@ -5,7 +5,7 @@ from rbi.models import Sites
 from rbi.models import Facility,EquipmentMaster, ComponentMaster, EquipmentType, DesignCode, Manufacturer, ComponentType
 from rbi.models import FacilityRiskTarget
 from rbi.models import RwAssessment,RwEquipment,RwComponent,RwStream,RwExtcorTemperature, RwCoating, RwMaterial
-from rbi.models import RwInputCaLevel1, RwCaLevel1, RwFullPof, RwFullFcof, RwInputCaTank, RwCaTank
+from rbi.models import RwInputCaLevel1, RwCaLevel1, RwFullPof, RwFullFcof, RwInputCaTank, RwCaTank, RwDamageMechanism
 from django.http import Http404, HttpResponse
 from rbi.DM_CAL import DM_CAL
 from rbi.CA_CAL import CA_NORMAL, CA_SHELL, CA_TANK_BOTTOM
@@ -212,6 +212,7 @@ def newProposal(request, componentname):
         dataCom = ComponentMaster.objects.get(componentid= componentname)
         dataEq = EquipmentMaster.objects.get(equipmentid= dataCom.equipmentid_id)
         dataFaci = Facility.objects.get(facilityid= dataEq.facilityid_id)
+        dataFaciTarget = FacilityRiskTarget.objects.get(facilityid= dataEq.facilityid_id)
         api = ApiComponentType.objects.get(apicomponenttypeid= dataCom.apicomponenttypeid)
         commisiondate = dataEq.commissiondate.date().strftime('%Y-%m-%d')
         data ={}
@@ -610,37 +611,35 @@ def newProposal(request, componentname):
                                         production_cost= data['ProductionCost'], mass_inventory= data['MassInventory'], mass_component= data['MassComponent'],stored_pressure= float(data['minOP'])*6.895,stored_temp= data['minOT'])
             rwinputca.save()
 
-            dm_cal = DM_CAL(APIComponentType= str(data['apicomponenttypeid']),
+            dm_cal = DM_CAL(ComponentNumber= str(dataCom.componentnumber),Commissiondate= dataEq.commissiondate,
+                 AssessmentDate= datetime.strptime(str(rwassessment.assessmentdate), "%Y-%M-%d"),
+                 APIComponentType= str(data['apicomponenttypeid']),
                  Diametter= float(data['normaldiameter']), NomalThick=float(data['normalthick']), CurrentThick=float(data['currentthick']), MinThickReq=float(data['tmin']), CorrosionRate=float(data['currentrate']), CA=float(data['CA']),
-                 ProtectedBarrier= False, CladdingCorrosionRate= float(data['CladdingCorrosionRate']), InternalCladding=bool(InternalCladding), NoINSP_THINNING=1,
-                 EFF_THIN="B", OnlineMonitoring=data['OnlineMonitoring'], HighlyEffectDeadleg=bool(HighlyEffe), ContainsDeadlegs=bool(containsDeadlegs),
+                 ProtectedBarrier= False, CladdingCorrosionRate= float(data['CladdingCorrosionRate']), InternalCladding=bool(InternalCladding),
+                 OnlineMonitoring=data['OnlineMonitoring'], HighlyEffectDeadleg=bool(HighlyEffe), ContainsDeadlegs=bool(containsDeadlegs),
                  TankMaintain653=False, AdjustmentSettle="", ComponentIsWeld=False,
                  LinningType=data['InternalLinerType'], LINNER_ONLINE=bool(linerOnlineMoniter), LINNER_CONDITION=data['InternalLinerCondition'], YEAR_IN_SERVICE=0, INTERNAL_LINNING=bool(InternalLining),
-                 CAUSTIC_INSP_EFF="E", CAUSTIC_INSP_NUM=0, HEAT_TREATMENT=data['heatTreatment'], NaOHConcentration=float(data['NaOHConcentration']), HEAT_TRACE=bool(heatTrace),
+                 HEAT_TREATMENT=data['heatTreatment'], NaOHConcentration=float(data['NaOHConcentration']), HEAT_TRACE=bool(heatTrace),
                  STEAM_OUT=bool(steamOut),
-                 AMINE_INSP_EFF="E", AMINE_INSP_NUM=0, AMINE_EXPOSED=bool(exposureAcid), AMINE_SOLUTION=data['AminSolution'],
-                 ENVIRONMENT_H2S_CONTENT=bool(EnvironmentCH2S), AQUEOUS_OPERATOR=bool(aquaDuringOP), AQUEOUS_SHUTDOWN=bool(aquaDuringShutdown), SULPHIDE_INSP_EFF="E",
-                 SULPHIDE_INSP_NUM=0, H2SContent= float(data['H2SContent']), PH= float(data['PHWater']), PRESENT_CYANIDE=bool(presentCyanide), BRINNEL_HARDNESS= data['MaxBrinell'],
-                 SULFUR_INSP_EFF="E", SULFUR_INSP_NUM=0, SULFUR_CONTENT=data['sulfurContent'],
-                 CACBONATE_INSP_EFF="E", CACBONATE_INSP_NUM=0, CO3_CONTENT=float(data['CO3']),
-                 PTA_SUSCEP=bool(materialPTA), NICKEL_ALLOY=bool(nickelAlloy), EXPOSED_SULFUR=bool(exposedSulfur), PTA_INSP_EFF="E", PTA_INSP_NUM=0,
+                 AMINE_EXPOSED=bool(exposureAcid), AMINE_SOLUTION=data['AminSolution'],
+                 ENVIRONMENT_H2S_CONTENT=bool(EnvironmentCH2S), AQUEOUS_OPERATOR=bool(aquaDuringOP), AQUEOUS_SHUTDOWN=bool(aquaDuringShutdown),
+                 H2SContent= float(data['H2SContent']), PH= float(data['PHWater']), PRESENT_CYANIDE=bool(presentCyanide), BRINNEL_HARDNESS= data['MaxBrinell'],
+                 SULFUR_CONTENT=data['sulfurContent'],
+                 CO3_CONTENT=float(data['CO3']),
+                 PTA_SUSCEP=bool(materialPTA), NICKEL_ALLOY=bool(nickelAlloy), EXPOSED_SULFUR=bool(exposedSulfur),
                  ExposedSH2OOperation=bool(presentSulphide), ExposedSH2OShutdown=bool(presentSulphidesShutdown), ThermalHistory= data['ThermalHistory'], PTAMaterial= data['PTAMaterialGrade'],
                  DOWNTIME_PROTECTED=bool(downtime),
                  INTERNAL_EXPOSED_FLUID_MIST=bool(materialExposedFluid), EXTERNAL_EXPOSED_FLUID_MIST=bool(materialExposed), CHLORIDE_ION_CONTENT= float(data['ChlorideIon']),
-                 CLSCC_INSP_EFF="E", CLSCC_INSP_NUM=0,
-                 HSC_HF_INSP_EFF="E", HSC_HF_INSP_NUM=0,
-                 HICSOHIC_INSP_EFF="E", HICSOHIC_INSP_NUM=0, HF_PRESENT=bool(presentHF),
-                 EXTERNAL_INSP_NUM=0, EXTERNAL_INSP_EFF="E",
-                 INTERFACE_SOIL_WATER=bool(interfaceSoilWater), SUPPORT_COATING=bool(supportMaterial), INSULATION_TYPE=data['ExternalInsulationType'], CUI_INSP_NUM=0,
-                 CUI_INSP_EFF="E", CUI_INSP_DATE=datetime.now().date(), CUI_PERCENT_1=data['OP1'], CUI_PERCENT_2=data['OP2'],
+                 HF_PRESENT=bool(presentHF),
+                 INTERFACE_SOIL_WATER=bool(interfaceSoilWater), SUPPORT_COATING=bool(supportMaterial), INSULATION_TYPE=data['ExternalInsulationType'],
+                 CUI_PERCENT_1=data['OP1'], CUI_PERCENT_2=data['OP2'],
                  CUI_PERCENT_3=data['OP3'], CUI_PERCENT_4=data['OP4'], CUI_PERCENT_5=data['OP5'], CUI_PERCENT_6=data['OP6'], CUI_PERCENT_7=data['OP7'], CUI_PERCENT_8=data['OP8'],
                  CUI_PERCENT_9=data['OP9'], CUI_PERCENT_10=data['OP10'],
-                 EXTERN_CLSCC_INSP_NUM=0, EXTERN_CLSCC_INSP_EFF="E",
-                 EXTERNAL_INSULATION=bool(ExternalInsulation), COMPONENT_INSTALL_DATE=datetime.now().date(), CRACK_PRESENT=bool(crackpresent),
-                 EXTERNAL_EVIRONMENT=data['ExternalEnvironment'], EXTERN_COAT_QUALITY=data['ExternalCoatingQuality'], EXTERN_CLSCC_CUI_INSP_NUM=0,
-                 EXTERN_CLSCC_CUI_INSP_EFF="E", PIPING_COMPLEXITY=data['complex'], INSULATION_CONDITION=data['InsulationCondition'],
+                 EXTERNAL_INSULATION=bool(ExternalInsulation), COMPONENT_INSTALL_DATE=datetime.strptime(str(data['ExternalCoatingID']),"%Y-%M-%d"), CRACK_PRESENT=bool(crackpresent),
+                 EXTERNAL_EVIRONMENT=data['ExternalEnvironment'], EXTERN_COAT_QUALITY=data['ExternalCoatingQuality'],
+                 PIPING_COMPLEXITY=data['complex'], INSULATION_CONDITION=data['InsulationCondition'],
                  INSULATION_CHLORIDE= bool(InsulationCholride),
-                 MATERIAL_SUSCEP_HTHA=bool(materialHTHA), HTHA_MATERIAL=data['HTHAMaterialGrade'], HTHA_NUM_INSP=0, HTHA_EFFECT="E", HTHA_PRESSURE= float(data['OpHydroPressure'])*0.006895,
+                 MATERIAL_SUSCEP_HTHA=bool(materialHTHA), HTHA_MATERIAL=data['HTHAMaterialGrade'],HTHA_PRESSURE= float(data['OpHydroPressure'])*0.006895,
                  CRITICAL_TEMP= float(data['criticalTemp']), DAMAGE_FOUND= bool(damageDuringInsp),
                  LOWEST_TEMP=bool(lowestTemp),
                  TEMPER_SUSCEP=bool(suscepTemp), PWHT=bool(pwht), BRITTLE_THICK= float(data['BrittleFacture']), CARBON_ALLOY=bool(cacbonAlloy), DELTA_FATT= float(data['deltafatt']),
@@ -654,103 +653,45 @@ def newProposal(request, componentname):
                  MASS_COMPONENT = float(data['MassComponent']), MITIGATION_SYSTEM = data['MittigationSysterm'], TOXIC_PERCENT = float(data['ToxicPercent']), RELEASE_DURATION = data['ReleaseDuration'], PRODUCTION_COST = float(data['ProductionCost']),
                  INJURE_COST = float(data['InjureCost']), ENVIRON_COST = float(data['EnvironmentCost']), PERSON_DENSITY = float(data['PersonDensity']), EQUIPMENT_COST = float(data['EquipmentCost']))
 
-            age ={}
-            age['thinning'] = 5.08
-            age['linning'] = 5.08
-            age['caustics'] = 5.08
-            age['amine'] = 5.08
-            age['sulphide'] = 5.08
-            age['hicsohich2s'] = 5.08
-            age['cacbonate'] = 5.08
-            age['pta'] = 5.08
-            age['clscc'] = 5.08
-            age['hschf'] = 5.08
-            age['hicsohichf'] = 5.08
-            age['externalcorrosion'] = 5.08
-            age['cui'] = 5.08
-            age['htha'] = 5.08
 
-            DF_SSC_TOTAL_API1 = max(dm_cal.DF_CAUSTIC(age['caustics']), dm_cal.DF_AMINE(age['amine']), dm_cal.DF_SULPHIDE(age['sulphide']), dm_cal.DF_HIC_SOHIC_HF(age['hicsohichf']), dm_cal.DF_HICSOHIC_H2S(age['hicsohich2s']),
-                               dm_cal.DF_CACBONATE(age['cacbonate']), dm_cal.DF_PTA(age['pta']), dm_cal.DF_CLSCC(age['clscc']), dm_cal.DF_HSCHF(age['hschf']))
-
-            DF_SSC_TOTAL_API2 = max(dm_cal.DF_CAUSTIC(age['caustics'] + 3), dm_cal.DF_AMINE(age['amine'] + 3),
-                               dm_cal.DF_SULPHIDE(age['sulphide'] + 3), dm_cal.DF_HIC_SOHIC_HF(age['hicsohichf'] + 3),
-                               dm_cal.DF_HICSOHIC_H2S(age['hicsohich2s'] + 3),
-                               dm_cal.DF_CACBONATE(age['cacbonate'] + 3), dm_cal.DF_PTA(age['pta'] + 3),
-                               dm_cal.DF_CLSCC(age['clscc'] + 3), dm_cal.DF_HSCHF(age['hschf'] + 3))
-
-            DF_SSC_TOTAL_API3 = max(dm_cal.DF_CAUSTIC(age['caustics'] + 6), dm_cal.DF_AMINE(age['amine'] + 6),
-                               dm_cal.DF_SULPHIDE(age['sulphide'] + 6), dm_cal.DF_HIC_SOHIC_HF(age['hicsohichf'] + 6),
-                               dm_cal.DF_HICSOHIC_H2S(age['hicsohich2s'] + 6),
-                               dm_cal.DF_CACBONATE(age['cacbonate'] + 6), dm_cal.DF_PTA(age['pta'] + 6),
-                               dm_cal.DF_CLSCC(age['clscc'] + 6), dm_cal.DF_HSCHF(age['hschf'] + 6))
-
-            DF_EXT_TOTAL_API1 = max(dm_cal.DF_EXTERNAL_CORROSION(age['externalcorrosion']), dm_cal.DF_CUI(age['cui']), dm_cal.DF_EXTERN_CLSCC(), dm_cal.DF_CUI_CLSCC())
-
-            DF_EXT_TOTAL_API2 = max(dm_cal.DF_EXTERNAL_CORROSION(age['externalcorrosion'] + 3), dm_cal.DF_CUI(age['cui'] + 3),
-                                    dm_cal.DF_EXTERN_CLSCC(), dm_cal.DF_CUI_CLSCC())
-            DF_EXT_TOTAL_API3 = max(dm_cal.DF_EXTERNAL_CORROSION(age['externalcorrosion'] + 6),
-                                    dm_cal.DF_CUI(age['cui'] + 6),
-                                    dm_cal.DF_EXTERN_CLSCC(), dm_cal.DF_CUI_CLSCC())
-
-
-            DF_BRIT_TOTAL = max(dm_cal.DF_BRITTLE() + dm_cal.DF_TEMP_EMBRITTLE(), dm_cal.DF_SIGMA(), dm_cal.DF_885())
-
-            DF_HTHA_API1 = dm_cal.DF_HTHA(age['htha'])
-            DF_HTHA_API2 = dm_cal.DF_HTHA(age['htha'] + 3)
-            DF_HTHA_API3 = dm_cal.DF_HTHA(age['htha'] + 6)
-
-            DF_MFAT = dm_cal.DF_PIPE()
-
-            DF_THINNING_API1 = dm_cal.DF_THIN(age['thinning'])
-            DF_THINNING_API2 = dm_cal.DF_THIN(age['thinning'] + 3)
-            DF_THINNING_API3 = dm_cal.DF_THIN(age['thinning'] + 6)
-
-            DF_LINNING_API1 = dm_cal.DF_LINNING(age['linning'])
-            DF_LINNING_API2 = dm_cal.DF_LINNING(age['linning'] + 3)
-            DF_LINNING_API3 = dm_cal.DF_LINNING(age['linning'] + 6)
-
-            if InternalLining and (DF_LINNING_API1 != 0 or DF_LINNING_API2 != 0 or DF_LINNING_API3 != 0):
-                DF_THINNING_TOTAL_1 = min(DF_THINNING_API1, DF_LINNING_API1)
-                DF_THINNING_TOTAL_2 = min(DF_THINNING_API2, DF_LINNING_API2)
-                DF_THINNING_TOTAL_3 = min(DF_THINNING_API3, DF_LINNING_API3)
-            else:
-                DF_THINNING_TOTAL_1 = DF_THINNING_API1
-                DF_THINNING_TOTAL_2 = DF_THINNING_API2
-                DF_THINNING_TOTAL_3 = DF_THINNING_API3
-
-            TOTAL_DF_API1 = max(DF_THINNING_TOTAL_1, DF_EXT_TOTAL_API1) + DF_SSC_TOTAL_API1 + DF_HTHA_API1 + DF_BRIT_TOTAL + DF_MFAT
-            TOTAL_DF_API2 = max(DF_THINNING_TOTAL_2,DF_EXT_TOTAL_API2) + DF_SSC_TOTAL_API2 + DF_HTHA_API2 + DF_BRIT_TOTAL + DF_MFAT
-            TOTAL_DF_API3 = max(DF_THINNING_TOTAL_3,DF_EXT_TOTAL_API3) + DF_SSC_TOTAL_API3 + DF_HTHA_API3 + DF_BRIT_TOTAL + DF_MFAT
-
+            TOTAL_DF_API1 = dm_cal.DF_TOTAL_API(0)
+            TOTAL_DF_API2 = dm_cal.DF_TOTAL_API(3)
+            TOTAL_DF_API3 = dm_cal.DF_TOTAL_API(6)
             gffTotal = api.gfftotal
             pofap1 = TOTAL_DF_API1 * dataFaci.managementfactor * gffTotal
             pofap2 = TOTAL_DF_API2 * dataFaci.managementfactor * gffTotal
             pofap3 = TOTAL_DF_API3 * dataFaci.managementfactor * gffTotal
+
             # thinningtype = General or Local
-            refullPOF = RwFullPof(id= rwassessment, thinningap1= DF_THINNING_TOTAL_1, thinningap2= DF_THINNING_TOTAL_2, thinningap3= DF_THINNING_TOTAL_3,
-                                  sccap1= DF_SSC_TOTAL_API1, sccap2= DF_SSC_TOTAL_API2, sccap3= DF_SSC_TOTAL_API3,
-                                  brittleap1=DF_BRIT_TOTAL, brittleap2= DF_BRIT_TOTAL, brittleap3= DF_BRIT_TOTAL,
-                                  htha_ap1= DF_HTHA_API1, htha_ap2= DF_HTHA_API2, htha_ap3= DF_HTHA_API3,
-                                  fatigueap1= DF_MFAT, fatigueap2= DF_MFAT, fatigueap3= DF_MFAT,
+            refullPOF = RwFullPof(id= rwassessment, thinningap1= dm_cal.DF_THINNING_TOTAL_API(0), thinningap2= dm_cal.DF_THINNING_TOTAL_API(3) , thinningap3= dm_cal.DF_THINNING_TOTAL_API(6),
+                                  sccap1= dm_cal.DF_SSC_TOTAL_API(0), sccap2= dm_cal.DF_SSC_TOTAL_API(3), sccap3= dm_cal.DF_SSC_TOTAL_API(6),
+                                  externalap1= dm_cal.DF_EXT_TOTAL_API(0), externalap2= dm_cal.DF_EXT_TOTAL_API(3),externalap3= dm_cal.DF_EXT_TOTAL_API(6),
+                                  brittleap1=dm_cal.DF_BRIT_TOTAL_API(), brittleap2= dm_cal.DF_BRIT_TOTAL_API(), brittleap3= dm_cal.DF_BRIT_TOTAL_API(),
+                                  htha_ap1= dm_cal.DF_HTHA_API(0), htha_ap2= dm_cal.DF_HTHA_API(3), htha_ap3= dm_cal.DF_HTHA_API(6),
+                                  fatigueap1= dm_cal.DF_PIPE_API(), fatigueap2= dm_cal.DF_PIPE_API(), fatigueap3= dm_cal.DF_PIPE_API(),
                                   fms= dataFaci.managementfactor, thinningtype="Local",
-                                  thinninglocalap1= max(DF_THINNING_TOTAL_1, DF_EXT_TOTAL_API1), thinninglocalap2= max(DF_THINNING_TOTAL_2, DF_EXT_TOTAL_API2), thinninglocalap3= max(DF_THINNING_TOTAL_3, DF_EXT_TOTAL_API3),
-                                  thinninggeneralap1= DF_THINNING_TOTAL_1 + DF_EXT_TOTAL_API1, thinninggeneralap2= DF_THINNING_TOTAL_2 + DF_EXT_TOTAL_API2, thinninggeneralap3= DF_THINNING_TOTAL_3 + DF_EXT_TOTAL_API3,
+                                  thinninglocalap1= max(dm_cal.DF_THINNING_TOTAL_API(0), dm_cal.DF_EXT_TOTAL_API(0)), thinninglocalap2= max(dm_cal.DF_THINNING_TOTAL_API(3), dm_cal.DF_EXT_TOTAL_API(3)), thinninglocalap3= max(dm_cal.DF_THINNING_TOTAL_API(6), dm_cal.DF_EXT_TOTAL_API(6)),
+                                  thinninggeneralap1= dm_cal.DF_THINNING_TOTAL_API(0) + dm_cal.DF_EXT_TOTAL_API(0), thinninggeneralap2= dm_cal.DF_THINNING_TOTAL_API(3) + dm_cal.DF_EXT_TOTAL_API(3), thinninggeneralap3= dm_cal.DF_THINNING_TOTAL_API(6) + dm_cal.DF_EXT_TOTAL_API(6),
                                   totaldfap1= TOTAL_DF_API1, totaldfap2= TOTAL_DF_API2, totaldfap3= TOTAL_DF_API3,
                                   pofap1= pofap1, pofap2= pofap2, pofap3= pofap3,gfftotal= gffTotal,
                                   pofap1category= dm_cal.PoFCategory(TOTAL_DF_API1), pofap2category= dm_cal.PoFCategory(TOTAL_DF_API2), pofap3category= dm_cal.PoFCategory(TOTAL_DF_API3))
 
             refullPOF.save()
 
+            if ca_cal.NominalDiametter == 0 or ca_cal.STORED_PRESSURE == 0 or ca_cal.MASS_INVERT == 0 or ca_cal.MASS_COMPONENT == 0:
+                calv1 = RwCaLevel1(id= rwassessment,release_phase= ca_cal.GET_RELEASE_PHASE(),fact_di= ca_cal.fact_di(),
+                                   fact_mit=ca_cal.fact_mit(), fact_ait=ca_cal.fact_ait(),fc_total= 100000000,fcof_category="E" )
+            else:
+                calv1 = RwCaLevel1(id= rwassessment, release_phase= ca_cal.GET_RELEASE_PHASE(), fact_di= ca_cal.fact_di(), ca_inj_flame= ca_cal.ca_inj_flame(),
+                                   ca_inj_toxic= ca_cal.ca_inj_tox(), ca_inj_ntnf= ca_cal.ca_inj_nfnt(),
+                                   fact_mit= ca_cal.fact_mit(), fact_ait= ca_cal.fact_ait(), ca_cmd= ca_cal.ca_cmd(), fc_cmd= ca_cal.fc_cmd(),
+                                   fc_affa= ca_cal.fc_affa(), fc_envi= ca_cal.fc_environ(), fc_prod= ca_cal.fc_prod(), fc_inj= ca_cal.fc_inj(),
+                                   fc_total= ca_cal.fc(), fcof_category= ca_cal.FC_Category(ca_cal.fc()))
 
-            calv1 = RwCaLevel1(id= rwassessment, release_phase= ca_cal.GET_RELEASE_PHASE(), fact_di= ca_cal.fact_di(), ca_inj_flame= ca_cal.ca_inj_flame(),
-                               ca_inj_toxic= ca_cal.ca_inj_tox(), ca_inj_ntnf= ca_cal.ca_inj_nfnt(),
-                               fact_mit= ca_cal.fact_mit(), fact_ait= ca_cal.fact_ait(), ca_cmd= ca_cal.ca_cmd(), fc_cmd= ca_cal.fc_cmd(),
-                               fc_affa= ca_cal.fc_affa(), fc_envi= ca_cal.fc_environ(), fc_prod= ca_cal.fc_prod(), fc_inj= ca_cal.fc_inj(),
-                               fc_total= ca_cal.fc(), fcof_category= ca_cal.FC_Category(ca_cal.fc()))
             calv1.save()
 
-            refullfc = RwFullFcof(id=rwassessment,fcofvalue= ca_cal.fc(), fcofcategory= ca_cal.FC_Category(ca_cal.fc()), envcost= data['EnvironmentCost'],
+
+            refullfc = RwFullFcof(id=rwassessment,fcofvalue= calv1.fc_total, fcofcategory= calv1.fcof_category, envcost= data['EnvironmentCost'],
                                   equipcost= data['EquipmentCost'], prodcost= data['ProductionCost'], popdens= data['PersonDensity'], injcost= data['InjureCost'])
             refullfc.save()
 
@@ -1177,21 +1118,20 @@ def newProposalTank(request, componentname):
                             HighlyEffectDeadleg=bool(rwequipment.highlydeadleginsp), ContainsDeadlegs=bool(rwequipment.containsdeadlegs),
                             TankMaintain653=bool(rwequipment.tankismaintained), AdjustmentSettle=rwequipment.adjustmentsettle, ComponentIsWeld=bool(rwequipment.componentiswelded),
                             LinningType=data['internalLinnerType'], LINNER_ONLINE=bool(rwequipment.lineronlinemonitoring),
-                            LINNER_CONDITION=data['internalLinnerCondition'], YEAR_IN_SERVICE=0,
+                            LINNER_CONDITION=data['internalLinnerCondition'],
                             INTERNAL_LINNING= bool(rwcoat.internallining),
-                            CAUSTIC_INSP_EFF="E", CAUSTIC_INSP_NUM=0, HEAT_TREATMENT=data['heatTreatment'],
+                            HEAT_TREATMENT=data['heatTreatment'],
                             NaOHConcentration=float(data['naohConcent']), HEAT_TRACE=bool(heatTrace),
                             STEAM_OUT=bool(steamOutWater),
-                            AMINE_INSP_EFF="E", AMINE_INSP_NUM=0, AMINE_EXPOSED=bool(exposedAmine),
+                            AMINE_EXPOSED=bool(exposedAmine),
                             AMINE_SOLUTION=data['amineSolution'],
                             ENVIRONMENT_H2S_CONTENT=bool(environtH2S), AQUEOUS_OPERATOR=bool(aqueosOP),
-                            AQUEOUS_SHUTDOWN=bool(aqueosShut), SULPHIDE_INSP_EFF="E",
-                            SULPHIDE_INSP_NUM=0, H2SContent=float(data['h2sContent']), PH=float(data['PHWater']),
+                            AQUEOUS_SHUTDOWN=bool(aqueosShut),H2SContent=float(data['h2sContent']), PH=float(data['PHWater']),
                             PRESENT_CYANIDE=bool(cyanidesPresence), BRINNEL_HARDNESS=data['maxBrinnelHardness'],
-                            SULFUR_INSP_EFF="E", SULFUR_INSP_NUM=0, SULFUR_CONTENT=data['sulfurContent'],
-                            CACBONATE_INSP_EFF="E", CACBONATE_INSP_NUM=0, CO3_CONTENT=float(data['co3']),
+                            SULFUR_CONTENT=data['sulfurContent'],
+                            CO3_CONTENT=float(data['co3']),
                             PTA_SUSCEP=bool(materialPTA), NICKEL_ALLOY=bool(nickelAlloy),
-                            EXPOSED_SULFUR=bool(exposedSulfur), PTA_INSP_EFF="E", PTA_INSP_NUM=0,
+                            EXPOSED_SULFUR=bool(exposedSulfur),
                             ExposedSH2OOperation=bool(presenceSulphideOP),
                             ExposedSH2OShutdown=bool(presenceSulphideShut), ThermalHistory=data['themalHistory'],
                             PTAMaterial=data['PTAMaterialGrade'],
@@ -1199,27 +1139,21 @@ def newProposalTank(request, componentname):
                             INTERNAL_EXPOSED_FLUID_MIST=bool(materialChlorineIntern),
                             EXTERNAL_EXPOSED_FLUID_MIST=bool(materialChlorineExt),
                             CHLORIDE_ION_CONTENT=float(data['chlorideIon']),
-                            CLSCC_INSP_EFF="E", CLSCC_INSP_NUM=0,
-                            HSC_HF_INSP_EFF="E", HSC_HF_INSP_NUM=0,
-                            HICSOHIC_INSP_EFF="E", HICSOHIC_INSP_NUM=0, HF_PRESENT=bool(presentHF),
-                            EXTERNAL_INSP_NUM=0, EXTERNAL_INSP_EFF="E",
+                            HF_PRESENT=bool(presentHF),
                             INTERFACE_SOIL_WATER=bool(interfaceSoilWater), SUPPORT_COATING=bool(supportCoatingMaintain),
-                            INSULATION_TYPE=data['extInsulationType'], CUI_INSP_NUM=0,
-                            CUI_INSP_EFF="E", CUI_INSP_DATE=datetime.now().date(), CUI_PERCENT_1=float(data['OP1']),
+                            INSULATION_TYPE=data['extInsulationType'],CUI_PERCENT_1=float(data['OP1']),
                             CUI_PERCENT_2=float(data['OP2']),
                             CUI_PERCENT_3=float(data['OP3']), CUI_PERCENT_4=float(data['OP4']), CUI_PERCENT_5=float(data['OP5']),
                             CUI_PERCENT_6=float(data['OP6']), CUI_PERCENT_7=float(data['OP7']), CUI_PERCENT_8=float(data['OP8']),
                             CUI_PERCENT_9=float(data['OP9']), CUI_PERCENT_10=float(data['OP10']),
-                            EXTERN_CLSCC_INSP_NUM=0, EXTERN_CLSCC_INSP_EFF="E",
-                            EXTERNAL_INSULATION=bool(extInsulation), COMPONENT_INSTALL_DATE=datetime.now().date(),
+                            EXTERNAL_INSULATION=bool(extInsulation), COMPONENT_INSTALL_DATE= datetime.strptime(str(data['externalInstallDate']),"%Y-%M-%d"),
                             CRACK_PRESENT=bool(crackPresence),
                             EXTERNAL_EVIRONMENT=data['extEnvironment'],
-                            EXTERN_COAT_QUALITY=data['externalCoatQuality'], EXTERN_CLSCC_CUI_INSP_NUM=0,
-                            EXTERN_CLSCC_CUI_INSP_EFF="E", PIPING_COMPLEXITY=data['complexProtrusion'],
+                            EXTERN_COAT_QUALITY=data['externalCoatQuality'],PIPING_COMPLEXITY=data['complexProtrusion'],
                             INSULATION_CONDITION=data['insulationCondition'],
                             INSULATION_CHLORIDE=bool(InsulationContainChloride),
                             MATERIAL_SUSCEP_HTHA=False, HTHA_MATERIAL="",
-                            HTHA_NUM_INSP=0, HTHA_EFFECT="E", HTHA_PRESSURE=float(data['OpHydroPressure']) * 0.006895,
+                            HTHA_PRESSURE=float(data['OpHydroPressure']) * 0.006895,
                             CRITICAL_TEMP=float(data['criticalTemp']), DAMAGE_FOUND=bool(damageFound),
                             LOWEST_TEMP=bool(lowestTemp),
                             TEMPER_SUSCEP= False, PWHT=bool(pwht),

@@ -66,8 +66,9 @@
                 <legend class="scheduler-border"><p><b>Assessment</b></p></legend></br>
             <table>
                 <tr>
-                    <td>Assessment Name</td>
+                    <td>Assessment Name&emsp;&emsp;&emsp;&ensp;</td>
                     <td><input type="text" class="form-control" name="AssessmentName" value="" required/></td>
+
                 </tr>
                 <tr>
                     <td>Assessment Date</td>
@@ -134,6 +135,7 @@
                             <tr>
                                 <td><span style="font-size: 16px">Component Number</span> </td>
                                 <td><input type="text" name="ComponentNumber" class="form-control" value="{{ component.componentnumber }}" readonly> </td>
+                                <td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;</td>
                             </tr>
                             <tr>
                                 <td><span style="font-size: 16px">Component Type</span> </td>
@@ -164,9 +166,10 @@
                     <table>
                         <tr>
                             <td><span style="font-size: 16px">Administrative Control for Upset Management</span></td>
-                            <td><input type="checkbox" name="adminControlUpset" list="Admin" /></td>
+                            <td><input type="checkbox" name="adminControlUpset" list="Admin" />&emsp;&emsp;</td>
                             <td><span style="font-size: 16px">Contains Deadlegs</span></td>
                             <td><input  type="checkbox" name="ContainsDeadlegs"/></td>
+
                         </tr>
                         <tr>
                             <td><span style="font-size: 16px">Highly Effective Inspection for Deadlegs</span></td>
@@ -216,8 +219,8 @@
 
                         <table>
                             <tr>
-                                <td><span style="font-size: 16px">Min. Required Temperature Before</br> Pressurisation Allowed by Admin</span></td>
-                                <td><input type="number"step="0.01" class="form-control" name="Min" value="0" size="13"/></td><td>&deg;C</td>
+                                <td><span style="font-size: 16px">Min. Required Temperature Before</br> Pressurisation Allowed by Admin&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span></td>
+                                <td><input type="number"step="0.01" class="form-control" name="Min" value="0" size="13"/></td><td>&deg;C&emsp;&emsp;&emsp;&emsp;</td>
                             </tr>
 
                             <tr>
@@ -301,7 +304,7 @@
                     <table>
                         <tr>
                             <td><span style="font-size:16px">Nominal Diameter</span></td>
-                            <td><input type="number" class="form-control" step="0.01" min="0" name="NominalDiameter" value="0" /></td><td>in</td>
+                            <td><input type="number" class="form-control" step="0.01" min="0" name="NominalDiameter" value="0" /></td><td>in&emsp;&emsp;</td>
 
                             <td><span style="font-size:16px">Nominal Thickness</span></td>
                             <td><input type="number" class="form-control" step="0.01" min="0" name="NominalThickness" value="0"/></td><td>mm</td>
@@ -316,7 +319,7 @@
 
                         <tr>
                             <td><span style="font-size:16px">Current Corrosion Rate</span></td>
-                            <td><input type="number" class="form-control" step="0.01" min="0" value="0" name="CurrentRate" /></td><td>mm/yr</td>
+                            <td><input type="number" class="form-control" step="0.01" min="0" value="0" name="CurrentRate" /></td><td>mm/yr&emsp;&emsp;</td>
                             <td><span style="font-size:16px">Delta FATT</span>
                             <td><input type="number" class="form-control" step="0.01" min="0" value="0" name="DeltaFATT" /></td>
                         </tr>
@@ -333,11 +336,12 @@
                             <td><input type="checkbox"  list="ChemicalInjection" name="ChemicalInjection"/></td>
                             <td><span style="font-size:16px">Presence of Cracks</span></td>
                             <td><input  type="checkbox"  list="PresenceCracks" name="PresenceCracks"/></td>
+                            <td>&emsp;</td>
                         </tr>
 
                         <tr>
                             <td><span style="font-size:16px">Highly Effective Inspection </br>for Corrosion at <br>Injection Mix Point</span></td>
-                            <td><input type="checkbox"  list="HFICI" name="HFICI"></td>
+                            <td><input type="checkbox"  list="HFICI" name="HFICI">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
                             <td><span style="font-size:16px">Tramp Elements</span></td>
                             <td><input type="checkbox"  list="TrampElements" name="TrampElements" /></td>
                         </tr>
@@ -352,6 +356,7 @@
                                 <option>Greater than 237</option>
                             </select>
                             </td>
+                            <td>&emsp;&emsp;</td>
                         </tr>
                         <tr>
                             <td><span style="font-size:16px">Complexity of Protrusions</span></td>
@@ -553,13 +558,14 @@
                     <table>
                         <tr>
                             <td><span style="font-size: 16px;">Material</span></td>
-                            <td><input type="text" class="form-control" list="Material" name="Material"/></td>
+                            <td><input type="text" class="form-control" list="Material" name="Material" required/></td>
+                            <td>&emsp;</td>
                         </tr>
                     </table>
                     <table>
                         <tr>
                             <td><span style="font-size: 16px;display: inline-block;">Max.Design Temperature</span></td>
-                            <td><input type="number" class="form-control" step="0.01" value="0" name="MaxDesignTemp"/></td><td>&deg;C </td>
+                            <td><input type="number" class="form-control" step="0.01" value="0" name="MaxDesignTemp"/></td><td>&deg;C &emsp;&emsp;</td>
                             <td><span style="font-size: 16px">Min.Design Temperature </span></td>
                             <td><input type="number" step="0.01" class="form-control" value="0" name="MinDesignTemp"/></td><td>&deg;C</td>
                         </tr>
@@ -591,13 +597,16 @@
                         <tr>
                             <td><span style="color: red;font-size: 16px">Carbon or Low Alloy Steel</span></td>
                             <td><input type="checkbox" list="CoLAS" name="CoLAS"/></td>
+                            <td>&emsp;&emsp;&ensp;</td>
                             <td><span style="color: red;font-size: 16px">Austenitic Steel </span></td>
                             <td></span><input type="checkbox"  list="AusteniticSteel" name="AusteniticSteel"/></td>
+                            <td>&emsp;&emsp;</td>
                         </tr>
 
                         <tr>
                             <td><span style="color: red;font-size: 16px">Susceptible to Temper</span></td>
                             <td><input type="checkbox" list="SusceptibleTemper" name="SusceptibleTemper"/></td>
+                            <td>&emsp;</td>
                             <td><span style="color:red;font-size: 16px">Nickel-based Alloy</span></td>
                             <td><input type="checkbox" list="NickelAlloy" name="NickelAlloy"/></td>
                         </tr>
@@ -610,13 +619,15 @@
                     <br>
                     <table>
                         <tr>
-                            <td><span style="font-size: 16px">Sulfur Content</span></td>
+                            <td><span style="font-size: 16px">Sulfur Content&emsp;&emsp;&emsp;&emsp;</span></td>
+
                             <td><select class="form-control" list="SulfurContent" name="SulfurContent">
                                 <option>High > 0.01%</option>
                                 <option>Low 0.002 - 0.01%</option>
                                 <option>Ultra Low < 0.002%</option>
                             </select>
                             </td>
+                            <td>&emsp;&emsp;&emsp;&emsp;</td>
                         </tr>
 
                         <tr>
@@ -685,13 +696,14 @@
                             <tr>
                                 <td><span style="font-size: 16px">Internal Coating</span></td>
                                 <td><input type="checkbox" list="InternalCoating" name="InternalCoating"></td>
+                            </tr>
+                            <tr>
                                 <td><span style="color:red;font-size: 16px">External Coating</span></td>
                                 <td><input type="checkbox" id="ExternalCoating" name="ExternalCoating" >
                                 </td>
 
                             </tr>
-                        </table>
-                        <table>
+
                             <tr >
                                 <td><span style="font-size: 16px">External Coating Installation Date</span></td>
                                 <td><input type="text" id="datepicker2" width="auto" data-format="yyyy-mm-dd" name="ExternalCoatingID" /></td>
@@ -759,11 +771,13 @@
                             <tr>
                                 <td><span style="font-size: 16px">Internal Cladding</span></td>
                                 <td><input type="checkbox" list="InternalCladding" name="InternalCladding"/></td>
+                                <td>&emsp;&emsp;</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">Cladding Corrosion Rate</span></td>
                                 <td><input type="number" class="form-control" step="0.01" min="0" name="CladdingCorrosionRate" value="0" /></td><td>mm/yr</td>
+                                <td>&ensp;</td>
                             </tr>
                         </table>
                     </fieldset>
@@ -773,11 +787,14 @@
                         <table>
                             <tr>
                                 <td><span style="color:#ff0000;font-size: 16px">Internal Lining </span></td>
+                                <td></td>
                                 <td><input type="checkbox"  list="InternalLining" name="InternalLining"/></td>
+                                <td>&ensp;</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">Internal Liner Type</span></td>
+                                <td></td>
                                 <td><select class="form-control" list="ILT" name="InternalLinerType">
                                     <option>Acid Brick</option>
                                     <option>Castable refractory</option>
@@ -792,6 +809,7 @@
 
                             <tr>
                                 <td><span style="font-size: 16px">Internal Liner Condition</span></td>
+                                <td></td>
                                 <td><select class="form-control" list="ILC" name="InternalLinerCondition">
                                     <option>Average</option>
                                     <option>Good</option>
@@ -808,6 +826,9 @@
                             <tr>
                                 <td><span style="color: #ff0000;font-size: 16px"> External Insulation</span></td>
                                 <td><input  type="checkbox" list="ExternalInsulation" name="ExternalInsulation" size="40"/>
+                                <td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
+                                <td>&emsp;</td>
+                                <td>&emsp;&emsp;</td>
                             </tr>
 
                             <tr>
@@ -869,10 +890,7 @@
                                 <td><span style="color: red;font-size: 16px">PH of Water</span></td>
                                 <td><input type="number" step="0.01" class="form-control" min="0" max="14" value="7" name="PHWater"/></td>
                             </tr>
-                        </table>
 
-                        <br>
-                        <table>
                             <tr>
                                 <td><span style="color: red;font-size: 16px">Exposed To Acid Gas<br> Treating Amine</span></td>
                                 <td><input type="checkbox" list="EAGTA" name="EAGTA"/>
@@ -910,7 +928,7 @@
                         <table>
                             <tr>
                                 <td><span style="color: red;font-size: 16px"> Aqueous Phase During Operation</span></td>
-                                <td><input type="checkbox" list="APDO" name="APDO"/></td>
+                                <td><input type="checkbox" list="APDO" name="APDO"/>&emsp;&ensp;</td>
                                 <td>&emsp;</td>
                                 <td><span style="color: red;font-size:16px"> Aqueous Phase During Shut Down</span></td>
                                 <td><input type="checkbox" list="APDSD" name="APDSD"/>
