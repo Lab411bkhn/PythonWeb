@@ -116,25 +116,30 @@ class CA_NORMAL:
             if(data[1] == 0):
                 wn = 0;
             else:
-                wn = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1]) * 16.02) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(1));
+                try:
+                    wn = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1]) * 16.02) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(1));
+                except:
+                    wn = 0
         else:
             R = 8.314;
             k = self.C_P() / (self.C_P() - R);
             if(k == 0):
                 wn = 0;
             else:
-                p_trans = self.ATMOSPHERIC_PRESSURE * pow((k + 1) / 2, k / (k - 1));
-                if (self.STORED_PRESSURE > p_trans):
-                    x = ((k * mw * gc / (R * self.STORED_TEMP)) * pow(2 / (k + 1), (k + 1) / (k - 1)));
-                    wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
-                else:
-                    x = (mw * gc / (R * self.STORED_TEMP)) * ((2 * k) / (k - 1)) * pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, 2 / k) * (1 - pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, (k - 1) / k));
-                    wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                try:
+                    p_trans = self.ATMOSPHERIC_PRESSURE * pow((k + 1) / 2, k / (k - 1));
+                    if (self.STORED_PRESSURE > p_trans):
+                        x = ((k * mw * gc / (R * self.STORED_TEMP)) * pow(2 / (k + 1), (k + 1) / (k - 1)));
+                        wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                    else:
+                        x = (mw * gc / (R * self.STORED_TEMP)) * ((2 * k) / (k - 1)) * pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, 2 / k) * (1 - pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, (k - 1) / k));
+                        wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                except:
+                    wn = 0
         return wn;
 
     def W_max8(self):
         data = DAL_CAL.MySQL_CAL.GET_TBL_52(self.FLUID);
-        w_max8 = 0;
         an = 32450;
         mw = data[0];
         gc = 1;
@@ -142,20 +147,26 @@ class CA_NORMAL:
             if(data[1] == 0):
                 w_max8 = 0;
             else:
-                w_max8 = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1] * 16.02)) / DAL_CAL.MySQL_CAL.GET_TBL_3B21(1);
+                try:
+                    w_max8 = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1] * 16.02)) / DAL_CAL.MySQL_CAL.GET_TBL_3B21(1);
+                except:
+                    w_max8 = 0
         else:
             R = 8.314;
             k = (self.C_P() / (self.C_P() - R));
             if(k == 0):
                 w_max8 = 0;
             else:
-                p_trans = (self.ATMOSPHERIC_PRESSURE * pow((k + 1) / 2, k / (k - 1)));
-                if (self.STORED_PRESSURE > p_trans):
-                    x = ((k * mw * gc / (R * self.STORED_TEMP)) * pow(2 / (k + 1), (k + 1) / (k - 1)));
-                    w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
-                else:
-                    x = (mw * gc / (R * self.STORED_TEMP)) * ((2 * k) / (k - 1)) * pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, 2 / k) * (1 - pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, (k - 1) / k));
-                    w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                try:
+                    p_trans = (self.ATMOSPHERIC_PRESSURE * pow((k + 1) / 2, k / (k - 1)));
+                    if (self.STORED_PRESSURE > p_trans):
+                        x = ((k * mw * gc / (R * self.STORED_TEMP)) * pow(2 / (k + 1), (k + 1) / (k - 1)));
+                        w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                    else:
+                        x = (mw * gc / (R * self.STORED_TEMP)) * ((2 * k) / (k - 1)) * pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, 2 / k) * (1 - pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, (k - 1) / k));
+                        w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                except:
+                    w_max8 = 0
         return w_max8;
 
     def mass_addn(self, i):
@@ -260,7 +271,6 @@ class CA_NORMAL:
         wn = self.W_n(i);
         factdi = self.fact_di();
         rate = wn * (1 - factdi);
-        print("wn" + str(wn))
         return rate;
 
     def ld_n(self, i):
@@ -287,11 +297,10 @@ class CA_NORMAL:
             return 0.15;
 
     def eneff_n(self, i):
-        eff = (4 * math.log10(DAL_CAL.MySQL_CAL.GET_TBL_3B21(4) * self.mass_n(i)) - 15);
         if(self.mass_n(i) == 0):
             return 0;
         else:
-            return eff;
+            return (4 * math.log10(DAL_CAL.MySQL_CAL.GET_TBL_3B21(4) * self.mass_n(i)) - 15);
 
     def a_cont(self, select):
         data = DAL_CAL.MySQL_CAL.GET_TBL_58(self.FLUID);
@@ -932,6 +941,18 @@ class CA_SHELL:
         self.API_COMPONENT_TYPE_NAME = API_COMPONENT_TYPE_NAME;
         self.PRODUCTION_COST = PRODUCTION_COST;
 
+    def FC_Category(self, fc):
+        if (fc <= 10000):
+            return "A";
+        elif (fc <= 100000):
+            return "B";
+        elif (fc <= 1000000):
+            return "C";
+        elif (fc <= 10000000):
+            return "D";
+        else:
+            return "E";
+
     def d_n_shell(self, i):
         if (i == 1):
             dn = 3.175;
@@ -1077,6 +1098,18 @@ class CA_TANK_BOTTOM:
         self.P_onsite = P_onsite;
         self.P_offsite = P_offsite;
 
+    def FC_Category(self, fc):
+        if (fc <= 10000):
+            return "A";
+        elif (fc <= 100000):
+            return "B";
+        elif (fc <= 1000000):
+            return "C";
+        elif (fc <= 10000000):
+            return "D";
+        else:
+            return "E";
+
     def n_rh(self):
         C36 =DAL_CAL.MySQL_CAL.GET_TBL_3B21(36);
         return max(pow(self.TANK_DIAMETER / C36, 2), 1);
@@ -1119,7 +1152,6 @@ class CA_TANK_BOTTOM:
         return C31 * (k_h[0] + k_h[1]) / 2;
 
     def dn_bottom(self, i):
-        dn = 0;
         if (i == 1):
             if (self.PREVENTION_BARRIER):
                 dn = 3.175;
@@ -1157,7 +1189,10 @@ class CA_TANK_BOTTOM:
     def ld_n_tank_bottom(self, i):
         C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
         Bbl_total_tank_bottom = (math.pi * pow(self.TANK_DIAMETER, 2) * self.FLUID_HEIGHT) / (4 * C13);
-        return min(Bbl_total_tank_bottom / self.rate_n_tank_bottom(i), self.t_ld_tank_bottom());
+        if self.rate_n_tank_bottom(i) == 0:
+            return self.t_ld_tank_bottom()
+        else:
+            return min(Bbl_total_tank_bottom / self.rate_n_tank_bottom(i), self.t_ld_tank_bottom());
 
     def Bbl_leak_n_bottom(self, i):
         C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
@@ -1242,13 +1277,15 @@ class CA_TANK_BOTTOM:
         cost = self.getCost();
         obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         summ = self.Bbl_leak_groundwater(1) * cost[4] + self.Bbl_leak_subsoil(1) * cost[3];
-        return summ * obj[0] / obj[4];
+        ######### demo exception
+        print("API:" + self.API_COMPONENT_TYPE_NAME)
+        return summ * obj[0] / obj[5];
 
     def Bbl_rupture_release_bottom(self):
         obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
         Bbl_total_tank_bottom = (math.pi * pow(self.TANK_DIAMETER, 2) * self.FLUID_HEIGHT) / (4 * C13);
-        return (Bbl_total_tank_bottom * obj[3]) / obj[4];
+        return (Bbl_total_tank_bottom * obj[3]) / obj[5];
 
     def Bbl_rupture_indike_bottom(self):
         indike = self.Bbl_rupture_release_bottom() * (1 - self.P_lvdike / 100);
@@ -1298,3 +1335,4 @@ class CA_TANK_BOTTOM:
 
     def FC_total_bottom(self):
         return self.FC_cmd_bottom() + self.FC_environ_bottom() + self.FC_PROD_BOTTOM();
+

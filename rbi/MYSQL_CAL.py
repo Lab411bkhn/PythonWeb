@@ -1,14 +1,17 @@
-import pymysql;
+import psycopg2;
 from datetime import  datetime;
 from dateutil.relativedelta import relativedelta;
 import numpy as np;
-conn = pymysql.connect(host ='localhost',user = 'root', password = 'root', db = 'djangorbi');
+#connect_string = "host='localhost' dbname='djangorbi' user='postgres' password='root'"
+connect_string = "host='ec2-54-217-236-201.eu-west-1.compute.amazonaws.com' dbname='d3s74b7putntgb' user='hphbzavltnvngh' password='971440c9ab2e34c429971d9dc6ce07efbe597516e2e022f20be1a3b76370f69c'"
+#conn = psycopg2.connect(connect_string)
 class MySQL_CAL:
     def GET_TBL_52(fluid):
         row = np.zeros(10);
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `MW`,`Density`,`NBP`,`ideal`,`A`,`B`,`C`,`D`,`E`,`Auto` FROM `TBL_52_CA_PROPERTIES_LEVEL_1` WHERE `Fluid` = '" + fluid + "'";
+            sql = "SELECT \"MW\",\"Density\",\"NBP\",\"ideal\",\"A\",\"B\",\"C\",\"D\",\"E\",\"Auto\" FROM \"tbl_52_ca_properties_level_1\" WHERE \"Fluid\" = '" + fluid + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 row[0] = r[0];
@@ -21,27 +24,33 @@ class MySQL_CAL:
                 row[7] = r[7];
                 row[8] = r[8];
                 row[9] = r[9];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! execute table 5.2");
+        finally:
+            conn.close()
         return row;
 
     def GET_RELEASE_PHASE(fluid):
         data = "Liquid";
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `Ambient` FROM `TBL_52_CA_PROPERTIES_LEVEL_1` WHERE `Fluid` = '" + fluid + "'";
+            sql = "SELECT \"Ambient\" FROM \"tbl_52_ca_properties_level_1\" WHERE \"Fluid\" = '" + fluid + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r[0];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! get Release Phase from table 5.2");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_58(fluid):
         data = np.zeros(16);
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT * FROM `TBL_58_CA_COMPONENT_DM` WHERE `Fluid` = '" + fluid + "'";
+            sql = "SELECT * FROM \"tbl_58_ca_component_dm\" WHERE \"Fluid\" = '" + fluid + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[2]
@@ -60,15 +69,18 @@ class MySQL_CAL:
                 data[13] = r[15]
                 data[14] = r[16]
                 data[15] = r[17]
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! execute data from table 5.8 error!");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_59(fluid):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         data = np.zeros(16);
         try:
-            sql = "SELECT * FROM `TBL_59_COMPONENT_DAMAGE_PERSON` WHERE `Fluid` = '" + fluid + "'";
+            sql = "SELECT * FROM \"tbl_59_component_damage_person\" WHERE \"Fluid\" = '" + fluid + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[1];
@@ -87,30 +99,36 @@ class MySQL_CAL:
                 data[13] = r[14];
                 data[14] = r[15];
                 data[15] = r[16];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute data Table 5.9 Fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_213(thickness):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         data = np.zeros(4);
         try:
-            sql = "SELECT * FROM `TBL_213_DM_IMPACT_EXEMPTION` WHERE `ComponentThickness` = '" + str(thickness) + "'";
+            sql = "SELECT * FROM \"tbl_213_dm_impact_exemption\" WHERE \"ComponentThickness\" = '" + str(thickness) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[1];
                 data[1] = r[2];
                 data[2] = r[3];
                 data[3] = r[4];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute data from Table 213 Fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_204(susceptibility):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         data = np.zeros(7);
         try:
-            sql = "SELECT * FROM `TBL_204_DM_HTHA` WHERE `Susceptibility` = '"+susceptibility+"'";
+            sql = "SELECT * FROM \"tbl_204_dm_htha\" WHERE \"Susceptibility\" = '"+susceptibility+"'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[2];
@@ -120,128 +138,158 @@ class MySQL_CAL:
                 data[4] = r[6];
                 data[5] = r[7];
                 data[6] = r[8];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 204 Fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_214(DeltaT, size):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         data = 0.0;
         try:
-            sql = "SELECT `"+str(size)+"` FROM djangorbi.tbl_214_dm_not_pwht WHERE `Tmin-Tref` = '"+str(DeltaT)+"'";
+            sql = "SELECT \""+str(size)+"\" FROM tbl_214_dm_not_pwht WHERE \"Tmin-Tref\" = '"+str(DeltaT)+"'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 214 Fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_215(DeltaT, size):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         data = 0;
         try:
-            sql = "SELECT `" + str(size) + "` FROM `TBL_215_DM_PWHT` WHERE `Tmin-Tref` = '" + str(DeltaT) + "'";
+            sql = "SELECT \"" + str(size) + "\" FROM \"tbl_215_dm_pwht\" WHERE \"Tmin-Tref\" = '" + str(DeltaT) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 215 fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_511(ART, INSP, Effective):
         data = 0;
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
             if(Effective == "E"):
-                sql = "SELECT `E` FROM `TBL_511_DFB_THIN` WHERE `art` ='" + str(ART) + "'";
+                sql = "SELECT \"E\" FROM \"tbl_511_dfb_thin\" WHERE \"art\" ='" + str(ART) + "'";
             else:
-                sql = "SELECT `" + Effective + "` FROM `TBL_511_DFB_THIN` WHERE `art` ='" + str(ART) + "' AND `insp` = '" + str(INSP) + "'";
+                sql = "SELECT \"" + Effective + "\" FROM \"TBL_511_DFB_THIN\" WHERE \"art\" ='" + str(ART) + "' AND \"insp\" = '" + str(INSP) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 511 Fail");
+        finally:
+            conn.close()
         return data[0];
 
     def GET_TBL_512(ART, Effective):
         data = 0;
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `"+Effective+"` FROM `TBL_512_DFB_THIN_TANK_BOTTOM` WHERE `art` = '"+str(ART)+"'";
+            sql = "SELECT \""+Effective+"\" FROM \"tbl_512_dfb_thin_tank_bottom\" WHERE \"art\" = '"+str(ART)+"'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 512 fail!");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_64(YEAR, Suscep):
         data = 0;
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `" + Suscep + "` FROM `TBL_64_DM_LINNING_INORGANIC` WHERE `YearsSinceLastInspection` = '" + str(YEAR) + "'";
+            sql = "SELECT \"" + Suscep + "\" FROM \"tbl_64_dm_linning_inorganic\" WHERE \"YearsSinceLastInspection\" = '" + str(YEAR) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 64 fail!");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_65(YEAR, Suscep):
         data = 0;
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `" + Suscep + "` FROM `TBL_65_DM_LINNING_ORGANIC` WHERE `YearInService` = '" + str(YEAR) + "'";
+            sql = "SELECT \"" + Suscep + "\" FROM \"tbl_65_dm_linning_organic\" WHERE \"YearInService\" = '" + str(YEAR) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 65 fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_74(SVI, field):
         data = 0;
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `" + field + "` FROM `TBL_74_SCC_DM_PWHT` WHERE `SVI` ='" + str(SVI) + "'";
+            sql = "SELECT \"" + field + "\" FROM \"tbl_74_scc_dm_pwht\" WHERE \"SVI\" ='" + str(SVI) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r;
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 74 fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_3B21(locat):
-        data = 0;
+        data = 0
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `SIUnits` FROM `TBL_3B21_SI_CONVERSION` WHERE `conversionFactory` = '" + str(locat) + "'";
+            sql = "SELECT \"SIUnits\" FROM \"tbl_3b21_si_conversion\" WHERE \"conversionFactory\" = '" + str(locat) + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data = r[0];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 3B21 fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_TBL_71_PROPERTIES(FluidTank):
         data = np.zeros(3);
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT `Molecular Weight`,`Liquid Density`,`Liquid Density Viscosity` FROM `TBL_71_PROPERTIES_STORAGE_TANK` WHERE `Fluid`='" + FluidTank + "'";
+            sql = "SELECT \"Molecular Weight\",\"Liquid Density\",\"Liquid Density Viscosity\" FROM \"tbl_71_properties_storage_tank\" WHERE \"Fluid\"='" + FluidTank + "'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[0];
                 data[1] = r[1];
                 data[2] = r[2];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql from table 71 fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_API_COM(APIComponentTypeName):
         data = np.zeros(13);
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor();
         try:
-            sql = "SELECT * FROM `api_component_type` WHERE `APIComponentTypeName` = '"+str(APIComponentTypeName)+"'";
+            sql = "SELECT * FROM \"api_component_type\" WHERE \"APIComponentTypeName\" = '"+str(APIComponentTypeName)+"'";
             Cursor.execute(sql);
             for r in Cursor:
                 data[0] = r[2];
@@ -257,53 +305,68 @@ class MySQL_CAL:
                 data[10] = r[12];
                 data[11] = r[13];
                 data[12] = r[14];
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Execute sql table API_COMPONENT_TYPE fail");
+        finally:
+            conn.close()
         return data;
 
     def GET_LAST_INSP(ComponentNumber, DamageName, CommissionDate):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor()
         try:
-            sql = "SELECT MAX(InspectionDate) FROM `rw_inspection_history` WHERE `ComponentNumber` = '"+str(ComponentNumber)+"' AND `DM` = '"+str(DamageName)+"'"
+            sql = "SELECT MAX(\"InspectionDate\") FROM \"rw_inspection_history\" WHERE \"ComponentNumber\" = '"+str(ComponentNumber)+"' AND \"DM\" = '"+str(DamageName)+"'"
             Cursor.execute(sql)
             data = Cursor.fetchone()
             if data[0] is None:
                 date = CommissionDate
             else:
                 date = data[0]
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Excute sql table INSPECTION HISTORY fail")
+        finally:
+            conn.close()
         return date
 
     def GET_MAX_INSP(ComponentNumber, DamageName):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor()
+        eff = "E"
         try:
-            sql = "SELECT MIN(InspectionEffective) FROM `rw_inspection_history` WHERE `ComponentNumber` = '"+str(ComponentNumber)+"' AND `DM` = '"+str(DamageName)+"'"
+            sql = "SELECT MIN(\"InspectionEffective\") FROM \"rw_inspection_history\" WHERE \"ComponentNumber\" = '"+str(ComponentNumber)+"' AND \"DM\" = '"+str(DamageName)+"'"
             Cursor.execute(sql)
             data = Cursor.fetchone()
             if data[0] is None:
                 eff = "E"
             else:
                 eff = str(data[0])
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Excute sql table INSPECTION HISTORY fail")
+        finally:
+            conn.close()
         return eff
 
     def GET_NUMBER_INSP(ComponentNumber, DamageName):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor()
+        data=[0]
         try:
-            sql = "SELECT COUNT(InspectionEffective) FROM `rw_inspection_history` WHERE `ComponentNumber` = '"+str(ComponentNumber)+"' AND `DM` = '"+str(DamageName)+"'"
+            sql = "SELECT COUNT(\"InspectionEffective\") FROM \"rw_inspection_history\" WHERE \"ComponentNumber\" = '"+str(ComponentNumber)+"' AND \"DM\" = '"+str(DamageName)+"'"
             Cursor.execute(sql)
             data = Cursor.fetchone()
-        except pymysql.InternalError as Error:
+        except psycopg2.InternalError as Error:
             print("Error! Excute sql table INSPECTION HISTORY fail")
+        finally:
+            conn.close()
         return data[0]
 
     def GET_AGE_INSP(ComponentNumber, DamageName, CommissionDate, AssessmentDate):
+        conn = psycopg2.connect(connect_string)
         Cursor = conn.cursor()
+        date = CommissionDate
         try:
-            sql = "SELECT MAX(InspectionDate) FROM `rw_inspection_history` WHERE `ComponentNumber` = '" + str(
-                ComponentNumber) + "' AND `DM` = '" + str(DamageName) + "'"
+            sql = "SELECT MAX(\"InspectionDate\") FROM \"rw_inspection_history\" WHERE \"ComponentNumber\" = '" + str(
+                ComponentNumber) + "' AND \"DM\" = '" + str(DamageName) + "'"
             Cursor.execute(sql)
             data = Cursor.fetchone()
             if data[0] is None:
@@ -311,5 +374,7 @@ class MySQL_CAL:
             else:
                 date = data[0]
         except:
-            print("Error!")
+            print("Error! get age insp")
+        finally:
+            conn.close()
         return (AssessmentDate.date() - date.date()).days/365

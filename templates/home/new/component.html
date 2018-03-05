@@ -101,7 +101,7 @@
 
                 <tr>
                     <td><span style="font-size:16px;">Component Type: </span></td>
-                    <td><select class="form-control" id="exampleFormControlSelect1" name="componentType" >
+                    <td><select class="form-control" id="componentType" name="componentType" >
                         {% for a in componenttype %}
                             {% if a.componenttypename == component.componenttype or a.componenttypeid == component.componenttypeid_id %}
                                 <option selected>{{ a.componenttypename }}</option>
@@ -114,7 +114,7 @@
                 <tr>
                     <td><span style="font-size:16px;">API Component Type: </span></td>
                     {% if isedit %}
-                    <td><select class="form-control" id="exampleFormControlSelect1" name="apiComponentType" disabled="true">
+                    <td><select class="form-control" id="apiComponentType" name="apiComponentType" disabled="true">
                         {%  for a in api %}
                             {% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}
                                 <option selected>{{ a.apicomponenttypename }}</option>
@@ -124,7 +124,7 @@
                         {% endfor %}
                     </select></td>
                     {% else %}
-                    <td><select class="form-control" id="exampleFormControlSelect1" name="apiComponentType" >
+                    <td><select class="form-control" id="apiComponentType" name="apiComponentType" >
                         {%  for a in api %}
                             {% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}
                                 <option selected>{{ a.apicomponenttypename }}</option>
@@ -132,9 +132,44 @@
                                 <option>{{ a.apicomponenttypename }}</option>
                             {% endif %}
                         {% endfor %}
-                    </select></td>
                     {% endif %}
                 </tr>
+                 <!------Component Type Change-------->
+                        <script>
+                            $(document).ready(function () {
+                                $("#componentType").change(function () {
+                                    $("#apiComponentType").empty();
+                                    var componenttype = $("#componentType").val();
+                                    if( componenttype == "Shell"){
+                                        $("#apiComponentType").html("<option value ='COURSE-1'>COURSE-1</option>"+
+                                        "<option value='COURSE-2'>COURSE-2</option><option value='COURSE-3'>COURSE-3</option>"+
+                                        "<option value='COURSE-4'>COURSE-4</option><option value='COURSE-5'>COURSE-5</option>"+
+                                        "<option value='COURSE-6'>COURSE-6</option><option value='COURSE-7'>COURSE-7</option>"+
+                                        "<option value='COURSE-8'>COURSE-8</option><option value='COURSE-9'>COURSE-9</option>"+
+                                        "<option value='COURSE-10'>COURSE-10</option>");
+                                    }
+                                    else if(componenttype == "Tank Bottom"){
+                                        $("#apiComponentType").html("<option value ='TANKBOTTOM'>TANKBOTTOM</option>");
+                                    }
+                                    else if(componenttype == "Fixed Roof"){
+                                        $("#apiComponentType").html("<option value ='TANKROOFFIXED'>TANKROOFFIXED</option>");
+                                    }
+                                    else if(componenttype == "Floating Roof"){
+                                        $("#apiComponentType").html("<option value ='TANKROOFFLOAT'>TANKROOFFLOAT</option>");
+                                    }
+                                    else {
+                                        $("#apiComponentType").html("{%  for a in api %}"+
+                                                                    "{% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}"+
+                                                                        "<option selected>{{ a.apicomponenttypename }}</option>"+
+                                                                    "{% else %}"+
+                                                                        "<option>{{ a.apicomponenttypename }}</option>"+
+                                                                    "{% endif %}"+
+                                                                    "{% endfor %}");
+                                    }
+                                })
+                            })
+                        </script>
+
 
                 <tr>
                     <td><span style="font-size:16px;">Component Name:</span></td>

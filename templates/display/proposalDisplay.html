@@ -56,7 +56,11 @@
         <ul>
             <h2>Proposal Management</h2>
             <li><a href="{% url 'proposalDisplay' component.componentid %}">Proposal List</a></li>
-            <li><a href="{% url 'newProposal' component.componentid%}">New Proposal</a></li>
+            {% if isTank %}
+                <li><a href="{% url 'newProposalTank' component.componentid%}">New Proposal</a></li>
+            {% else %}
+                <li><a href="{% url 'newProposal' component.componentid%}">New Proposal</a></li>
+            {% endif %}
             <li><a href="{% url 'component_display' component.equipmentid_id %}">Back To Component</a> </li>
         </ul>
     </div>
@@ -64,7 +68,7 @@
     <div id = Adiv>
     <form class="form-control" method="post">
     {% csrf_token %}
-        <caption><b style="font-size: 20px; color: darkblue">COMPONENTS LIST</b></caption>
+        <caption><b style="font-size: 20px; color: darkblue">PROPOSAL LIST</b></caption>
         <table id = "t01"><br>
         <thead>
             <tr>
@@ -80,7 +84,6 @@
 
         <tbody>
             {% for data,a in obj %}
-
              <tr >
                 <td align="center"><input type="checkbox" name="{{ a.id }}"></td>
                  <td align="center"><a href="{% url 'resultpof' a.id %}">{{ a.proposalname }}</a></td>

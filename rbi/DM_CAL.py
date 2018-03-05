@@ -1904,8 +1904,8 @@ class DM_CAL:
         TOTAL_DF_API = max(self.DF_THINNING_TOTAL_API(i),self.DF_EXT_TOTAL_API(i)) + self.DF_SSC_TOTAL_API(i) + self.DF_HTHA_API(i) + self.DF_BRIT_TOTAL_API() + self.DF_PIPE_API()
         return TOTAL_DF_API
 
-    def INSP_DUE_DATE(self, PoF_Total, Risk_Target):
-        DF_TARGET = Risk_Target/PoF_Total
+    def INSP_DUE_DATE(self, FC_Total, GFF, FSM, Risk_Target):
+        DF_TARGET = Risk_Target/(FC_Total * GFF * FSM);
         for a in range(1,16):
             if self.DF_TOTAL_API(a) > DF_TARGET:
                 break
@@ -1913,16 +1913,84 @@ class DM_CAL:
         return self.AssesmentDate + relativedelta(years= a)
 
     def ISDF(self):
-         DM_ID = [8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10]
-         DM_VALUES =[self.DF_THINNING_API(0),self.DF_THINNING_API(3),self.DF_THINNING_API(6),
-                     self.DF_LINNING_API(0),self.DF_LINNING_API(3),self.DF_LINNING_API(6),
-                     self.DF_CAUTISC_API(0),self.DF_CAUTISC_API(3),self.DF_CAUTISC_API(6),
-                     self.DF_AMINE_API(0),self.DF_AMINE_API(3),self.DF_AMINE_API(6),
-                     self.DF_SULPHIDE_API(0),self.DF_SULPHIDE_API(3),self.DF_SULPHIDE_API(6),
-                     self.DF_HICSOHIC_H2S_API(0),self.DF_HICSOHIC_H2S_API(3),self.DF_HICSOHIC_H2S_API(6),
-                     self.DF_CACBONATE_API(0),self.DF_CACBONATE_API(3),self.DF_CACBONATE_API(6),
-                     self.DF_PTA_API(0),self.DF_PTA_API(3),self.DF_PTA_API(6),
-                     ]
-         data = {}
-    #     for a in range(0,61,3):
-    #         if
+        DM_ID = [8, 9, 61, 57, 73, 69, 60, 72, 62, 70, 67, 34, 32, 66, 63, 68, 2, 18, 1, 14, 10]
+        data_mechanism = []
+        DF_ITEM = np.zeros(21)
+        DF_ITEM[0] = self.DF_THINNING_API(0)
+        DF_ITEM[1] = self.DF_LINNING_API(0)
+        DF_ITEM[2] = self.DF_CAUTISC_API(0)
+        DF_ITEM[3] = self.DF_AMINE_API(0)
+        DF_ITEM[4] = self.DF_SULPHIDE_API(0)
+        DF_ITEM[5] = self.DF_HICSOHIC_H2S_API(0)
+        DF_ITEM[6] = self.DF_CACBONATE_API(0)
+        DF_ITEM[7] = self.DF_PTA_API(0)
+        DF_ITEM[8] = self.DF_CLSCC_API(0)
+        DF_ITEM[9] = self.DF_HSCHF_API(0)
+        DF_ITEM[10] = self.DF_HIC_SOHIC_HF_API(0)
+        DF_ITEM[11] = self.DF_EXTERNAL_CORROSION_API(0)
+        DF_ITEM[12] = self.DF_CUI_API(0)
+        DF_ITEM[13] = self.DF_EXTERN_CLSCC_API()
+        DF_ITEM[14] = self.DF_CUI_CLSCC_API()
+        DF_ITEM[15] = self.DF_HTHA_API(0)
+        DF_ITEM[16] = self.DF_BRITTLE_API()
+        DF_ITEM[17] = self.DF_TEMP_EMBRITTLE_API()
+        DF_ITEM[18] = self.DF_885_API()
+        DF_ITEM[19] = self.DF_SIGMA_API()
+        DF_ITEM[20] = self.DF_PIPE_API()
+        for i in range(0,21):
+            if DF_ITEM[i] > 1:
+                data_return = {}
+                data_return['DF1'] = DF_ITEM[i]
+                data_return['DM_ITEM_ID'] = DM_ID[i]
+                data_return['isActive'] = 1
+                data_return['highestEFF'] = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[i])
+                data_return['secondEFF'] = data_return['highestEFF']
+                data_return['numberINSP'] = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[i])
+                data_return['lastINSP'] = DAL_CAL.MySQL_CAL.GET_LAST_INSP(self.ComponentNumber, self.DM_Name[i], self.CommissionDate)
+                if i == 0:
+                    data_return['DF2'] = self.DF_THINNING_API(3)
+                    data_return['DF3'] = self.DF_THINNING_API(6)
+                elif i == 1:
+                    data_return['DF2'] = self.DF_LINNING_API(3)
+                    data_return['DF3'] = self.DF_LINNING_API(6)
+                elif i == 2:
+                    data_return['DF2'] = self.DF_CAUTISC_API(3)
+                    data_return['DF3'] = self.DF_CAUTISC_API(6)
+                elif i == 3:
+                    data_return['DF2'] = self.DF_AMINE_API(3)
+                    data_return['DF3'] = self.DF_AMINE_API(6)
+                elif i == 4:
+                    data_return['DF2'] = self.DF_SULPHIDE_API(3)
+                    data_return['DF3'] = self.DF_SULPHIDE_API(6)
+                elif i == 5:
+                    data_return['DF2'] = self.DF_HICSOHIC_H2S_API(3)
+                    data_return['DF3'] = self.DF_HICSOHIC_H2S_API(6)
+                elif i == 6:
+                    data_return['DF2'] = self.DF_CACBONATE_API(3)
+                    data_return['DF3'] = self.DF_CACBONATE_API(6)
+                elif i == 7:
+                    data_return['DF2'] = self.DF_PTA_API(3)
+                    data_return['DF3'] = self.DF_PTA_API(6)
+                elif i == 8:
+                    data_return['DF2'] = self.DF_CLSCC_API(3)
+                    data_return['DF3'] = self.DF_CLSCC_API(6)
+                elif i == 9:
+                    data_return['DF2'] = self.DF_HSCHF_API(3)
+                    data_return['DF3'] = self.DF_HSCHF_API(6)
+                elif i == 10:
+                    data_return['DF2'] = self.DF_HIC_SOHIC_HF_API(3)
+                    data_return['DF3'] = self.DF_HIC_SOHIC_HF_API(6)
+                elif i == 11:
+                    data_return['DF2'] = self.DF_EXTERNAL_CORROSION_API(3)
+                    data_return['DF3'] = self.DF_EXTERNAL_CORROSION_API(6)
+                elif i == 12:
+                    data_return['DF2'] = self.DF_CUI_API(3)
+                    data_return['DF3'] = self.DF_CUI_API(6)
+                elif i == 15:
+                    data_return['DF2'] = self.DF_HTHA_API(3)
+                    data_return['DF3'] = self.DF_HTHA_API(6)
+                else:
+                    data_return['DF2'] = DF_ITEM[i]
+                    data_return['DF3'] = DF_ITEM[i]
+                data_mechanism.append(data_return)
+        return data_mechanism

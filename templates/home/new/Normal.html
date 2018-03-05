@@ -471,18 +471,18 @@
                     <table>
                         <tr>
                             <td ><span style="color: red;font-size: 16px">Maximum Operating Temperature</span></td>
-                            <td><input type="number" class="form-control" step="0.01" value="0" name="MaxOT"/></td><td>&deg;C</td>
+                            <td><input type="number" class="form-control" step="0.01" value="0" name="MaxOT" id="MaxOT"/></td><td>&deg;C</td>
                             <td>&emsp;</td>
                             <td><span style="font-size: 16px">Maximum Operating Pressure</span></td>
-                            <td><input type="number" step="0.01" class="form-control" value="0" name="MaxOP"/></td><td>psi</td>
+                            <td><input type="number" step="0.01" class="form-control" value="0" name="MaxOP" id="MaxOP"/></td><td>psi</td>
                         </tr>
 
                         <tr>
                             <td><span style="color: red;font-size: 16px">Minimum Operating Temperature</span>
-                            <td><input type="number" value="0" class="form-control" step="0.01" name="MinOT"/></td><td>&deg;C</td>
+                            <td><input type="number" value="0" class="form-control" step="0.01" name="MinOT" id="MinOT"/></td><td>&deg;C</td>
                             <td>&emsp;</td>
                             <td><span style="font-size: 16px">Minimum Operating Pressure</span></td>
-                            <td><input type="number" value="0" class="form-control" step="0.01" name="MinOP"/></td><td>psi</td>
+                            <td><input type="number" value="0" class="form-control" step="0.01" name="MinOP" id="MinOP"/></td><td>psi</td>
                         </tr>
                         <tr>
                             <td><span style="color: red;font-size: 16px">Operating Hydrogen Partial Pressure </span></td>
@@ -495,7 +495,27 @@
                             <td><span style="color: red;font-size: 16px">Critical Exposure Temperature</span></td>
                             <td><input type="number" value="0" class="form-control" step="0.01" name="CET"/></td><td>&deg;C</td>
                         </tr>
+                        <!-----demo catch input----->
+                        <script>
+                        $("#MaxOP").change(function () {
+                            $maxOP = $("#MaxOP").val();
+                            $("#MinOP").prop('max', $maxOP);
+                        })
+                        $("#MinOP").change(function () {
+                            $minOP = $("#MinOP").val();
+                            $("#MaxOP").prop('min', $minOP);
+                        })
+                        $("#MaxOT").change(function () {
+                            $maxOT = $("#MaxOT").val();
+                            $("#MinOT").prop('max', $maxOT);
+                        })
+                        $("#MinOT").change(function () {
+                            $minOT = $("#MinOT").val();
+                            $("#MaxOT").prop('min',$minOT)
+                        })
+                    </script>
                     </table>
+
                     <br>
                     <fieldset class="scheduler-border" >
                         <legend class="scheduler-border" ><p><b><span style="font-size: 16px">Operating Temperature in Different Temperature Ranger</span></b></p></legend>
@@ -565,10 +585,21 @@
                     <table>
                         <tr>
                             <td><span style="font-size: 16px;display: inline-block;">Max.Design Temperature</span></td>
-                            <td><input type="number" class="form-control" step="0.01" value="0" name="MaxDesignTemp"/></td><td>&deg;C &emsp;&emsp;</td>
+                            <td><input type="number" class="form-control" step="0.01" value="0" name="MaxDesignTemp" id="MaxDesignTemp" /></td><td>&deg;C &emsp;&emsp;</td>
                             <td><span style="font-size: 16px">Min.Design Temperature </span></td>
-                            <td><input type="number" step="0.01" class="form-control" value="0" name="MinDesignTemp"/></td><td>&deg;C</td>
+                            <td><input type="number" step="0.01" class="form-control" value="0" name="MinDesignTemp" id="MinDesignTemp" /></td><td>&deg;C</td>
                         </tr>
+                        <!-------demo catch data-------->
+                        <script>
+                            $("#MaxDesignTemp").change(function () {
+                                $maxDesignTemp = $("#MaxDesignTemp").val();
+                                $("#MinDesignTemp").prop('max', $maxDesignTemp);
+                            })
+                            $("#MinDesignTemp").change(function () {
+                                $minDesignTemp = $("#MinDesignTemp").val();
+                                $("#MaxDesignTemp").prop("min", $minDesignTemp);
+                            })
+                        </script>
 
                         <tr>
                             <td><span style="font-size: 16px">Design Pressure</span></td>

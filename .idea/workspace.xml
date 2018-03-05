@@ -2,15 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ad7445e-0f21-431d-8b2c-5429b7497c99" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/display/proposalDisplay.html" afterPath="$PROJECT_DIR$/templates/display/proposalDisplay.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/display/dfThinningFull.html" afterPath="$PROJECT_DIR$/templates/display/dfThinningFull.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/home/views.py" afterPath="$PROJECT_DIR$/home/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/CA_CAL.py" afterPath="$PROJECT_DIR$/rbi/CA_CAL.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/DM_CAL.py" afterPath="$PROJECT_DIR$/rbi/DM_CAL.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/MYSQL_CAL.py" afterPath="$PROJECT_DIR$/rbi/MYSQL_CAL.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/models.py" afterPath="$PROJECT_DIR$/rbi/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/settings.py" afterPath="$PROJECT_DIR$/rbi/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home/new/component.html" afterPath="$PROJECT_DIR$/templates/home/new/component.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/urls.py" afterPath="$PROJECT_DIR$/rbi/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home/new/Normal.html" afterPath="$PROJECT_DIR$/templates/home/new/Normal.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/home/views.py" afterPath="$PROJECT_DIR$/home/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/models.py" afterPath="$PROJECT_DIR$/rbi/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/CA_CAL.py" afterPath="$PROJECT_DIR$/rbi/CA_CAL.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/MYSQL_CAL.py" afterPath="$PROJECT_DIR$/rbi/MYSQL_CAL.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rbi/DM_CAL.py" afterPath="$PROJECT_DIR$/rbi/DM_CAL.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home/new/newAllTank.html" afterPath="$PROJECT_DIR$/templates/home/new/newAllTank.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,17 +37,7 @@
     <option name="SHOW_TABLE_DETAILS" value="true" />
     <option name="SHOW_EMPTY_GROUPS" value="false" />
     <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-    <expand>
-      <path>
-        <item name="" type="eadb38e5:DatabaseStructure$Root" />
-        <item name="djangorbi@localhost" type="e3449647:DbNodeDescriptor" />
-      </path>
-      <path>
-        <item name="" type="eadb38e5:DatabaseStructure$Root" />
-        <item name="djangorbi@localhost" type="e3449647:DbNodeDescriptor" />
-        <item name="djangorbi" type="e3449647:DbNodeDescriptor" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
@@ -50,81 +45,62 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rbi/models.py">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rbi/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="952" column="39" lean-forward="false" selection-start-line="952" selection-start-column="39" selection-end-line="952" selection-end-column="39" />
-              <folding>
-                <element signature="e#468#496#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DM_CAL.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/rbi/DM_CAL.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1026">
-              <caret line="1927" column="5" lean-forward="false" selection-start-line="1927" selection-start-column="5" selection-end-line="1927" selection-end-column="5" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Normal.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/home/new/Normal.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10183">
-              <caret line="599" column="55" lean-forward="false" selection-start-line="599" selection-start-column="28" selection-end-line="599" selection-end-column="55" />
+            <state relative-caret-position="1717">
+              <caret line="101" column="7" lean-forward="false" selection-start-line="101" selection-start-column="7" selection-end-line="101" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CA_CAL.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rbi/CA_CAL.py">
+      <file leaf-file-name="proposalDisplay.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/display/proposalDisplay.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4777">
-              <caret line="877" column="49" lean-forward="false" selection-start-line="877" selection-start-column="49" selection-end-line="877" selection-end-column="49" />
-              <folding>
-                <element signature="e#3688#3728#0" expanded="false" />
-                <element signature="e#3757#4591#0" expanded="false" />
-                <element signature="e#6022#7429#0" expanded="false" />
-                <element signature="e#7467#7552#0" expanded="false" />
-                <element signature="e#7592#7675#0" expanded="false" />
-                <element signature="e#7707#7842#0" expanded="false" />
-                <element signature="e#7882#8154#0" expanded="false" />
-                <element signature="e#8187#8635#0" expanded="false" />
-                <element signature="e#8672#10600#0" expanded="false" />
-                <element signature="e#10803#11085#0" expanded="false" />
-                <element signature="e#11120#11183#0" expanded="false" />
-                <element signature="e#11217#11590#0" expanded="false" />
-                <element signature="e#11626#11799#0" expanded="false" />
-                <element signature="e#11839#12355#0" expanded="false" />
-                <element signature="e#12395#12837#0" expanded="false" />
-                <element signature="e#12876#13308#0" expanded="false" />
-                <element signature="e#13347#13780#0" expanded="false" />
-                <element signature="e#13830#14218#0" expanded="false" />
-                <element signature="e#14264#14641#0" expanded="false" />
-                <element signature="e#14691#15188#0" expanded="false" />
-                <element signature="e#15237#15340#0" expanded="false" />
-                <element signature="e#15389#15586#0" expanded="false" />
-                <element signature="e#15624#15809#0" expanded="false" />
-                <element signature="e#15843#16275#0" expanded="false" />
-                <element signature="e#16317#16624#0" expanded="false" />
-                <element signature="e#16666#16993#0" expanded="false" />
-                <element signature="e#17029#17385#0" expanded="false" />
-                <element signature="e#17423#17810#0" expanded="false" />
-                <element signature="e#17848#18207#0" expanded="false" />
-                <element signature="e#18331#18380#0" expanded="false" />
-                <element signature="e#18415#29341#0" expanded="false" />
-                <element signature="e#29381#30697#0" expanded="false" />
-                <element signature="e#30733#32047#0" expanded="false" />
-                <element signature="e#32083#32429#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="1564">
+              <caret line="92" column="46" lean-forward="false" selection-start-line="92" selection-start-column="44" selection-end-line="92" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FullyNormalConsequences.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/display/FullyNormalConsequences.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="918">
+              <caret line="54" column="103" lean-forward="false" selection-start-line="53" selection-start-column="12" selection-end-line="54" selection-end-column="103" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FullyShellConsequences.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/display/FullyShellConsequences.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="901">
+              <caret line="53" column="42" lean-forward="false" selection-start-line="53" selection-start-column="33" selection-end-line="53" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rbi/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="950" column="0" lean-forward="false" selection-start-line="950" selection-start-column="0" selection-end-line="950" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TankBottomConsequences.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/display/TankBottomConsequences.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="918">
+              <caret line="54" column="103" lean-forward="false" selection-start-line="54" selection-start-column="103" selection-end-line="54" selection-end-column="103" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -132,33 +108,25 @@
       <file leaf-file-name="MYSQL_CAL.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/rbi/MYSQL_CAL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2958">
-              <caret line="177" column="22" lean-forward="false" selection-start-line="177" selection-start-column="19" selection-end-line="177" selection-end-column="22" />
+            <state relative-caret-position="5984">
+              <caret line="355" column="32" lean-forward="false" selection-start-line="355" selection-start-column="32" selection-end-line="355" selection-end-column="32" />
               <folding>
-                <marker date="1518099660756" expanded="true" signature="348:478" ph="SELECT `MW`,... TBL_52_CA_PROPERTIES_LEVEL_1" />
-                <marker date="1518099660756" expanded="true" signature="1091:1175" ph="SELECT `Ambi... TBL_52_CA_PROPERTIES_LEVEL_1" />
-                <marker date="1518099660756" expanded="true" signature="1520:1590" ph="SELECT * FRO... TBL_58_CA_COMPONENT_DM" />
-                <marker date="1518099660756" expanded="true" signature="2418:2496" ph="SELECT * FRO... TBL_59_COMPONENT_DAMAGE_PERSON" />
-                <marker date="1518099660756" expanded="true" signature="3336:3433" ph="SELECT * FRO... TBL_213_DM_IMPACT_EXEMPTION" />
-                <marker date="1518099660756" expanded="true" signature="3886:3963" ph="SELECT * FRO... TBL_204_DM_HTHA" />
-                <marker date="1518099660756" expanded="true" signature="5409:5475" ph="SELECT `E` F... TBL_511_DFB_THIN" />
-                <marker date="1518099660756" expanded="true" signature="7697:7792" ph="SELECT `SIUn... TBL_3B21_SI_CONVERSION" />
-                <marker date="1518099660756" expanded="true" signature="8151:8292" ph="SELECT `Mole... TBL_71_PROPERTIES_STORAGE_TANK" />
-                <marker date="1518099660756" expanded="true" signature="8718:8815" ph="SELECT * FRO... api_component_type" />
-                <marker date="1518099660756" expanded="true" signature="9575:9658" ph="SELECT MAX(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="9575:9683" ph="SELECT MAX(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="9575:9696" ph="SELECT MAX(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="9575:9716" ph="SELECT MAX(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="9575:9717" ph="SELECT MAX(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10157:10245" ph="SELECT MIN(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10157:10270" ph="SELECT MIN(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10157:10281" ph="SELECT MIN(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10157:10283" ph="SELECT MIN(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10157:10303" ph="SELECT MIN(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10157:10304" ph="SELECT MIN(I... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10738:10806" ph="SELECT COUNT... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="10738:10886" ph="SELECT COUNT... rw_inspection_history" />
-                <marker date="1518099660756" expanded="true" signature="11243:11409" ph="SELECT MAX(I... rw_inspection_history" />
+                <marker date="1519977873629" expanded="true" signature="631:638" ph="SELECT `MW`,... TBL_52_CA_PROPERTIES_LEVEL_1" />
+                <marker date="1519977873629" expanded="true" signature="631:785" ph="SELECT \&quot;MW\... TBL_52_CA_PROPERTIES_LEVEL_1" />
+                <marker date="1519977873629" expanded="true" signature="1489:1579" ph="SELECT \&quot;Amb... TBL_52_CA_PROPERTIES_LEVEL_1" />
+                <marker date="1519977873629" expanded="true" signature="2015:2089" ph="SELECT * FRO... TBL_58_CA_COMPONENT_DM" />
+                <marker date="1519977873629" expanded="true" signature="3008:3090" ph="SELECT * FRO... TBL_59_COMPONENT_DAMAGE_PERSON" />
+                <marker date="1519977873629" expanded="true" signature="4021:4122" ph="SELECT * FRO... TBL_213_DM_IMPACT_EXEMPTION" />
+                <marker date="1519977873629" expanded="true" signature="4666:4747" ph="SELECT * FRO... TBL_204_DM_HTHA" />
+                <marker date="1519977873629" expanded="true" signature="6466:6538" ph="SELECT \&quot;E\&quot;... TBL_511_DFB_THIN" />
+                <marker date="1519977873629" expanded="true" signature="9246:9347" ph="SELECT \&quot;SIU... TBL_3B21_SI_CONVERSION" />
+                <marker date="1519977873629" expanded="true" signature="9797:9948" ph="SELECT \&quot;Mol... TBL_71_PROPERTIES_STORAGE_TANK" />
+                <marker date="1519977873629" expanded="true" signature="10465:10566" ph="SELECT * FRO... api_component_type" />
+                <marker date="1519977873629" expanded="true" signature="11417:11568" ph="SELECT MAX(I... rw_inspection_history" />
+                <marker date="1519977873629" expanded="true" signature="12118:12274" ph="SELECT MIN(I... rw_inspection_history" />
+                <marker date="1519977873629" expanded="true" signature="12817:12975" ph="SELECT COUNT... rw_inspection_history" />
+                <marker date="1519977873629" expanded="true" signature="13453:13629" ph="SELECT MAX(I... rw_inspection_history" />
+                <marker date="1519977873629" expanded="true" signature="13601:13629" ph="SELECT MAX(I... rw_inspection_history" />
               </folding>
             </state>
           </provider>
@@ -167,47 +135,45 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/home/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="691" column="0" lean-forward="false" selection-start-line="691" selection-start-column="0" selection-end-line="691" selection-end-column="0" />
+            <state relative-caret-position="10438">
+              <caret line="1393" column="71" lean-forward="false" selection-start-line="1393" selection-start-column="71" selection-end-line="1393" selection-end-column="71" />
               <folding>
-                <element signature="e#0#23#0" expanded="true" />
                 <element signature="e#1059#1665#0" expanded="false" />
                 <element signature="e#1701#3832#0" expanded="false" />
                 <element signature="e#3876#7150#0" expanded="false" />
                 <element signature="e#7198#8308#0" expanded="false" />
                 <element signature="e#8357#9238#0" expanded="false" />
                 <element signature="e#9285#11972#0" expanded="false" />
-                <element signature="e#68321#69126#0" expanded="false" />
-                <element signature="e#69183#71712#0" expanded="false" />
-                <element signature="e#71773#74943#0" expanded="false" />
-                <element signature="e#75006#77195#0" expanded="false" />
-                <element signature="e#77257#78501#0" expanded="false" />
-                <element signature="e#78565#79577#0" expanded="false" />
-                <element signature="e#79631#80060#0" expanded="false" />
-                <element signature="e#80106#80875#0" expanded="false" />
-                <element signature="e#80926#81855#0" expanded="false" />
-                <element signature="e#81907#82837#0" expanded="false" />
-                <element signature="e#82889#83642#0" expanded="false" />
-                <element signature="e#83695#84481#0" expanded="false" />
-                <element signature="e#84525#84699#0" expanded="false" />
-                <element signature="e#84743#84853#0" expanded="false" />
-                <element signature="e#84901#85087#0" expanded="false" />
-                <element signature="e#85138#86243#0" expanded="false" />
+                <element signature="e#12019#49892#0" expanded="false" />
+                <element signature="e#92280#93085#0" expanded="false" />
+                <element signature="e#93142#95671#0" expanded="false" />
+                <element signature="e#95732#98902#0" expanded="false" />
+                <element signature="e#98965#101154#0" expanded="false" />
+                <element signature="e#101216#102460#0" expanded="false" />
+                <element signature="e#102524#103536#0" expanded="false" />
+                <element signature="e#103590#104019#0" expanded="false" />
+                <element signature="e#104065#104834#0" expanded="false" />
+                <element signature="e#104885#105814#0" expanded="false" />
+                <element signature="e#105866#106796#0" expanded="false" />
+                <element signature="e#106848#107601#0" expanded="false" />
+                <element signature="e#107654#108440#0" expanded="false" />
+                <element signature="e#108484#108758#0" expanded="false" />
+                <element signature="e#108817#109043#0" expanded="false" />
+                <element signature="e#109103#109330#0" expanded="false" />
+                <element signature="e#109374#109484#0" expanded="false" />
+                <element signature="e#109532#110134#0" expanded="false" />
+                <element signature="e#110185#111630#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="newAllTank.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/home/new/newAllTank.html">
+      <file leaf-file-name="DM_CAL.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rbi/DM_CAL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15708">
-              <caret line="924" column="78" lean-forward="false" selection-start-line="924" selection-start-column="78" selection-end-line="924" selection-end-column="78" />
-              <folding>
-                <element signature="e#51138#51144#0#HTML" expanded="false" />
-                <element signature="e#51144#51150#0#HTML" expanded="false" />
-                <element signature="e#51150#51156#0#HTML" expanded="false" />
-              </folding>
+            <state relative-caret-position="33915">
+              <caret line="1995" column="27" lean-forward="false" selection-start-line="1995" selection-start-column="27" selection-end-line="1995" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -226,36 +192,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DF_THI</find>
-      <find>DF_EXTERN_CLSCC</find>
-      <find>DF_THIN(</find>
-      <find>DF_TEMP_EMBRITTLE</find>
-      <find>NoINSP_THINNING</find>
-      <find>CAUSTIC_INSP_NUM</find>
-      <find>CARBONATE</find>
-      <find>DF_CLSCC</find>
-      <find>HSC-HF</find>
-      <find>HICSOHIC-HF</find>
-      <find>SCP</find>
-      <find>EXTERN_CLSCC_INSP_EFF</find>
-      <find>CUI_INSP_EFF</find>
-      <find>EFF</find>
-      <find>NUM=0</find>
-      <find>Mater</find>
-      <find>self</find>
-      <find>prin</find>
-      <find>rw</find>
-      <find>INST</find>
-      <find>asse</find>
-      <find>YEA</find>
-      <find>AGE_I</find>
-      <find>YEAR</find>
-      <find>YEAR_IN</find>
-      <find>ComponentI</find>
-      <find>CUI_INSP_DATE</find>
-      <find>CUI_I</find>
-      <find>CUI_INSP_</find>
+      <find>EXTER</find>
+      <find>EXTERNAL</find>
+      <find>DF_EX</find>
+      <find>EXTERN</find>
       <find>COMPONENT_INSTALL_DATE</find>
+      <find>1900</find>
+      <find>DF</find>
+      <find>W_n</find>
+      <find>EXTERN_COATING</find>
+      <find>rate_n</find>
+      <find>mater</find>
+      <find>ExternalCoating</find>
+      <find>isT</find>
+      <find>isTa</find>
+      <find>displayFullDF</find>
+      <find>operating con</find>
+      <find>isTank</find>
+      <find>Script</find>
+      <find>`</find>
+      <find>rwe</find>
+      <find>EquipmentMaster</find>
+      <find>'</find>
+      <find>TBL_3b</find>
+      <find>install</find>
+      <find>RWdame</find>
+      <find>ISD</find>
+      <find>rw</find>
+      <find>RwAssessment</find>
+      <find>FC_TOTAL</find>
+      <find>AutoField</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -264,9 +230,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/home/newTank/newStreamTank.html" />
-        <option value="$PROJECT_DIR$/templates/home/new/newMaterial.html" />
-        <option value="$PROJECT_DIR$/templates/home/newTank/newProposalTank.html" />
         <option value="$PROJECT_DIR$/templates/home/newTank/newAllTank.html" />
         <option value="$PROJECT_DIR$/templates/main_left/component.html" />
         <option value="$PROJECT_DIR$/templates/main_left/equipment.html" />
@@ -288,9 +251,7 @@
         <option value="$PROJECT_DIR$/home/admin.py" />
         <option value="$PROJECT_DIR$/templates/home/new/equipment.html" />
         <option value="$PROJECT_DIR$/templates/display/dfThinning .html" />
-        <option value="$PROJECT_DIR$/rbi/urls.py" />
         <option value="$PROJECT_DIR$/templates/Error/CAerror.html" />
-        <option value="$PROJECT_DIR$/templates/display/dfThinningFull.html" />
         <option value="$PROJECT_DIR$/templates/display/CA.html" />
         <option value="$PROJECT_DIR$/templates/display/component_display.html" />
         <option value="$PROJECT_DIR$/templates/display/designcode_display.html" />
@@ -298,23 +259,28 @@
         <option value="$PROJECT_DIR$/templates/display/equipment_display.html" />
         <option value="$PROJECT_DIR$/templates/display/facility_display.html" />
         <option value="$PROJECT_DIR$/templates/display/manufacture_display.html" />
-        <option value="$PROJECT_DIR$/templates/display/proposalDisplay.html" />
         <option value="$PROJECT_DIR$/templates/display/site_display.html" />
-        <option value="$PROJECT_DIR$/templates/home/new/component.html" />
         <option value="$PROJECT_DIR$/templates/home/new/facility.html" />
         <option value="$PROJECT_DIR$/templates/home/new/newDesignCode.html" />
         <option value="$PROJECT_DIR$/templates/home/new/newManufacture.html" />
         <option value="$PROJECT_DIR$/templates/home/new/newSite.html" />
         <option value="$PROJECT_DIR$/templates/page/home.html" />
         <option value="$PROJECT_DIR$/requirements.txt" />
-        <option value="$PROJECT_DIR$/rbi/settings.py" />
         <option value="$PROJECT_DIR$/templates/home/new/Normal.html" />
-        <option value="$PROJECT_DIR$/templates/home/new/newAllTank.html" />
-        <option value="$PROJECT_DIR$/rbi/MYSQL_CAL.py" />
         <option value="$PROJECT_DIR$/rbi/CA_CAL.py" />
-        <option value="$PROJECT_DIR$/rbi/models.py" />
-        <option value="$PROJECT_DIR$/home/views.py" />
+        <option value="$PROJECT_DIR$/templates/display/FullyNormalConsequences.html" />
+        <option value="$PROJECT_DIR$/rbi/urls.py" />
+        <option value="$PROJECT_DIR$/templates/display/dfThinningFull.html" />
+        <option value="$PROJECT_DIR$/templates/home/new/component.html" />
+        <option value="$PROJECT_DIR$/templates/display/FullyShellConsequences.html" />
+        <option value="$PROJECT_DIR$/templates/display/TankBottomConsequences.html" />
+        <option value="$PROJECT_DIR$/templates/home/new/newAllTank.html" />
         <option value="$PROJECT_DIR$/rbi/DM_CAL.py" />
+        <option value="$PROJECT_DIR$/rbi/models.py" />
+        <option value="$PROJECT_DIR$/rbi/settings.py" />
+        <option value="$PROJECT_DIR$/templates/display/proposalDisplay.html" />
+        <option value="$PROJECT_DIR$/home/views.py" />
+        <option value="$PROJECT_DIR$/rbi/MYSQL_CAL.py" />
       </list>
     </option>
   </component>
@@ -324,11 +290,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-7" />
     <option name="width" value="1370" />
-    <option name="height" value="744" />
+    <option name="height" value="735" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -356,6 +321,33 @@
               <item name="rbi" type="b2602c69:ProjectViewProjectNode" />
               <item name="rbi" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="rbi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rbi" type="462c0819:PsiDirectoryNode" />
+              <item name="home" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rbi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rbi" type="462c0819:PsiDirectoryNode" />
+              <item name="rbi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rbi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rbi" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rbi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rbi" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="display" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="rbi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rbi" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="home" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -368,7 +360,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/WEB/RBI" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -504,20 +496,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2624811" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23600605" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23895253" sideWeight="0.5711044" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22541603" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26350245" sideWeight="0.47276855" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26626325" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26350245" sideWeight="0.52723145" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26350245" sideWeight="0.42889562" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2569558" sideWeight="0.6043873" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934534" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -569,60 +560,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/home/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/static/css/home.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="80" column="16" lean-forward="true" selection-start-line="80" selection-start-column="16" selection-end-line="80" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/9d769c23/00e4bb33-d773-4e6b-a494-e9af9eb6f9eb/djangorbi.facility_risk_target">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/9d769c23/00e4bb33-d773-4e6b-a494-e9af9eb6f9eb/djangorbi.facility">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://table:/9d769c23/00e4bb33-d773-4e6b-a494-e9af9eb6f9eb/djangorbi.equipment_master">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/home/newNormal/newCoating.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://table:/9d769c23/00e4bb33-d773-4e6b-a494-e9af9eb6f9eb/djangorbi.component_master">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -728,13 +670,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/display/CA.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="46" column="14" lean-forward="false" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/display/component_display.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
@@ -753,13 +688,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
           <caret line="46" column="14" lean-forward="true" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/display/dfThinningFull.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="142" column="25" lean-forward="false" selection-start-line="142" selection-start-column="25" selection-end-line="142" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -784,31 +712,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/display/proposalDisplay.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="50" column="14" lean-forward="false" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/home/new/test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="56" lean-forward="true" selection-start-line="8" selection-start-column="56" selection-end-line="8" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/display/site_display.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="50" column="14" lean-forward="false" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/home/new/component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="46" column="14" lean-forward="true" selection-start-line="46" selection-start-column="14" selection-end-line="46" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -854,163 +761,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rbi/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="21" lean-forward="false" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
           <caret line="73" column="12" lean-forward="false" selection-start-line="73" selection-start-column="12" selection-end-line="73" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rbi/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="135" column="49" lean-forward="false" selection-start-line="135" selection-start-column="49" selection-end-line="135" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/home/new/newAllTank.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15708">
-          <caret line="924" column="78" lean-forward="false" selection-start-line="924" selection-start-column="78" selection-end-line="924" selection-end-column="78" />
-          <folding>
-            <element signature="e#51138#51144#0#HTML" expanded="false" />
-            <element signature="e#51144#51150#0#HTML" expanded="false" />
-            <element signature="e#51150#51156#0#HTML" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/home/new/Normal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10183">
-          <caret line="599" column="55" lean-forward="false" selection-start-line="599" selection-start-column="28" selection-end-line="599" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rbi/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="952" column="39" lean-forward="false" selection-start-line="952" selection-start-column="39" selection-end-line="952" selection-end-column="39" />
-          <folding>
-            <element signature="e#468#496#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rbi/CA_CAL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4777">
-          <caret line="877" column="49" lean-forward="false" selection-start-line="877" selection-start-column="49" selection-end-line="877" selection-end-column="49" />
-          <folding>
-            <element signature="e#3688#3728#0" expanded="false" />
-            <element signature="e#3757#4591#0" expanded="false" />
-            <element signature="e#6022#7429#0" expanded="false" />
-            <element signature="e#7467#7552#0" expanded="false" />
-            <element signature="e#7592#7675#0" expanded="false" />
-            <element signature="e#7707#7842#0" expanded="false" />
-            <element signature="e#7882#8154#0" expanded="false" />
-            <element signature="e#8187#8635#0" expanded="false" />
-            <element signature="e#8672#10600#0" expanded="false" />
-            <element signature="e#10803#11085#0" expanded="false" />
-            <element signature="e#11120#11183#0" expanded="false" />
-            <element signature="e#11217#11590#0" expanded="false" />
-            <element signature="e#11626#11799#0" expanded="false" />
-            <element signature="e#11839#12355#0" expanded="false" />
-            <element signature="e#12395#12837#0" expanded="false" />
-            <element signature="e#12876#13308#0" expanded="false" />
-            <element signature="e#13347#13780#0" expanded="false" />
-            <element signature="e#13830#14218#0" expanded="false" />
-            <element signature="e#14264#14641#0" expanded="false" />
-            <element signature="e#14691#15188#0" expanded="false" />
-            <element signature="e#15237#15340#0" expanded="false" />
-            <element signature="e#15389#15586#0" expanded="false" />
-            <element signature="e#15624#15809#0" expanded="false" />
-            <element signature="e#15843#16275#0" expanded="false" />
-            <element signature="e#16317#16624#0" expanded="false" />
-            <element signature="e#16666#16993#0" expanded="false" />
-            <element signature="e#17029#17385#0" expanded="false" />
-            <element signature="e#17423#17810#0" expanded="false" />
-            <element signature="e#17848#18207#0" expanded="false" />
-            <element signature="e#18331#18380#0" expanded="false" />
-            <element signature="e#18415#29341#0" expanded="false" />
-            <element signature="e#29381#30697#0" expanded="false" />
-            <element signature="e#30733#32047#0" expanded="false" />
-            <element signature="e#32083#32429#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rbi/MYSQL_CAL.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2958">
-          <caret line="177" column="22" lean-forward="false" selection-start-line="177" selection-start-column="19" selection-end-line="177" selection-end-column="22" />
-          <folding>
-            <marker date="1518099660756" expanded="true" signature="348:478" ph="SELECT `MW`,... TBL_52_CA_PROPERTIES_LEVEL_1" />
-            <marker date="1518099660756" expanded="true" signature="1091:1175" ph="SELECT `Ambi... TBL_52_CA_PROPERTIES_LEVEL_1" />
-            <marker date="1518099660756" expanded="true" signature="1520:1590" ph="SELECT * FRO... TBL_58_CA_COMPONENT_DM" />
-            <marker date="1518099660756" expanded="true" signature="2418:2496" ph="SELECT * FRO... TBL_59_COMPONENT_DAMAGE_PERSON" />
-            <marker date="1518099660756" expanded="true" signature="3336:3433" ph="SELECT * FRO... TBL_213_DM_IMPACT_EXEMPTION" />
-            <marker date="1518099660756" expanded="true" signature="3886:3963" ph="SELECT * FRO... TBL_204_DM_HTHA" />
-            <marker date="1518099660756" expanded="true" signature="5409:5475" ph="SELECT `E` F... TBL_511_DFB_THIN" />
-            <marker date="1518099660756" expanded="true" signature="7697:7792" ph="SELECT `SIUn... TBL_3B21_SI_CONVERSION" />
-            <marker date="1518099660756" expanded="true" signature="8151:8292" ph="SELECT `Mole... TBL_71_PROPERTIES_STORAGE_TANK" />
-            <marker date="1518099660756" expanded="true" signature="8718:8815" ph="SELECT * FRO... api_component_type" />
-            <marker date="1518099660756" expanded="true" signature="9575:9658" ph="SELECT MAX(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="9575:9683" ph="SELECT MAX(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="9575:9696" ph="SELECT MAX(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="9575:9716" ph="SELECT MAX(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="9575:9717" ph="SELECT MAX(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10157:10245" ph="SELECT MIN(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10157:10270" ph="SELECT MIN(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10157:10281" ph="SELECT MIN(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10157:10283" ph="SELECT MIN(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10157:10303" ph="SELECT MIN(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10157:10304" ph="SELECT MIN(I... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10738:10806" ph="SELECT COUNT... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="10738:10886" ph="SELECT COUNT... rw_inspection_history" />
-            <marker date="1518099660756" expanded="true" signature="11243:11409" ph="SELECT MAX(I... rw_inspection_history" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="691" column="0" lean-forward="false" selection-start-line="691" selection-start-column="0" selection-end-line="691" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#1059#1665#0" expanded="false" />
-            <element signature="e#1701#3832#0" expanded="false" />
-            <element signature="e#3876#7150#0" expanded="false" />
-            <element signature="e#7198#8308#0" expanded="false" />
-            <element signature="e#8357#9238#0" expanded="false" />
-            <element signature="e#9285#11972#0" expanded="false" />
-            <element signature="e#68321#69126#0" expanded="false" />
-            <element signature="e#69183#71712#0" expanded="false" />
-            <element signature="e#71773#74943#0" expanded="false" />
-            <element signature="e#75006#77195#0" expanded="false" />
-            <element signature="e#77257#78501#0" expanded="false" />
-            <element signature="e#78565#79577#0" expanded="false" />
-            <element signature="e#79631#80060#0" expanded="false" />
-            <element signature="e#80106#80875#0" expanded="false" />
-            <element signature="e#80926#81855#0" expanded="false" />
-            <element signature="e#81907#82837#0" expanded="false" />
-            <element signature="e#82889#83642#0" expanded="false" />
-            <element signature="e#83695#84481#0" expanded="false" />
-            <element signature="e#84525#84699#0" expanded="false" />
-            <element signature="e#84743#84853#0" expanded="false" />
-            <element signature="e#84901#85087#0" expanded="false" />
-            <element signature="e#85138#86243#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1021,13 +775,202 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/site_display.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="50" column="14" lean-forward="false" selection-start-line="50" selection-start-column="14" selection-end-line="50" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/CA.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="54" column="75" lean-forward="false" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rbi/CA_CAL.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="379" column="34" lean-forward="true" selection-start-line="379" selection-start-column="34" selection-end-line="379" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rbi/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="57" column="93" lean-forward="false" selection-start-line="57" selection-start-column="84" selection-end-line="57" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/dfThinningFull.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2567">
+          <caret line="151" column="13" lean-forward="false" selection-start-line="151" selection-start-column="13" selection-end-line="151" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home/new/Normal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18989">
+          <caret line="1117" column="97" lean-forward="false" selection-start-line="1113" selection-start-column="24" selection-end-line="1117" selection-end-column="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home/new/component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2822">
+          <caret line="166" column="84" lean-forward="false" selection-start-line="166" selection-start-column="84" selection-end-line="166" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/FullyNormalConsequences.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="54" column="103" lean-forward="false" selection-start-line="53" selection-start-column="12" selection-end-line="54" selection-end-column="103" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://table:/9d769c23/08f1495f-db6c-46ad-9058-7692069527b0/djangorbi.public.api_component_type">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home/new/newAllTank.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="654">
+          <caret line="690" column="130" lean-forward="false" selection-start-line="690" selection-start-column="130" selection-end-line="690" selection-end-column="130" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/rbi/DM_CAL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1026">
-          <caret line="1927" column="5" lean-forward="false" selection-start-line="1927" selection-start-column="5" selection-end-line="1927" selection-end-column="5" />
+        <state relative-caret-position="33915">
+          <caret line="1995" column="27" lean-forward="false" selection-start-line="1995" selection-start-column="27" selection-end-line="1995" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python 3.6.4/Lib/site-packages/django/db/backends/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-472">
+          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/TankBottomConsequences.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="54" column="103" lean-forward="false" selection-start-line="54" selection-start-column="103" selection-end-line="54" selection-end-column="103" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/FullyShellConsequences.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="53" column="42" lean-forward="false" selection-start-line="53" selection-start-column="33" selection-end-line="53" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/display/proposalDisplay.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1564">
+          <caret line="92" column="46" lean-forward="false" selection-start-line="92" selection-start-column="44" selection-end-line="92" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10438">
+          <caret line="1393" column="71" lean-forward="false" selection-start-line="1393" selection-start-column="71" selection-end-line="1393" selection-end-column="71" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#1059#1665#0" expanded="false" />
+            <element signature="e#1701#3832#0" expanded="false" />
+            <element signature="e#3876#7150#0" expanded="false" />
+            <element signature="e#7198#8308#0" expanded="false" />
+            <element signature="e#8357#9238#0" expanded="false" />
+            <element signature="e#9285#11972#0" expanded="false" />
+            <element signature="e#12019#49892#0" expanded="false" />
+            <element signature="e#92280#93085#0" expanded="false" />
+            <element signature="e#93142#95671#0" expanded="false" />
+            <element signature="e#95732#98902#0" expanded="false" />
+            <element signature="e#98965#101154#0" expanded="false" />
+            <element signature="e#101216#102460#0" expanded="false" />
+            <element signature="e#102524#103536#0" expanded="false" />
+            <element signature="e#103590#104019#0" expanded="false" />
+            <element signature="e#104065#104834#0" expanded="false" />
+            <element signature="e#104885#105814#0" expanded="false" />
+            <element signature="e#105866#106796#0" expanded="false" />
+            <element signature="e#106848#107601#0" expanded="false" />
+            <element signature="e#107654#108440#0" expanded="false" />
+            <element signature="e#108484#108758#0" expanded="false" />
+            <element signature="e#108817#109043#0" expanded="false" />
+            <element signature="e#109103#109330#0" expanded="false" />
+            <element signature="e#109374#109484#0" expanded="false" />
+            <element signature="e#109532#110134#0" expanded="false" />
+            <element signature="e#110185#111630#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rbi/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1717">
+          <caret line="101" column="7" lean-forward="false" selection-start-line="101" selection-start-column="7" selection-end-line="101" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rbi/MYSQL_CAL.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5984">
+          <caret line="355" column="32" lean-forward="false" selection-start-line="355" selection-start-column="32" selection-end-line="355" selection-end-column="32" />
+          <folding>
+            <marker date="1519977873629" expanded="true" signature="631:638" ph="SELECT `MW`,... TBL_52_CA_PROPERTIES_LEVEL_1" />
+            <marker date="1519977873629" expanded="true" signature="631:785" ph="SELECT \&quot;MW\... TBL_52_CA_PROPERTIES_LEVEL_1" />
+            <marker date="1519977873629" expanded="true" signature="1489:1579" ph="SELECT \&quot;Amb... TBL_52_CA_PROPERTIES_LEVEL_1" />
+            <marker date="1519977873629" expanded="true" signature="2015:2089" ph="SELECT * FRO... TBL_58_CA_COMPONENT_DM" />
+            <marker date="1519977873629" expanded="true" signature="3008:3090" ph="SELECT * FRO... TBL_59_COMPONENT_DAMAGE_PERSON" />
+            <marker date="1519977873629" expanded="true" signature="4021:4122" ph="SELECT * FRO... TBL_213_DM_IMPACT_EXEMPTION" />
+            <marker date="1519977873629" expanded="true" signature="4666:4747" ph="SELECT * FRO... TBL_204_DM_HTHA" />
+            <marker date="1519977873629" expanded="true" signature="6466:6538" ph="SELECT \&quot;E\&quot;... TBL_511_DFB_THIN" />
+            <marker date="1519977873629" expanded="true" signature="9246:9347" ph="SELECT \&quot;SIU... TBL_3B21_SI_CONVERSION" />
+            <marker date="1519977873629" expanded="true" signature="9797:9948" ph="SELECT \&quot;Mol... TBL_71_PROPERTIES_STORAGE_TANK" />
+            <marker date="1519977873629" expanded="true" signature="10465:10566" ph="SELECT * FRO... api_component_type" />
+            <marker date="1519977873629" expanded="true" signature="11417:11568" ph="SELECT MAX(I... rw_inspection_history" />
+            <marker date="1519977873629" expanded="true" signature="12118:12274" ph="SELECT MIN(I... rw_inspection_history" />
+            <marker date="1519977873629" expanded="true" signature="12817:12975" ph="SELECT COUNT... rw_inspection_history" />
+            <marker date="1519977873629" expanded="true" signature="13453:13629" ph="SELECT MAX(I... rw_inspection_history" />
+            <marker date="1519977873629" expanded="true" signature="13601:13629" ph="SELECT MAX(I... rw_inspection_history" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rbi/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="950" column="0" lean-forward="false" selection-start-line="950" selection-start-column="0" selection-end-line="950" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

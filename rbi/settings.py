@@ -25,7 +25,7 @@ SECRET_KEY = 'zg=0mihjrr3ja&ll21j^$)3)%ks)!16j(8p8)#&zizi%axm#a9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://cortek.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -77,20 +77,41 @@ WSGI_APPLICATION = 'rbi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'djangorbi',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'OPTIONS': {
+#             'autocommit': True,
+#         },
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'djangorbi',
+#         'USER': 'postgres',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+#  }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangorbi',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'OPTIONS': {
-            'autocommit': True,
-        },
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd3s74b7putntgb',
+        'USER': 'hphbzavltnvngh',
+        'PASSWORD': '971440c9ab2e34c429971d9dc6ce07efbe597516e2e022f20be1a3b76370f69c',
+        'HOST': 'ec2-54-217-236-201.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
-}
-
+ }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

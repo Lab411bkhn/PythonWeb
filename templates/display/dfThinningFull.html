@@ -141,7 +141,13 @@
     <div id="main-left">
         <ul>
             <h2>DF Result</h2>
-            <li><a href="{% url 'resultca' obj.id_id %}">CA Result</a></li>
+            {% if not isTank %}
+                <li><a href="{% url 'resultca' obj.id_id %}">CA Result</a></li>
+            {% elif isShell %}
+                <li><a href="{% url 'resultShell' obj.id_id %}">CA Result</a></li>
+            {% else %}
+                <li><a href="{% url 'resultBottom' obj.id_id %}">CA Result</a></li>
+            {% endif %}
             <li><a href="{% url 'proposalDisplay' assess.componentid_id %}">Back to Component</a></li>
         </ul>
     </div>

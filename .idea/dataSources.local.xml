@@ -20,5 +20,13 @@
       <user-name>root</user-name>
       <introspection-schemas>*:djangorbi</introspection-schemas>
     </data-source>
+    <data-source name="Django default" uuid="08f1495f-db6c-46ad-9058-7692069527b0">
+      <database-info product="PostgreSQL" version="10.2" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.1">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <user-name>postgres</user-name>
+      <introspection-schemas>djangorbi:public</introspection-schemas>
+    </data-source>
   </component>
 </project>

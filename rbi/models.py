@@ -928,8 +928,9 @@ class Tbl74SccDmPwht(models.Model):
         verbose_name = "Table 7.4 – SCC Damage Factors – All SCC Mechanism"
 
 class RwDamageMechanism(models.Model):
-    id = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID', primary_key=True)
-    dmitemid = models.ForeignKey(DmItems, on_delete=models.CASCADE, db_column='DMItemID', primary_key=True)
+    id = models.AutoField(db_column='ID', primary_key=True)
+    id_dm = models.ForeignKey(RwAssessment, on_delete=models.CASCADE, db_column='ID_DM')
+    dmitemid = models.ForeignKey(DmItems, on_delete=models.CASCADE, db_column='DMItemID')
     isactive = models.IntegerField(default=1, db_column='IsActive')
     notes = models.TextField(db_column='Notes', null=True)
     expectedtypeid = models.IntegerField(default=0, db_column='ExpectedTypeID')
@@ -940,7 +941,7 @@ class RwDamageMechanism(models.Model):
     df1 = models.FloatField(db_column='DF1')
     df2 = models.FloatField(db_column='DF2')
     df3 = models.FloatField(db_column='DF3')
-    dfbase = models.FloatField(db_column='DFBase')
+    dfbase = models.FloatField(db_column='DFBase', default= 0)
     rli = models.FloatField(db_column='RLI', default=0)
     highestinspectioneffectiveness = models.TextField(max_length=50, db_column='HighestInspectionEffectiveness')
     secondinspectioneffectiveness = models.TextField(max_length=50, db_column='SecondInspectionEffectiveness', null=True)
@@ -951,3 +952,4 @@ class RwDamageMechanism(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_damage_mechanism'
+        #unique_together = (("id_dm","dmitemid"),)
