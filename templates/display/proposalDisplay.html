@@ -74,11 +74,11 @@
             <tr>
                 <th width="50px"><input type="checkbox" id="chkHeader"></th>
                 <th width="100px">Proposal Name</th>
-                <th width="100px">Gff Total</th>
-                <th width="100px">FMS</th>
                 <th width="100px">Current DF</th>
                 <th width="100px">Current FC ($)</th>
                 <th width="100px">Current Risk ($/year)</th>
+                <th width="100px">Last Inspection Date</th>
+                <th width="100px">Inspection Due Date</th>
             </tr>
         </thead>
 
@@ -87,11 +87,11 @@
              <tr >
                 <td align="center"><input type="checkbox" name="{{ a.id }}"></td>
                  <td align="center"><a href="{% url 'resultpof' a.id %}">{{ a.proposalname }}</a></td>
-                 <td align="center">{{ data.gff }} </td>
-                 <td align="center">{{ data.fms }}</td>
                  <td align="center">{{ data.DF }}</td>
                  <td align="center">{{ data.FC }}</td>
                  <td align="center">{{ data.risk }}</td>
+                 <td align="center">{{ data.LastInsp }}</td>
+                 <td align="center">{{ data.DueDate }}</td>
              </tr>
 
             {% endfor %}

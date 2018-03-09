@@ -215,10 +215,17 @@
                 <tr>
 
                     <td><span style="font-size: 16px">Distance To Ground Water</span></td>
-                    <td><input type="number" step="0.01" class="form-control" min="0" name="Distance" value="0" />
+                    <td><input type="number" step="0.01" class="form-control" min="0" id="Distance" name="Distance" value="0" />
                     <td><span style="font-size: 16px">m</span> </td>
-
                 </tr>
+                <script>
+                        if({{ isShell }}){
+                            $("#Distance").attr("disabled",true);
+                        }
+                        else {
+                            $("#Distance").attr("disabled", false);
+                        }
+                </script>
                 <tr>
                      <td><span style="font-size: 16px">Type of Soil</span></td>
                         <td>
@@ -677,38 +684,73 @@
                 <table>
                     <tr>
                         <td><span style="font-size: 16px">Internal Coating</span></td>
-                        <td><input type="checkbox" class="form-control" list="InternalCoating" name="InternalCoating">
+                        <td><input type="checkbox" class="form-control" name="InternalCoating">
                     </tr>
                     <tr>
                         <td><span style="color:red;font-size: 16px">External Coating</span></td>
-                        <td><input type="checkbox" class="form-control" list="ExternalCoating" name="ExternalCoating">
+                        <td><input type="checkbox" class="form-control" id="extCoat" name="ExternalCoating">
                         </td>
                     </tr>
 
                     <tr>
-
-                                <td><span style="font-size: 16px">External Coating Installation Date</span></td>
-                                <td><input type="text" id="datepicker2" data-format="yyyy-mm-dd" name="ExternalCoatingID" required/></td>
-                                <script>
-                                $('#datepicker2').datepicker({
-                                    uiLibrary: 'bootstrap4'
-                                });
-                            </script>
+                        <td><span style="font-size: 16px">External Coating Installation Date</span></td>
+                        <td><input type="text" id="datepickerTank" data-format="yyyy-mm-dd" name="ExternalCoatingID" ></td>
+                        <script>
+                            $('#datepickerTank').datepicker({
+                                uiLibrary: 'bootstrap4',
+                                value: defaultDate()
+                            });
+                            function defaultDate() {
+                                var date = new Date();
+                                var dd = date.getDate();
+                                var mm = date.getMonth()+1; //January is 0!
+                                var yyyy = date.getFullYear();
+                                if(dd<10){
+                                    dd='0'+dd;
+                                }
+                                if(mm<10){
+                                    mm='0'+mm;
+                                }
+                                var today = yyyy+'-'+mm+'-'+dd;
+                                return today
+                            }
+                        </script>
                     </tr>
                     <tr>
                      <td><span style="color:red;font-size: 16px">External Coating Quality</span> </td>
-                        <td><select class="form-control" list="ECQ" name="ExternalCoatingQuality">
-                                    <option>High coating quality</option>
-                                    <option>Medium coating quality</option>
-                                    <option>No coating or poor quality</option>
-                                </select>
-                                </td>
+                        <td><select class="form-control" id ="externalCoatQuality" name="ExternalCoatingQuality">
+                        </select>
+                        </td>
                     </tr>
 
-                <tr>
-                    <td><span style="font-size: 16px">Support Configuration Which Does</br> Not Allow Coating Maintenance</span></td>
-                    <td><input type="checkbox" class="form-control" list="SCWD" name="SCWD"/></td>
-                </tr>
+                    <script>
+                        $(document).ready(function () {
+                            $("#externalCoatQuality").attr("disabled", true);
+                            $("#externalCoatQuality").empty();
+                            $("#datepickerTank").attr("disabled", true);
+                            $("#extCoat").click(function () {
+                                if($("#extCoat").prop("checked") == true){
+                                    $("#externalCoatQuality").empty();
+                                    $("#externalCoatQuality").html("<option>High coating quality</option>\n" +
+                                                                    "<option>Medium coating quality</option>\n" +
+                                                                    "<option>No coating or poor quality</option>");
+
+                                    $("#externalCoatQuality").attr("disabled", false);
+                                    $("#datepickerTank").attr("disabled",false);
+                                }
+                                else {
+                                    $("#externalCoatQuality").attr("disabled", true);
+                                    $("#externalCoatQuality").empty();
+                                    $("#datepickerTank").attr("disabled",true);
+                                }});
+                        });
+                    </script>
+
+
+                    <tr>
+                        <td><span style="font-size: 16px">Support Configuration Which Does</br> Not Allow Coating Maintenance</span></td>
+                        <td><input type="checkbox" class="form-control" list="SCWD" name="SCWD"/></td>
+                    </tr>
                 </table>
             </fieldset>
             <fieldset class="scheduler-border">

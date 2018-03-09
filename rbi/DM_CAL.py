@@ -4,7 +4,8 @@ from datetime import datetime;
 import  numpy as np
 from dateutil.relativedelta import relativedelta;
 from pathlib import _Selector
-from rbi import MYSQL_CAL as DAL_CAL;
+#from rbi import MYSQL_CAL as DAL_CAL;
+from rbi import Postgresql as DAL_CAL
 
 
 class DM_CAL:
@@ -245,7 +246,7 @@ class DM_CAL:
                "Vibration-Induced Mechanical Fatigue"];
     # calculate Thinning Damage Factor
     def getTmin(self):
-        if self.APIComponentType == "TANKBOTTOM":
+        if self.APIComponentType == "TANKBOTTOM" or self.APIComponentType =="TANKROOFFLOAT":
             if (self.ProtectedBarrier):
                 t = 3.2;
             else:
@@ -265,7 +266,7 @@ class DM_CAL:
             return max(1 - (self.CurrentThick - self.CorrosionRate * age) / (self.getTmin() + self.CA), 0.0);
 
     def API_ART(self, a):
-        if self.APIComponentType != "TANKBOTTOM":
+        if self.APIComponentType != "TANKBOTTOM" or self.APIComponentType != "TANKROOFFLOAT":
             data = [0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55,
                     0.6, 0.65];
             if (a < (data[0] + data[1]) / 2):
@@ -351,22 +352,22 @@ class DM_CAL:
                 return data[19];
 
     def DFB_THIN(self, age):
-        self.EFF_THIN = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[0])
-        self.NoINSP_THINNING = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber,self.DM_Name[0])
+        self.EFF_THIN = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[0])
+        self.NoINSP_THINNING = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber,self.DM_Name[0])
 
         # if (self.EFF_THIN == "" or self.NoINSP_THINNING == 0):
         #     self.EFF_THIN = "E";
 
-        if (self.APIComponentType == "TANKBOTTOM"):
+        if (self.APIComponentType == "TANKBOTTOM" or self.APIComponentType == "TANKROOFFLOAT"):
             if (self.NomalThick == 0 or self.CurrentThick == 0):
                 return 1390;
             else:
-                return DAL_CAL.MySQL_CAL.GET_TBL_512(self.API_ART(self.Art(age)), self.EFF_THIN);
+                return DAL_CAL.POSTGRESQL.GET_TBL_512(self.API_ART(self.Art(age)), self.EFF_THIN);
         else:
             if (self.NomalThick == 0 or self.CurrentThick == 0):
                 return 1900;
             else:
-                return DAL_CAL.MySQL_CAL.GET_TBL_511(self.API_ART(self.Art(age)), self.NoINSP_THINNING, self.EFF_THIN);
+                return DAL_CAL.POSTGRESQL.GET_TBL_511(self.API_ART(self.Art(age)), self.NoINSP_THINNING, self.EFF_THIN);
 
     def DF_THIN(self, age):
         Fwd = 1;
@@ -430,9 +431,9 @@ class DM_CAL:
             else:
                 SUSCEP_LINNING = "MoreThan6Years";
             self.YEAR_IN_SERVICE = int(self.GET_AGE()[1])
-            return DAL_CAL.MySQL_CAL.GET_TBL_65(self.YEAR_IN_SERVICE, SUSCEP_LINNING);
+            return DAL_CAL.POSTGRESQL.GET_TBL_65(self.YEAR_IN_SERVICE, SUSCEP_LINNING);
         else:
-            return DAL_CAL.MySQL_CAL.GET_TBL_64(int(round(age)), self.LinningType);
+            return DAL_CAL.POSTGRESQL.GET_TBL_64(int(round(age)), self.LinningType);
 
     def DF_LINNING(self, age):
         if (self.INTERNAL_LINNING):
@@ -500,13 +501,13 @@ class DM_CAL:
 
     def DF_CAUSTIC(self, age):
         if (self.CARBON_ALLOY):
-            self.CAUSTIC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[2])
-            self.CACBONATE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[2])
+            self.CAUSTIC_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[2])
+            self.CACBONATE_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[2])
             if (self.CAUSTIC_INSP_EFF == "E" or self.CAUSTIC_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.CAUSTIC_INSP_NUM) + self.CAUSTIC_INSP_EFF;
-            DFB_CAUSTIC = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CAUSTIC(), FIELD);
+            DFB_CAUSTIC = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_CAUSTIC(), FIELD);
             return DFB_CAUSTIC[0] * pow(age, 1.1);
         else:
             return 0;
@@ -553,13 +554,13 @@ class DM_CAL:
 
     def DF_AMINE(self, age):
         if (self.CARBON_ALLOY):
-            self.AMINE_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[3])
-            self.AMINE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[3])
+            self.AMINE_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[3])
+            self.AMINE_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[3])
             if (self.AMINE_INSP_EFF == "E" or self.AMINE_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.AMINE_INSP_NUM) + self.AMINE_INSP_EFF;
-            DFB_AMIN = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_AMINE(), FIELD);
+            DFB_AMIN = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_AMINE(), FIELD);
             return DFB_AMIN[0] * pow(age, 1.1);
         else:
             return 0;
@@ -645,13 +646,13 @@ class DM_CAL:
 
     def DF_SULPHIDE(self, age):
         if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and self.ENVIRONMENT_H2S_CONTENT):
-            self.SULPHIDE_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[4])
-            self.SULPHIDE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber,self.DM_Name[4])
+            self.SULPHIDE_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[4])
+            self.SULPHIDE_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber,self.DM_Name[4])
             if (self.SULPHIDE_INSP_EFF == "E" or self.SULPHIDE_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.SULPHIDE_INSP_NUM) + self.SULPHIDE_INSP_EFF;
-            DFB_SULPHIDE = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_SULPHIDE(), FIELD);
+            DFB_SULPHIDE = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_SULPHIDE(), FIELD);
             return DFB_SULPHIDE[0] * pow(age, 1.1);
         else:
             return 0;
@@ -747,13 +748,13 @@ class DM_CAL:
 
     def DF_HICSOHIC_H2S(self, age):
         if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and self.ENVIRONMENT_H2S_CONTENT):
-            self.SULFUR_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[5])
-            self.SULFUR_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[5])
+            self.SULFUR_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[5])
+            self.SULFUR_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[5])
             if (self.SULFUR_INSP_EFF == "E" or self.SULFUR_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.SULPHIDE_INSP_NUM) + self.SULFUR_INSP_NUM;
-            DFB_SULFUR = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HICSOHIC_H2S(), FIELD);
+            DFB_SULFUR = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_HICSOHIC_H2S(), FIELD);
             return DFB_SULFUR[0] * pow(age, 1.1);
         else:
             return 0;
@@ -796,13 +797,13 @@ class DM_CAL:
 
     def DF_CACBONATE(self, age):
         if (self.CARBON_ALLOY and self.AQUEOUS_OPERATOR and self.PH >= 7.5):
-            self.CACBONATE_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[6])
-            self.CACBONATE_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[6])
+            self.CACBONATE_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[6])
+            self.CACBONATE_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[6])
             if (self.CACBONATE_INSP_EFF == "E" or self.CACBONATE_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.CACBONATE_INSP_NUM) + self.CACBONATE_INSP_EFF;
-            DFB_CACBONATE = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CARBONATE(), FIELD);
+            DFB_CACBONATE = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_CARBONATE(), FIELD);
             return DFB_CACBONATE[0] * pow(age, 1.1);
         else:
             return 0;
@@ -896,13 +897,13 @@ class DM_CAL:
 
     def DF_PTA(self, age):
         if (self.PTA_SUSCEP or ((self.CARBON_ALLOY or self.NICKEL_ALLOY) and self.EXPOSED_SULFUR)):
-            self.PTA_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[7])
-            self.PTA_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[7])
+            self.PTA_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[7])
+            self.PTA_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[7])
             if (self.PTA_INSP_EFF == "E" or self.PTA_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.PTA_INSP_NUM) + self.PTA_INSP_EFF;
-            DFB_PTA = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_PTA(), FIELD);
+            DFB_PTA = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_PTA(), FIELD);
             return DFB_PTA[0] * pow(age, 1.1);
         else:
             return 0;
@@ -951,13 +952,13 @@ class DM_CAL:
 
     def DF_CLSCC(self, age):
         if (self.INTERNAL_EXPOSED_FLUID_MIST and self.AUSTENITIC_STEEL and self.MAX_OP_TEMP > 38):
-            self.CLSCC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[8])
-            self.CLSCC_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[8])
+            self.CLSCC_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[8])
+            self.CLSCC_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[8])
             if (self.CLSCC_INSP_EFF == "E" or self.CLSCC_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.CLSCC_INSP_NUM) + self.CLSCC_INSP_EFF;
-            DFB_CLSCC = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_CLSCC(), FIELD);
+            DFB_CLSCC = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_CLSCC(), FIELD);
             return DFB_CLSCC[0] * pow(age, 1.1);
         else:
             return 0;
@@ -996,13 +997,13 @@ class DM_CAL:
 
     def DF_HSCHF(self, age):
         if (self.CARBON_ALLOY and self.HF_PRESENT):
-            self.HSC_HF_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[9])
-            self.HSC_HF_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[9])
+            self.HSC_HF_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[9])
+            self.HSC_HF_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[9])
             if (self.HSC_HF_INSP_EFF == "E" or self.HSC_HF_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.HSC_HF_INSP_NUM) + self.HSC_HF_INSP_EFF;
-            DFB_HSCHF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HSCHF(), FIELD);
+            DFB_HSCHF = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_HSCHF(), FIELD);
             return DFB_HSCHF[0] * pow(age, 1.1);
         else:
             return 0;
@@ -1037,13 +1038,13 @@ class DM_CAL:
 
     def DF_HIC_SOHIC_HF(self, age):
         if (self.CARBON_ALLOY and self.HF_PRESENT):
-            self.HICSOHIC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[10])
-            self.HICSOHIC_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[10])
+            self.HICSOHIC_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[10])
+            self.HICSOHIC_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[10])
             if (self.HICSOHIC_INSP_EFF == "E" or self.HICSOHIC_INSP_NUM == 0):
                 FIELD = "E";
             else:
                 FIELD = str(self.HICSOHIC_INSP_NUM) + self.HICSOHIC_INSP_EFF;
-            DFB_HICSOHIC_HF = DAL_CAL.MySQL_CAL.GET_TBL_74(self.SVI_HICSOHIC_HF(), FIELD);
+            DFB_HICSOHIC_HF = DAL_CAL.POSTGRESQL.GET_TBL_74(self.SVI_HICSOHIC_HF(), FIELD);
             return DFB_HICSOHIC_HF[0] * pow(age, 1.1);
         else:
             return 0;
@@ -1116,20 +1117,20 @@ class DM_CAL:
     def DF_EXTERNAL_CORROSION(self, age):
         if (self.EXTERNAL_EXPOSED_FLUID_MIST or (
             self.CARBON_ALLOY and not (self.MAX_OP_TEMP < -23 or self.MIN_OP_TEMP > 121))):
-            self.EXTERNAL_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[11])
-            self.EXTERNAL_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
+            self.EXTERNAL_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[11])
+            self.EXTERNAL_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[11])
             if (self.EXTERNAL_INSP_EFF == "" or self.EXTERNAL_INSP_NUM == 0):
                 self.EXTERNAL_INSP_EFF = "E";
-            if (self.APIComponentType == "TANKBOTTOM"):
+            if (self.APIComponentType == "TANKBOTTOM" or self.APIComponentType == "TANKROOFFLOAT"):
                 if (self.NomalThick == 0 or self.CurrentThick == 0):
                     return 1390;
                 else:
-                    return DAL_CAL.MySQL_CAL.GET_TBL_512(self.API_ART_EXTERNAL(age), self.EXTERNAL_INSP_EFF);
+                    return DAL_CAL.POSTGRESQL.GET_TBL_512(self.API_ART_EXTERNAL(age), self.EXTERNAL_INSP_EFF);
             else:
                 if (self.NomalThick == 0 or self.CurrentThick == 0):
                     return 1900;
                 else:
-                    return DAL_CAL.MySQL_CAL.GET_TBL_511(self.API_ART_EXTERNAL(age), self.EXTERNAL_INSP_NUM,
+                    return DAL_CAL.POSTGRESQL.GET_TBL_511(self.API_ART_EXTERNAL(age), self.EXTERNAL_INSP_NUM,
                                                          self.EXTERNAL_INSP_EFF);
         else:
             return 0;
@@ -1223,20 +1224,20 @@ class DM_CAL:
         return self.API_ART(ART_CUI);
 
     def DF_CUI(self, age):
-        self.CUI_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[12])
-        self.CUI_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[12])
+        self.CUI_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[12])
+        self.CUI_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[12])
         if (self.CUI_INSP_EFF == "" or self.CUI_INSP_NUM == 0):
             self.CUI_INSP_EFF = "E";
-        if (self.APIComponentType == "TANKBOTTOM"):
+        if (self.APIComponentType == "TANKBOTTOM" or self.APIComponentType == "TANKROOFFLOAT"):
             if (self.NomalThick == 0 or self.CurrentThick == 0):
                 return 1390;
             else:
-                return DAL_CAL.MySQL_CAL.GET_TBL_512(self.API_ART_CUI(age), self.CUI_INSP_EFF);
+                return DAL_CAL.POSTGRESQL.GET_TBL_512(self.API_ART_CUI(age), self.CUI_INSP_EFF);
         else:
             if (self.NomalThick == 0 or self.CurrentThick == 0):
                 return 1900;
             else:
-                return DAL_CAL.MySQL_CAL.GET_TBL_511(self.API_ART_CUI(age), self.CUI_INSP_NUM, self.CUI_INSP_EFF);
+                return DAL_CAL.POSTGRESQL.GET_TBL_511(self.API_ART_CUI(age), self.CUI_INSP_NUM, self.CUI_INSP_EFF);
 
     # cal EXTERNAL CLSCC
     def CLSCC_SUSCEP(self):
@@ -1276,13 +1277,13 @@ class DM_CAL:
             SVI = 10;
         else:
             SVI = 1;
-        self.EXTERN_CLSCC_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[13])
-        self.EXTERN_CLSCC_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[14])
+        self.EXTERN_CLSCC_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[13])
+        self.EXTERN_CLSCC_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[14])
         if (self.EXTERN_CLSCC_INSP_EFF == "E" or self.EXTERN_CLSCC_INSP_NUM == 0):
             FIELD = "E";
         else:
             FIELD = str(self.EXTERN_CLSCC_INSP_NUM) + self.EXTERN_CLSCC_INSP_EFF;
-        return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD)[0];
+        return DAL_CAL.POSTGRESQL.GET_TBL_74(SVI, FIELD)[0];
 
     def DF_EXTERN_CLSCC(self):
         if (self.AUSTENITIC_STEEL and self.EXTERNAL_EXPOSED_FLUID_MIST and not (
@@ -1387,14 +1388,14 @@ class DM_CAL:
             SVI = 10;
         else:
             SVI = 1;
-        self.EXTERN_CLSCC_CUI_INSP_EFF = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[14])
-        self.EXTERN_CLSCC_CUI_INSP_NUM = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[14])
+        self.EXTERN_CLSCC_CUI_INSP_EFF = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[14])
+        self.EXTERN_CLSCC_CUI_INSP_NUM = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[14])
 
         if (self.EXTERN_CLSCC_CUI_INSP_EFF == "E" or self.EXTERN_CLSCC_CUI_INSP_NUM == 0):
             FIELD = "E";
         else:
             FIELD = str(self.EXTERN_CLSCC_CUI_INSP_NUM) + self.EXTERN_CLSCC_CUI_INSP_EFF;
-        return DAL_CAL.MySQL_CAL.GET_TBL_74(SVI, FIELD)[0];
+        return DAL_CAL.POSTGRESQL.GET_TBL_74(SVI, FIELD)[0];
 
     def DF_CUI_CLSCC(self):
         if not self.EXTERN_COATING:
@@ -1475,9 +1476,9 @@ class DM_CAL:
         return SUSCEP;
 
     def API_DF_HTHA(self, age):
-        API_HTHA = DAL_CAL.MySQL_CAL.GET_TBL_204(self.HTHA_SUSCEP(age));
-        self.HTHA_EFFECT = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[15])
-        self.HTHA_NUM_INSP = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[15])
+        API_HTHA = DAL_CAL.POSTGRESQL.GET_TBL_204(self.HTHA_SUSCEP(age));
+        self.HTHA_EFFECT = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[15])
+        self.HTHA_NUM_INSP = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[15])
         if self.HTHA_NUM_INSP > 2:
             self.HTHA_NUM_INSP = 2
 
@@ -1512,10 +1513,10 @@ class DM_CAL:
     def DFB_BRIITLE(self):
         TEMP_BRITTLE = min(self.MIN_DESIGN_TEMP, self.MIN_OP_TEMP);
         if (self.PWHT):
-            return DAL_CAL.MySQL_CAL.GET_TBL_215(self.API_TEMP(TEMP_BRITTLE - self.REF_TEMP),
+            return DAL_CAL.POSTGRESQL.GET_TBL_215(self.API_TEMP(TEMP_BRITTLE - self.REF_TEMP),
                                                  self.API_SIZE_BRITTLE(self.BRITTLE_THICK));
         else:
-            return DAL_CAL.MySQL_CAL.GET_TBL_214(self.API_TEMP(TEMP_BRITTLE - self.REF_TEMP),
+            return DAL_CAL.POSTGRESQL.GET_TBL_214(self.API_TEMP(TEMP_BRITTLE - self.REF_TEMP),
                                                  self.API_SIZE_BRITTLE(self.BRITTLE_THICK));
 
     def DF_BRITTLE(self):
@@ -1579,10 +1580,10 @@ class DM_CAL:
         if (self.TEMPER_SUSCEP or (self.CARBON_ALLOY and not (self.MAX_OP_TEMP < 343 or self.MIN_OP_TEMP > 577))):
             TEMP_EMBRITTLE = min(self.MIN_DESIGN_TEMP, self.MIN_OP_TEMP) - (self.REF_TEMP + self.DELTA_FATT);
             if (self.PWHT):
-                return DAL_CAL.MySQL_CAL.GET_TBL_215(self.API_TEMP(TEMP_EMBRITTLE),
+                return DAL_CAL.POSTGRESQL.GET_TBL_215(self.API_TEMP(TEMP_EMBRITTLE),
                                                      self.API_SIZE_BRITTLE(self.BRITTLE_THICK))[0];
             else:
-                return DAL_CAL.MySQL_CAL.GET_TBL_214(self.API_TEMP(TEMP_EMBRITTLE),
+                return DAL_CAL.POSTGRESQL.GET_TBL_214(self.API_TEMP(TEMP_EMBRITTLE),
                                                      self.API_SIZE_BRITTLE(self.BRITTLE_THICK))[0];
         else:
             return 0;
@@ -1813,7 +1814,7 @@ class DM_CAL:
     def GET_AGE(self):
         age = np.zeros(14)
         for a in range(0,14):
-            age[a] = DAL_CAL.MySQL_CAL.GET_AGE_INSP(self.ComponentNumber,self.DM_Name[a],self.CommissionDate, self.AssesmentDate)
+            age[a] = DAL_CAL.POSTGRESQL.GET_AGE_INSP(self.ComponentNumber,self.DM_Name[a],self.CommissionDate, self.AssesmentDate)
         return age
 
     def DF_THINNING_API(self, i):
@@ -1909,7 +1910,6 @@ class DM_CAL:
         for a in range(1,16):
             if self.DF_TOTAL_API(a) > DF_TARGET:
                 break
-        print(self.AssesmentDate + relativedelta(years= a))
         return self.AssesmentDate + relativedelta(years= a)
 
     def ISDF(self):
@@ -1943,10 +1943,10 @@ class DM_CAL:
                 data_return['DF1'] = DF_ITEM[i]
                 data_return['DM_ITEM_ID'] = DM_ID[i]
                 data_return['isActive'] = 1
-                data_return['highestEFF'] = DAL_CAL.MySQL_CAL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[i])
+                data_return['highestEFF'] = DAL_CAL.POSTGRESQL.GET_MAX_INSP(self.ComponentNumber, self.DM_Name[i])
                 data_return['secondEFF'] = data_return['highestEFF']
-                data_return['numberINSP'] = DAL_CAL.MySQL_CAL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[i])
-                data_return['lastINSP'] = DAL_CAL.MySQL_CAL.GET_LAST_INSP(self.ComponentNumber, self.DM_Name[i], self.CommissionDate)
+                data_return['numberINSP'] = DAL_CAL.POSTGRESQL.GET_NUMBER_INSP(self.ComponentNumber, self.DM_Name[i])
+                data_return['lastINSP'] = DAL_CAL.POSTGRESQL.GET_LAST_INSP(self.ComponentNumber, self.DM_Name[i], self.CommissionDate)
                 if i == 0:
                     data_return['DF2'] = self.DF_THINNING_API(3)
                     data_return['DF3'] = self.DF_THINNING_API(6)

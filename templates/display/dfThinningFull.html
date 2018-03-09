@@ -148,6 +148,7 @@
             {% else %}
                 <li><a href="{% url 'resultBottom' obj.id_id %}">CA Result</a></li>
             {% endif %}
+            <li><a href="{% url 'riskMatrix' obj.id_id %}">Risk Matrix</a></li>
             <li><a href="{% url 'proposalDisplay' assess.componentid_id %}">Back to Component</a></li>
         </ul>
     </div>
@@ -185,7 +186,7 @@
             <legend class="scheduler-border"><b>Damage Factors and Probability of Failure</b></legend>
             <table>
                 <tr>
-                    <td style="font-size: 16px">Assessment Priods&emsp;</td>
+                    <td style="font-size: 16px">Assessment Periods&emsp;</td>
                     <td>0 months</td>
                     <td>36 months </td>
                     <td>72 months</td>

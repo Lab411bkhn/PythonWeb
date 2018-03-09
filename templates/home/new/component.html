@@ -62,10 +62,11 @@
      <form method="post">
          {% csrf_token %}
         {% if error.exist %}
-            <p style="color: red; size: 18px">
+            <p style="color: red; size: 20px">
             {{ error.exist }}
             </p>
         {% endif %}
+
      	<fieldset class="scheduler-border">
             <legend class="scheduler-border"><b>Component</b></legend>
             <fieldset class="scheduler-border">
@@ -101,6 +102,17 @@
 
                 <tr>
                     <td><span style="font-size:16px;">Component Type: </span></td>
+                    {% if isedit %}
+                        <td><select class="form-control" id="componentType" name="componentType" disabled="disabled">
+                        {% for a in componenttype %}
+                            {% if a.componenttypename == component.componenttype or a.componenttypeid == component.componenttypeid_id %}
+                                <option selected>{{ a.componenttypename }}</option>
+                            {% else %}
+                                <option>{{ a.componenttypename }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select></td>
+                    {% else %}
                     <td><select class="form-control" id="componentType" name="componentType" >
                         {% for a in componenttype %}
                             {% if a.componenttypename == component.componenttype or a.componenttypeid == component.componenttypeid_id %}
@@ -110,11 +122,12 @@
                             {% endif %}
                         {% endfor %}
                     </select></td>
+                    {% endif %}
                 </tr>
                 <tr>
                     <td><span style="font-size:16px;">API Component Type: </span></td>
                     {% if isedit %}
-                    <td><select class="form-control" id="apiComponentType" name="apiComponentType" disabled="true">
+                    <td><select class="form-control" id="apiComponentType" name="apiComponentType" disabled="disabled">
                         {%  for a in api %}
                             {% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}
                                 <option selected>{{ a.apicomponenttypename }}</option>
@@ -154,16 +167,12 @@
                                     else if(componenttype == "Fixed Roof"){
                                         $("#apiComponentType").html("<option value ='TANKROOFFIXED'>TANKROOFFIXED</option>");
                                     }
-                                    else if(componenttype == "Floating Roof"){
+                                    else if(componenttype == "Floating Roof") {
                                         $("#apiComponentType").html("<option value ='TANKROOFFLOAT'>TANKROOFFLOAT</option>");
                                     }
                                     else {
-                                        $("#apiComponentType").html("{%  for a in api %}"+
-                                                                    "{% if a.apicomponenttypename == component.apicomponenttype or a.apicomponenttypeid == component.apicomponenttypeid %}"+
-                                                                        "<option selected>{{ a.apicomponenttypename }}</option>"+
-                                                                    "{% else %}"+
+                                        $("#apiComponentType").html("{%  for a in other %}"+
                                                                         "<option>{{ a.apicomponenttypename }}</option>"+
-                                                                    "{% endif %}"+
                                                                     "{% endfor %}");
                                     }
                                 })

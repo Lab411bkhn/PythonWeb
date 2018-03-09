@@ -92,12 +92,23 @@ WSGI_APPLICATION = 'rbi.wsgi.application'
 # }
 
 # DATABASES = {
+#      'default': {
+#          'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#          'NAME': 'djangorbi',
+#          'USER': 'postgres',
+#          'PASSWORD': 'root',
+#          'HOST': 'localhost',
+#          'PORT': '5432',
+#      }
+#   }
+
+# DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'djangorbi',
-#         'USER': 'postgres',
-#         'PASSWORD': 'root',
-#         'HOST': 'localhost',
+#         'NAME': 'd3s74b7putntgb',
+#         'USER': 'hphbzavltnvngh',
+#         'PASSWORD': '971440c9ab2e34c429971d9dc6ce07efbe597516e2e022f20be1a3b76370f69c',
+#         'HOST': 'ec2-54-217-236-201.eu-west-1.compute.amazonaws.com',
 #         'PORT': '5432',
 #     }
 #  }
@@ -105,10 +116,10 @@ WSGI_APPLICATION = 'rbi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd3s74b7putntgb',
-        'USER': 'hphbzavltnvngh',
-        'PASSWORD': '971440c9ab2e34c429971d9dc6ce07efbe597516e2e022f20be1a3b76370f69c',
-        'HOST': 'ec2-54-217-236-201.eu-west-1.compute.amazonaws.com',
+        'NAME': 'fgmmzejj',
+        'USER': 'fgmmzejj',
+        'PASSWORD': 'nVrL5qDChU1pL83jlXqcKrNVyfAwxXCQ',
+        'HOST': 'baasu.db.elephantsql.com',
         'PORT': '5432',
     }
  }

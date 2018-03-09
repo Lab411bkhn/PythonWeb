@@ -679,7 +679,7 @@ class Sites(models.Model):
 
 
 class Tbl204DmHtha(models.Model):
-    susceptibility = models.TextField(db_column='Susceptibility', blank=True, null=True)  # Field name made lowercase.
+    susceptibility = models.TextField(db_column='Susceptibility',primary_key=True, blank=True)  # Field name made lowercase.
     no_inspection = models.IntegerField(db_column='No Inspection', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     number_1d = models.IntegerField(db_column='1D', blank=True, null=True)  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
     number_1c = models.IntegerField(db_column='1C', blank=True, null=True)  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
@@ -708,7 +708,7 @@ class Tbl213DmImpactExemption(models.Model):
 
 
 class Tbl214DmNotPwht(models.Model):
-    tmin_tref = models.IntegerField(db_column='Tmin-Tref', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    tmin_tref = models.IntegerField(db_column='Tmin-Tref',primary_key=True, blank=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     number_6_4 = models.FloatField(db_column='6.4', blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
     number_12_7 = models.FloatField(db_column='12.7', blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
     number_25_4 = models.FloatField(db_column='25.4', blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
@@ -726,7 +726,7 @@ class Tbl214DmNotPwht(models.Model):
 
 
 class Tbl215DmPwht(models.Model):
-    tmin_tref = models.IntegerField(db_column='Tmin-Tref', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    tmin_tref = models.IntegerField(db_column='Tmin-Tref',primary_key=True, blank=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     number_6_4 = models.FloatField(db_column='6.4', blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
     number_12_7 = models.FloatField(db_column='12.7', blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
     number_25_4 = models.FloatField(db_column='25.4', blank=True, null=True)  # Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
@@ -744,7 +744,7 @@ class Tbl215DmPwht(models.Model):
 
 
 class Tbl3B21SiConversion(models.Model):
-    conversionfactory = models.IntegerField(db_column='conversionFactory', blank=True, null=True)  # Field name made lowercase.
+    conversionfactory = models.IntegerField(db_column='conversionFactory',primary_key=True, blank=True)  # Field name made lowercase.
     siunits = models.FloatField(db_column='SIUnits', blank=True, null=True)  # Field name made lowercase.
     usunits = models.FloatField(db_column='USUnits', blank=True, null=True)  # Field name made lowercase.
 
@@ -755,7 +755,7 @@ class Tbl3B21SiConversion(models.Model):
 
 
 class Tbl511DfbThin(models.Model):
-    art = models.FloatField(blank=True, null=True)
+    art = models.FloatField(blank=True,primary_key=True)
     e = models.IntegerField(db_column='E', blank=True, null=True)  # Field name made lowercase.
     insp = models.IntegerField(blank=True, null=True)
     d = models.IntegerField(db_column='D', blank=True, null=True)  # Field name made lowercase.
@@ -770,7 +770,7 @@ class Tbl511DfbThin(models.Model):
 
 
 class Tbl512DfbThinTankBottom(models.Model):
-    art = models.FloatField(blank=True, null=True)
+    art = models.FloatField(blank=True,primary_key=True)
     e = models.IntegerField(db_column='E', blank=True, null=True)  # Field name made lowercase.
     insp = models.IntegerField(blank=True, null=True)
     d = models.IntegerField(db_column='D', blank=True, null=True)  # Field name made lowercase.
@@ -785,7 +785,7 @@ class Tbl512DfbThinTankBottom(models.Model):
 
 
 class Tbl52CaPropertiesLevel1(models.Model):
-    fluid = models.TextField(db_column='Fluid', blank=True, null=True)  # Field name made lowercase.
+    fluid = models.TextField(db_column='Fluid',primary_key=True, blank=True)  # Field name made lowercase.
     mw = models.FloatField(db_column='MW', blank=True, null=True)  # Field name made lowercase.
     density = models.FloatField(db_column='Density', blank=True, null=True)  # Field name made lowercase.
     nbp = models.FloatField(db_column='NBP', blank=True, null=True)  # Field name made lowercase.
@@ -805,7 +805,7 @@ class Tbl52CaPropertiesLevel1(models.Model):
 
 
 class Tbl58CaComponentDm(models.Model):
-    fluid = models.TextField(db_column='Fluid', blank=True, null=True)  # Field name made lowercase.
+    fluid = models.TextField(db_column='Fluid',primary_key=True, blank=True)  # Field name made lowercase.
     cainl_gas_a = models.FloatField(db_column='CAINL_gas_a', blank=True, null=True)  # Field name made lowercase.
     cainl_gas_b = models.FloatField(db_column='CAINL_gas_b', blank=True, null=True)  # Field name made lowercase.
     cainl_liquid_a = models.FloatField(db_column='CAINL_liquid_a', blank=True, null=True)  # Field name made lowercase.
@@ -830,7 +830,7 @@ class Tbl58CaComponentDm(models.Model):
 
 
 class Tbl59ComponentDamagePerson(models.Model):
-    fluid = models.TextField(db_column='Fluid', blank=True, null=True)  # Field name made lowercase.
+    fluid = models.TextField(db_column='Fluid',primary_key=True, blank=True)  # Field name made lowercase.
     cainl_gas_a = models.FloatField(db_column='CAINL_gas_a', blank=True, null=True)  # Field name made lowercase.
     cainl_gas_b = models.FloatField(db_column='CAINL_gas_b', blank=True, null=True)  # Field name made lowercase.
     cainl_liquid_a = models.FloatField(db_column='CAINL_liquid_a', blank=True, null=True)  # Field name made lowercase.
@@ -855,7 +855,7 @@ class Tbl59ComponentDamagePerson(models.Model):
 
 
 class Tbl64DmLinningInorganic(models.Model):
-    yearssincelastinspection = models.IntegerField(db_column='YearsSinceLastInspection', blank=True, null=True)  # Field name made lowercase.
+    yearssincelastinspection = models.IntegerField(db_column='YearsSinceLastInspection',primary_key=True, blank=True)  # Field name made lowercase.
     strip_lined_alloy = models.FloatField(db_column='Strip lined alloy', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     castable_refractory = models.FloatField(db_column='Castable refractory', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     castable_refractory_severe_condition = models.IntegerField(db_column='Castable refractory severe condition', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
@@ -870,7 +870,7 @@ class Tbl64DmLinningInorganic(models.Model):
 
 
 class Tbl65DmLinningOrganic(models.Model):
-    yearinservice = models.IntegerField(db_column='YearInService', blank=True, null=True)  # Field name made lowercase.
+    yearinservice = models.IntegerField(db_column='YearInService',primary_key=True, blank=True)  # Field name made lowercase.
     morethan6years = models.IntegerField(db_column='MoreThan6Years', blank=True, null=True)  # Field name made lowercase.
     withinlast6years = models.IntegerField(db_column='WithinLast6Years', blank=True, null=True)  # Field name made lowercase.
     withinlast3years = models.FloatField(db_column='WithinLast3Years', blank=True, null=True)  # Field name made lowercase.
@@ -882,7 +882,7 @@ class Tbl65DmLinningOrganic(models.Model):
 
 
 class Tbl71PropertiesStorageTank(models.Model):
-    fluid = models.TextField(db_column='Fluid', blank=True, null=True)  # Field name made lowercase.
+    fluid = models.TextField(db_column='Fluid',primary_key=True, blank=True)  # Field name made lowercase.
     level_1_consequence_analysis_representative_fluid = models.TextField(db_column='Level 1 Consequence Analysis Representative Fluid', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     molecular_weight = models.IntegerField(db_column='Molecular Weight', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     liquid_density = models.FloatField(db_column='Liquid Density', blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
@@ -895,7 +895,7 @@ class Tbl71PropertiesStorageTank(models.Model):
 
 
 class Tbl74SccDmPwht(models.Model):
-    svi = models.IntegerField(db_column='SVI', blank=True, null=True)  # Field name made lowercase.
+    svi = models.IntegerField(db_column='SVI',primary_key=True, blank=True)  # Field name made lowercase.
     e = models.IntegerField(db_column='E', blank=True, null=True)  # Field name made lowercase.
     number_1d = models.IntegerField(db_column='1D', blank=True, null=True)  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.
     number_1c = models.IntegerField(db_column='1C', blank=True, null=True)  # Field name made lowercase. Field renamed because it wasn't a valid Python identifier.

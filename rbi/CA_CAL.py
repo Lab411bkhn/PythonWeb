@@ -1,6 +1,7 @@
 import math
 import numpy as np
-from rbi import MYSQL_CAL as DAL_CAL
+#from rbi import MYSQL_CAL as DAL_CAL
+from rbi import Postgresql as DAL_CAL
 
 class CA_NORMAL:
     def __init__(self, NominalDiametter = 0, MATERIAL_COST = 0, FLUID = "", FLUID_PHASE = "", API_COMPONENT_TYPE_NAME ="", DETECTION_TYPE = "",
@@ -73,10 +74,10 @@ class CA_NORMAL:
         return API_TYPE;
 
     def GET_DATA_API_COM(self):
-        return DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        return DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
 
     def GET_RELEASE_PHASE(self):
-        return DAL_CAL.MySQL_CAL.GET_RELEASE_PHASE(self.FLUID);
+        return DAL_CAL.POSTGRESQL.GET_RELEASE_PHASE(self.FLUID);
 
     def d_n(self, i):
         if(i == 1):
@@ -92,7 +93,7 @@ class CA_NORMAL:
         return math.pi * pow(self.d_n(i),2) / 4;
 
     def C_P(self):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_52(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_52(self.FLUID);
         if(self.STORED_TEMP == 0):
            return 0;
         else:
@@ -108,7 +109,7 @@ class CA_NORMAL:
                 return 0;
 
     def W_n(self, i):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_52(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_52(self.FLUID);
         an = self.a_n(i);
         mw = data[0];
         gc = 1;
@@ -117,7 +118,7 @@ class CA_NORMAL:
                 wn = 0;
             else:
                 try:
-                    wn = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1]) * 16.02) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(1));
+                    wn = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1]) * 16.02) / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(1));
                 except:
                     wn = 0
         else:
@@ -130,16 +131,16 @@ class CA_NORMAL:
                     p_trans = self.ATMOSPHERIC_PRESSURE * pow((k + 1) / 2, k / (k - 1));
                     if (self.STORED_PRESSURE > p_trans):
                         x = ((k * mw * gc / (R * self.STORED_TEMP)) * pow(2 / (k + 1), (k + 1) / (k - 1)));
-                        wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                        wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(2));
                     else:
                         x = (mw * gc / (R * self.STORED_TEMP)) * ((2 * k) / (k - 1)) * pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, 2 / k) * (1 - pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, (k - 1) / k));
-                        wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                        wn = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(2));
                 except:
                     wn = 0
         return wn;
 
     def W_max8(self):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_52(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_52(self.FLUID);
         an = 32450;
         mw = data[0];
         gc = 1;
@@ -148,7 +149,7 @@ class CA_NORMAL:
                 w_max8 = 0;
             else:
                 try:
-                    w_max8 = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1] * 16.02)) / DAL_CAL.MySQL_CAL.GET_TBL_3B21(1);
+                    w_max8 = 0.61 * 1 * data[1] * 16.02 * an * math.sqrt(2 * gc * abs(self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) / (data[1] * 16.02)) / DAL_CAL.POSTGRESQL.GET_TBL_3B21(1);
                 except:
                     w_max8 = 0
         else:
@@ -161,10 +162,10 @@ class CA_NORMAL:
                     p_trans = (self.ATMOSPHERIC_PRESSURE * pow((k + 1) / 2, k / (k - 1)));
                     if (self.STORED_PRESSURE > p_trans):
                         x = ((k * mw * gc / (R * self.STORED_TEMP)) * pow(2 / (k + 1), (k + 1) / (k - 1)));
-                        w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                        w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(2));
                     else:
                         x = (mw * gc / (R * self.STORED_TEMP)) * ((2 * k) / (k - 1)) * pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, 2 / k) * (1 - pow(self.ATMOSPHERIC_PRESSURE / self.STORED_PRESSURE, (k - 1) / k));
-                        w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(2));
+                        w_max8 = 0.9 * an * self.STORED_PRESSURE * math.sqrt(abs(x)) / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(2));
                 except:
                     w_max8 = 0
         return w_max8;
@@ -182,7 +183,7 @@ class CA_NORMAL:
         if(wn == 0):
             return 0;
         else:
-            return (DAL_CAL.MySQL_CAL.GET_TBL_3B21(3)) / wn;
+            return (DAL_CAL.POSTGRESQL.GET_TBL_3B21(3)) / wn;
 
     def releaseType(self, i):
         tn = self.t_n(i);
@@ -300,10 +301,10 @@ class CA_NORMAL:
         if(self.mass_n(i) == 0):
             return 0;
         else:
-            return (4 * math.log10(DAL_CAL.MySQL_CAL.GET_TBL_3B21(4) * self.mass_n(i)) - 15);
+            return (4 * math.log10(DAL_CAL.POSTGRESQL.GET_TBL_3B21(4) * self.mass_n(i)) - 15);
 
     def a_cont(self, select):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_58(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_58(self.FLUID);
         a_cont = [0,0,0,0];
         if(self.GET_RELEASE_PHASE() == "Gas"):
             a_cont[0] = data[0];
@@ -321,7 +322,7 @@ class CA_NORMAL:
             return a_cont[select - 1];
 
     def b_cont(self, select):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_58(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_58(self.FLUID);
         b_cont = [0, 0, 0, 0];
         if(self.GET_RELEASE_PHASE() == "Gas"):
             b_cont[0] = data[1];
@@ -336,7 +337,7 @@ class CA_NORMAL:
         return b_cont[select - 1];
 
     def a_inj(self, select):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_58(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_58(self.FLUID);
         a_inj = [0, 0, 0, 0];
         if(self.GET_RELEASE_PHASE() == "Gas"):
             a_inj[0] = data[0];
@@ -351,7 +352,7 @@ class CA_NORMAL:
         return a_inj[select - 1];
 
     def b_inj(self, select):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_58(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_58(self.FLUID);
         b_inj = [0, 0, 0, 0];
         if (self.GET_RELEASE_PHASE() == "Gas"):
             b_inj[0] = data[1];
@@ -368,14 +369,14 @@ class CA_NORMAL:
     def ca_cmdn_cont(self, select , i):
         API_FLUID_TYPE = self.TYPE_FLUID();
         if((self.GET_RELEASE_PHASE() == "Liquid") and (API_FLUID_TYPE == "TYPE 0")):
-            return min(self.a_cont(select) * pow(self.rate_n(i), self.b_cont(select)), DAL_CAL.MySQL_CAL.GET_TBL_3B21(7)) * (1 - self.fact_mit());
+            return min(self.a_cont(select) * pow(self.rate_n(i), self.b_cont(select)), DAL_CAL.POSTGRESQL.GET_TBL_3B21(7)) * (1 - self.fact_mit());
         else:
             return self.a_cont(select) * pow(self.rate_n(i), self.b_cont(select)) * (1 - self.fact_mit());
 
     def effrate_n(self, select, i):
         API_FLUID_TYPE = self.TYPE_FLUID();
         if((self.GET_RELEASE_PHASE() == "Liquid") and (API_FLUID_TYPE == "TYPE 0")):
-            return (1 / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(4)) * math.exp(math.log10(self.ca_cmdn_cont(select, i) / (self.a_cont(select) * (DAL_CAL.MySQL_CAL.GET_TBL_3B21(8)))) * pow(self.b_cont(select), -1)));
+            return (1 / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(4)) * math.exp(math.log10(self.ca_cmdn_cont(select, i) / (self.a_cont(select) * (DAL_CAL.POSTGRESQL.GET_TBL_3B21(8)))) * pow(self.b_cont(select), -1)));
         else:
             return self.rate_n(i);
 
@@ -385,7 +386,7 @@ class CA_NORMAL:
             if(self.eneff_n(i) == 0):
                 return 0;
             else:
-                return min(self.a_cont(select) * pow(self.mass_n(i), self.b_cont(select)), (DAL_CAL.MySQL_CAL.GET_TBL_3B21(7))) * ((1 - self.fact_mit()) / self.eneff_n(i));
+                return min(self.a_cont(select) * pow(self.mass_n(i), self.b_cont(select)), (DAL_CAL.POSTGRESQL.GET_TBL_3B21(7))) * ((1 - self.fact_mit()) / self.eneff_n(i));
         else:
             return self.a_cont(select) * pow(self.mass_n(i), self.b_cont(select)) * (1 - self.fact_mit());
 
@@ -401,19 +402,19 @@ class CA_NORMAL:
     def fact_n_ic(self, i):
         releasetype = self.releaseType(i);
         if (releasetype == "Continuous"):
-            return self.rate_n(i) / (DAL_CAL.MySQL_CAL.GET_TBL_3B21(5));
+            return self.rate_n(i) / (DAL_CAL.POSTGRESQL.GET_TBL_3B21(5));
         else:
             return 0;
 
     def fact_ait(self):
-        data = DAL_CAL.MySQL_CAL.GET_TBL_52(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_52(self.FLUID);
         ait = 273 + (data[9] - 32) / 1.8;
-        if ((self.STORED_TEMP + (DAL_CAL.MySQL_CAL.GET_TBL_3B21(6))) <= ait):
+        if ((self.STORED_TEMP + (DAL_CAL.POSTGRESQL.GET_TBL_3B21(6))) <= ait):
             return 0;
-        elif((self.STORED_TEMP - (DAL_CAL.MySQL_CAL.GET_TBL_3B21(6))) >= ait):
+        elif((self.STORED_TEMP - (DAL_CAL.POSTGRESQL.GET_TBL_3B21(6))) >= ait):
             return 1;
         else:
-            return (self.STORED_TEMP - ait + (DAL_CAL.MySQL_CAL.GET_TBL_3B21(6))) / (2 * (DAL_CAL.MySQL_CAL.GET_TBL_3B21(6)));
+            return (self.STORED_TEMP - ait + (DAL_CAL.POSTGRESQL.GET_TBL_3B21(6))) / (2 * (DAL_CAL.POSTGRESQL.GET_TBL_3B21(6)));
 
     def ca_cmdn_flame(self, i):
         caailcmdn = self.ca_cmdn_cont(2, i) * self.fact_n_ic(i) + self.ca_cmdn_inst(4, i) * (1 - self.fact_n_ic(i));
@@ -438,7 +439,7 @@ class CA_NORMAL:
         if(not self.checkFlame()):
             return 0;
         else:
-            obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+            obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
             t = obj[0] * self.ca_cmdn_flame(1) + obj[1] * self.ca_cmdn_flame(2) + obj[2] * self.ca_cmdn_flame(3) + obj[3] * self.ca_cmdn_flame(4);
             ca_cmd_flame = t / obj[4]; # t / gff_Total
             return math.fabs(ca_cmd_flame);
@@ -447,7 +448,7 @@ class CA_NORMAL:
         if(not self.checkFlame()):
             return 0;
         else:
-            obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+            obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
             t = obj[0] * self.ca_injn_flame(1) + obj[1] * self.ca_injn_flame(2) + obj[2] * self.ca_injn_flame(3) + obj[3] * self.ca_injn_flame(4);
             ca_inj = t / obj[4];
             return math.fabs(ca_inj);
@@ -729,8 +730,8 @@ class CA_NORMAL:
         return a;
 
     def ca_injn_tox(self, i):
-        C8 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(8);
-        C4 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(4);
+        C8 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(8);
+        C4 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(4);
         releasetype = self.releaseType(i);
         if(releasetype == "Instantaneous"):
             self.RELEASE_DURATION == "Instantaneous Releases";
@@ -786,7 +787,7 @@ class CA_NORMAL:
         return check;
 
     def ca_inj_tox(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME)
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME)
         if(not self.checkToxic()):
             return 0;
         else:
@@ -797,10 +798,10 @@ class CA_NORMAL:
     #Step 10 non flammable non toxic consequence
 
     def ca_injn_contnfnt(self, i):
-        C11 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(11);
-        C9 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(9);
-        C8 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(8);
-        C4 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(4);
+        C11 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(11);
+        C9 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(9);
+        C8 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(8);
+        C4 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(4);
         g = 2696 - 21.9 * C11 * (self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) + 1.474 * pow((C11 * (self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE)), 2);
         h = 0.31 - 0.00032 * pow((C11 * (self.STORED_PRESSURE - self.ATMOSPHERIC_PRESSURE) - 40), 2);
         if(self.FLUID == "Steam"):
@@ -809,14 +810,14 @@ class CA_NORMAL:
             return 0.2 * (C8 * g * pow(C4 * self.rate_n(i), h));
 
     def ca_injn_instnfnt(self, i):
-        C10 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(10);
+        C10 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(10);
         if(self.FLUID == "Steam"):
             return C10 * pow(self.mass_n(i), 0.6384);
         else:
             return 0;
 
     def fact_n_icnfnt(self, i):
-        C5 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(5);
+        C5 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(5);
         if (self.FLUID == "Steam"):
             return min(self.rate_n(i) / C5, 1);
         else:
@@ -838,7 +839,7 @@ class CA_NORMAL:
         if(not self.checkNone()):
             return 0;
         else:
-            obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+            obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
             t = obj[0] * self.ca_injn_leaknfnt(1) + obj[1] * self.ca_injn_leaknfnt(2) + obj[2] * self.ca_injn_leaknfnt(3) + obj[3] * self.ca_injn_leaknfnt(4);
             ca_inj_nfnt = t / obj[4];
             return math.fabs(ca_inj_nfnt);
@@ -853,7 +854,7 @@ class CA_NORMAL:
         return max(max(cainjflame, cainjtox), cainjnfnt);
 
     def fc_cmd(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         t = obj[0] * obj[5] + obj[1] * obj[6] + obj[2] * obj[7] + obj[3] * obj[8];
         fc_cmd = t * self.MATERIAL_COST / obj[4];
         return fc_cmd;
@@ -864,7 +865,7 @@ class CA_NORMAL:
         return fc_affa;
 
     def outage_cmd(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         t = obj[0] * obj[9] + obj[1] * obj[10] + obj[2] * obj[11] + obj[3] * obj[12];
         return t / obj[4];
 
@@ -884,7 +885,7 @@ class CA_NORMAL:
 
     def vol_n_env(self, i):
         massn = self.mass_n(i);
-        C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
+        C13 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(13);
         if(self.FLUID == "C6-C8" or self.FLUID == "Acid"):
             frac_evap = 0.9;
         elif(self.FLUID == "C9-C12"):
@@ -909,11 +910,11 @@ class CA_NORMAL:
             frac_evap = 0.45;
         else:
             frac_evap = 1;
-        data = DAL_CAL.MySQL_CAL.GET_TBL_52(self.FLUID);
+        data = DAL_CAL.POSTGRESQL.GET_TBL_52(self.FLUID);
         return C13 * massn * (1 - frac_evap) / (data[1] * 16.02);
 
     def fc_environ(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         t = obj[0] * self.vol_n_env(1) + obj[1] * self.vol_n_env(2) + obj[2] * self.vol_n_env(3) + obj[3] * self.vol_n_env(4);
         return t * self.ENVIRON_COST / obj[4];
 
@@ -968,14 +969,14 @@ class CA_SHELL:
         return math.pi * pow(self.d_n_shell(i),2) / 4;
 
     def W_n_Tank(self, i):
-        C32 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(32);
+        C32 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(32);
         return C32 * 0.61 * self.a_n_shell(i) * math.sqrt(2 * self.FLUID_HEIGHT);
 
     def Bbl_total_shell(self):
-        return math.pi * pow(self.TANK_DIAMETER,2) * self.FLUID_HEIGHT / (4* DAL_CAL.MySQL_CAL.GET_TBL_3B21(13))
+        return math.pi * pow(self.TANK_DIAMETER,2) * self.FLUID_HEIGHT / (4* DAL_CAL.POSTGRESQL.GET_TBL_3B21(13))
 
     def Bbl_avail(self, i):
-        C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
+        C13 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(13);
         return math.pi * pow(self.TANK_DIAMETER, 2) * (self.FLUID_HEIGHT - (i - 1) * self.SHELL_COURSE_HEIGHT) / (4 * C13);
 
     def ld_tank(self, i):
@@ -1020,7 +1021,7 @@ class CA_SHELL:
         return costTANK;
 
     def Bbl_leak_release(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         summ = self.Bbl_leak_n(1) * obj[0] + self.Bbl_leak_n(2) * obj[1] + self.Bbl_leak_n(3) * obj[2];
         return summ / obj[4];
 
@@ -1041,7 +1042,7 @@ class CA_SHELL:
         return self.Bbl_leak_indike() * cost[0] + self.Bbl_leak_ssonsite() * cost[1] + self.Bbl_leak_ssoffsite() * cost[2] + self.Bbl_leak_water() * cost[5];
 
     def Bbl_rupture_release(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         return self.Bbl_leak_n(4) * obj[3] / obj[4];
 
     def Bbl_rupture_indike(self):
@@ -1064,18 +1065,22 @@ class CA_SHELL:
         return self.FC_leak_environ() + self.FC_rupture_environ();
 
     def FC_PROD_SHELL(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         t = obj[0] * obj[9] + obj[1] * obj[10] + obj[2] * obj[11] + obj[3] * obj[12];
         return t * self.PRODUCTION_COST / obj[4];
 
     def fc_cmd(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         t = obj[0] * obj[5] + obj[1] * obj[6] + obj[2] * obj[7] + obj[3] * obj[8];
         fc_cmd = t * self.MATERIAL_COST / obj[4];
         return fc_cmd;
 
     def FC_total_shell(self):
-        return self.fc_cmd() + self.FC_environ_shell() + self.FC_PROD_SHELL();
+        FC_TOTAL_SHELL = self.fc_cmd() + self.FC_environ_shell() + self.FC_PROD_SHELL();
+        if FC_TOTAL_SHELL == 0:
+            return 100000000;
+        else:
+            return self.fc_cmd() + self.FC_environ_shell() + self.FC_PROD_SHELL();
 
 
 
@@ -1111,7 +1116,7 @@ class CA_TANK_BOTTOM:
             return "E";
 
     def n_rh(self):
-        C36 =DAL_CAL.MySQL_CAL.GET_TBL_3B21(36);
+        C36 =DAL_CAL.POSTGRESQL.GET_TBL_3B21(36);
         return max(pow(self.TANK_DIAMETER / C36, 2), 1);
 
     def k_h_bottom(self):
@@ -1147,7 +1152,7 @@ class CA_TANK_BOTTOM:
         return k_h;
 
     def k_h_water(self):
-        C31 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(31);
+        C31 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(31);
         k_h = self.k_h_bottom();
         return C31 * (k_h[0] + k_h[1]) / 2;
 
@@ -1168,7 +1173,7 @@ class CA_TANK_BOTTOM:
         return dn;
 
     def rate_n_tank_bottom(self, i):
-        C33 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(33); C34 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(34); C35 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(35);
+        C33 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(33); C34 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(34); C35 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(35);
         if (self.k_h_water() > C34 * pow(self.dn_bottom(i), 2)):
             return C33 * math.pi * self.dn_bottom(i) * math.sqrt(2 * 1 * self.FLUID_HEIGHT) * self.n_rh();
         else:
@@ -1183,11 +1188,11 @@ class CA_TANK_BOTTOM:
             return 360;
 
     def BBL_TOTAL_TANKBOTTOM(self):
-        C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
+        C13 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(13);
         return math.pi * pow(self.TANK_DIAMETER, 2) * self.FLUID_HEIGHT / (4 * C13);
 
     def ld_n_tank_bottom(self, i):
-        C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
+        C13 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(13);
         Bbl_total_tank_bottom = (math.pi * pow(self.TANK_DIAMETER, 2) * self.FLUID_HEIGHT) / (4 * C13);
         if self.rate_n_tank_bottom(i) == 0:
             return self.t_ld_tank_bottom()
@@ -1195,7 +1200,7 @@ class CA_TANK_BOTTOM:
             return min(Bbl_total_tank_bottom / self.rate_n_tank_bottom(i), self.t_ld_tank_bottom());
 
     def Bbl_leak_n_bottom(self, i):
-        C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
+        C13 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(13);
         Bbl_total_tank_bottom = math.pi * pow(self.TANK_DIAMETER, 2) * self.FLUID_HEIGHT / (4 * C13);
         return min(self.rate_n_tank_bottom(i) * self.ld_n_tank_bottom(i), Bbl_total_tank_bottom);
 
@@ -1275,15 +1280,13 @@ class CA_TANK_BOTTOM:
 
     def FC_leak_environ_bottom(self):
         cost = self.getCost();
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         summ = self.Bbl_leak_groundwater(1) * cost[4] + self.Bbl_leak_subsoil(1) * cost[3];
-        ######### demo exception
-        print("API:" + self.API_COMPONENT_TYPE_NAME)
         return summ * obj[0] / obj[5];
 
     def Bbl_rupture_release_bottom(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
-        C13 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(13);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        C13 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(13);
         Bbl_total_tank_bottom = (math.pi * pow(self.TANK_DIAMETER, 2) * self.FLUID_HEIGHT) / (4 * C13);
         return (Bbl_total_tank_bottom * obj[3]) / obj[5];
 
@@ -1323,16 +1326,20 @@ class CA_TANK_BOTTOM:
         return self.FC_leak_environ_bottom() + self.FC_rupture_environ_bottom();
 
     def FC_cmd_bottom(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
-        C36 = DAL_CAL.MySQL_CAL.GET_TBL_3B21(36);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        C36 = DAL_CAL.POSTGRESQL.GET_TBL_3B21(36);
         summ = obj[0] * obj[5] + obj[1] * obj[6] + obj[2] * obj[7] + obj[8] * pow(self.TANK_DIAMETER / C36, 2);
         return summ * self.MATERIAL_COST / obj[4];
 
     def FC_PROD_BOTTOM(self):
-        obj = DAL_CAL.MySQL_CAL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
+        obj = DAL_CAL.POSTGRESQL.GET_API_COM(self.API_COMPONENT_TYPE_NAME);
         t = obj[0] * obj[9] + obj[1] * obj[10] + obj[2] * obj[11] + obj[3] * obj[12];
         return t * self.PRODUCTION_COST / obj[4];
 
     def FC_total_bottom(self):
-        return self.FC_cmd_bottom() + self.FC_environ_bottom() + self.FC_PROD_BOTTOM();
+        FC_TOTAL_BOTTOM = self.FC_cmd_bottom() + self.FC_environ_bottom() + self.FC_PROD_BOTTOM()
+        if FC_TOTAL_BOTTOM == 0:
+            return 100000000
+        else:
+            return self.FC_cmd_bottom() + self.FC_environ_bottom() + self.FC_PROD_BOTTOM();
 

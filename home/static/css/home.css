@@ -173,7 +173,6 @@ body{
             font-weight: bold;
             color: blue;
         }
-
 table {
     width:100%;
 }
@@ -201,6 +200,17 @@ table#t01 th {
 }
 table#t01 td {
     border: 0px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+table#t02 th {
+    background-color: lightgrey;
+    color: #6c6c6c;
+    border: 1px solid black;
+    text-align: center;
+}
+table#t02 td{
+    border: 1px solid black;
     border-collapse: collapse;
     text-align: center;
 }

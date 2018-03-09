@@ -9,7 +9,7 @@ from rbi.models import RwInputCaLevel1, RwCaLevel1, RwFullPof, RwFullFcof, RwInp
 from django.http import Http404, HttpResponse
 from rbi.DM_CAL import DM_CAL
 from rbi.CA_CAL import CA_NORMAL, CA_SHELL, CA_TANK_BOTTOM
-
+from dateutil.relativedelta import relativedelta;
 from datetime import datetime
 
 # Project Management Function
@@ -172,6 +172,12 @@ def newcomponent(request,equipmentname):
         error = {}
         data = {}
         isedit = 0
+        tankapi =[6,7,8,9,10,11,12,13,14,15,36,38,39]
+        other = []
+        for a in dataApicomponent:
+            if a.apicomponenttypeid not in tankapi:
+                other.append(a)
+        print(other)
         if request.method == "POST":
             data['equipmentNumber'] = request.POST.get('equipmentNub')
             data['equipmentType'] = request.POST.get('equipmentType')
@@ -205,7 +211,7 @@ def newcomponent(request,equipmentname):
                     return redirect('component_display', equipmentname)
     except EquipmentMaster.DoesNotExist:
         raise Http404
-    return render(request,'home/new/component.html', {'obj': dataEq , 'componenttype': dataComponentType, 'api':dataApicomponent, 'component':data, 'error': error, 'isedit':isedit})
+    return render(request,'home/new/component.html', {'obj': dataEq , 'componenttype': dataComponentType, 'api':dataApicomponent, 'component':data, 'error': error, 'isedit':isedit, 'other':other})
 
 def newProposal(request, componentname):
     try:
@@ -815,6 +821,12 @@ def newProposalTank(request, componentname):
         data = {}
         data['islink'] = dataCom.isequipmentlinked
         commisiondate = dataEq.commissiondate.date().strftime('%Y-%m-%d')
+        #shell = ["COURSE-1", "COURSE-2", "COURSE-3", "COURSE-4", "COURSE-5", "COURSE-6", "COURSE-7", "COURSE-8",
+        #         "COURSE-9", "COURSE-10"]
+        checkshell = False
+        if dataCom.componenttypeid_id == 8 or dataCom.componenttypeid_id == 38:
+            checkshell = True
+
         if request.method =="POST":
             # Data Assessment
             data['assessmentName'] = request.POST.get('AssessmentName')
@@ -1366,12 +1378,6 @@ def newProposalTank(request, componentname):
                                 PIPE_CONDITION="", JOINT_TYPE="",
                                 BRANCH_DIAMETER="")
 
-            shell = ["COURSE-1","COURSE-2","COURSE-3","COURSE-4","COURSE-5","COURSE-6","COURSE-7","COURSE-8","COURSE-9","COURSE-10"]
-            checkshell = False
-            for a in shell:
-                if str(dataCom.apicomponenttypeid) == a:
-                    checkshell = True
-                    break
             if checkshell:
                 cacal = CA_SHELL(FLUID= apiFluid, FLUID_HEIGHT= float(data['fluidHeight']), SHELL_COURSE_HEIGHT= float(data['shellHieght']),
                                  TANK_DIAMETER= float(data['tankDiameter']), EnvironSensitivity= data['EnvSensitivity'], P_lvdike= float(data['fluidLeaveDike']),
@@ -1470,13 +1476,13 @@ def newProposalTank(request, componentname):
                                   prodcost=data['productionCost'])
             refullfc.save()
 
-            if shell:
+            if checkshell:
                 return redirect('resultShell', rwassessment.id)
             else:
                 return redirect('resultBottom', rwassessment.id)
     except ComponentMaster.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/newAllTank.html',{'component': dataCom, 'equipment':dataEq, 'commissiondate':commisiondate,'api':api,'data':data, 'facility':dataFaci})
+    return render(request, 'home/new/newAllTank.html',{'component': dataCom, 'equipment':dataEq, 'commissiondate':commisiondate,'api':api,'data':data, 'facility':dataFaci, 'isShell':checkshell})
 
 ### Edit function
 def editSite(request, sitename):
@@ -1628,7 +1634,7 @@ def editComponent(request, equipmentname,componentname):
                     return  redirect('component_display', equipmentname)
     except ComponentMaster.DoesNotExist:
         raise Http404
-    return render(request, 'home/new/component.html', {'obj': dataEquip , 'componenttype': dataComponentType, 'api':dataApicomponent,'component':data, 'isedit':isEdit})
+    return render(request, 'home/new/component.html', {'obj': dataEquip , 'componenttype': dataComponentType, 'api':dataApicomponent,'component':data, 'isedit':isEdit, 'error':error})
 
 def editDesignCode(request, facilityname,designcodeid):
     try:
@@ -1824,12 +1830,14 @@ def displayProposal(request, componentname):
     proposal = RwAssessment.objects.filter(componentid= componentname)
     datafull = []
     component = ComponentMaster.objects.get(componentid= componentname)
+    equipmen = EquipmentMaster.objects.get(equipmentid= component.equipmentid_id)
     for a in proposal:
         df = RwFullPof.objects.filter(id= a.id)
         fc = RwFullFcof.objects.filter(id = a.id)
+        dm = RwDamageMechanism.objects.filter(id_dm= a.id)
         data = {}
         if df.count() != 0:
-            data['DF'] = df[0].totaldfap1
+            data['DF'] = round(df[0].totaldfap1,2)
             data['gff'] = df[0].gfftotal
             data['fms'] = df[0].fms
         else:
@@ -1837,21 +1845,30 @@ def displayProposal(request, componentname):
             data['gff'] = 0
             data['fms'] = 0
         if fc.count() != 0:
-            data['FC'] = fc[0].fcofvalue
+            data['FC'] = round(fc[0].fcofvalue,2)
         else:
             data['FC'] = 0
-        data['risk'] = data['DF']*data['gff']*data['fms']*data['FC']
+
+        if dm.count() != 0:
+            #dataEq.commissiondate.date().strftime('%Y-%m-%d')
+            data['DueDate'] = dm[0].inspduedate.date().strftime('%Y-%m-%d')
+            data['LastInsp'] = dm[0].lastinspdate.date().strftime('%Y-%m-%d')
+        else:
+            data['DueDate'] = (a.assessmentdate.date() + relativedelta(years=15)).strftime('%Y-%m-%d')
+            data['LastInsp'] = equipmen.commissiondate.date().strftime('%Y-%m-%d')
+
+        data['risk'] = round(data['DF']*data['gff']*data['fms']*data['FC'],2)
         datafull.append(data)
+
     if component.componenttypeid_id == 8 or component.componenttypeid_id == 12  or component.componenttypeid_id == 14 or component.componenttypeid_id == 15:
         isTank = 1
     else:
         isTank = 0
-    if component.componenttypeid == "Shell":
+    if component.componenttypeid_id == 8:
         isShell = 1
     else:
         isShell = 0
     zipped = zip(datafull,proposal)
-
 
     if "_delete" in request.POST:
         for a in proposal:
@@ -1859,3 +1876,68 @@ def displayProposal(request, componentname):
                 a.delete()
         return redirect('proposalDisplay', componentname)
     return render(request, 'display/proposalDisplay.html', {'obj': zipped, 'componentid': componentname, 'component':component, 'isTank': isTank, 'isShell': isShell})
+
+def locat(DamageFactor, FinancialCost):
+    data = {}
+    data['x'] = 0
+    data['y'] = 500
+
+    if FinancialCost <= 10000:
+        data['x'] = int(round(100+0.01 * FinancialCost,0))
+    elif FinancialCost <= 100000:
+        data['x'] = int(round(200 + 0.001 * FinancialCost,0))
+    elif FinancialCost <= 1000000:
+        data['x'] = int(round(300 + 0.0001 * FinancialCost,0))
+    elif FinancialCost <= 10000000:
+        data['x'] = int(round(400 + 0.00001 * FinancialCost,0))
+    elif FinancialCost <= 1000000000:
+        data['x'] = int(round(500 + 0.000001 * FinancialCost,0))
+    else:
+        data['x'] = 600
+
+    if DamageFactor <= 2:
+        data['y'] = int(round(500 - 50* DamageFactor,0))
+    elif DamageFactor <= 20:
+        data['y'] = int(round(400 - (100 * DamageFactor)/20,0))
+    elif DamageFactor <= 100:
+        data['y'] = int(round(300 - DamageFactor*1.25,0))
+    elif DamageFactor <= 1000:
+        data['y'] = int(round(200 - 0.1*DamageFactor,0))
+    elif DamageFactor <= 100000:
+        data['y'] = int(round(100- 0.001*DamageFactor,0))
+    else:
+        data['y'] = 0
+    return data
+
+def displayRiskMap(request, proposalname):
+    locatAPI1 = {}
+    locatAPI2 = {}
+    locatAPI3 = {}
+    locatAPI1['x'] = 0
+    locatAPI1['y'] = 500
+
+    locatAPI2['x'] = 0
+    locatAPI2['y'] = 500
+
+    locatAPI3['x'] = 0
+    locatAPI3['y'] = 500
+
+
+    df = RwFullPof.objects.get(id= proposalname)
+    ca = RwFullFcof.objects.get(id= proposalname)
+    rwAss = RwAssessment.objects.get(id= proposalname)
+    component = ComponentMaster.objects.get(componentid=rwAss.componentid_id)
+    if component.componenttypeid_id == 8 or component.componenttypeid_id == 12 or component.componenttypeid_id == 14 or component.componenttypeid_id == 15:
+        isTank = 1
+    else:
+        isTank = 0
+
+    if component.componenttypeid_id == 8:
+        isShell = 1
+    else:
+        isShell = 0
+    Ca = round(ca.fcofvalue,2)
+    DF1 = round(df.totaldfap1,2)
+    DF2 = round(df.totaldfap2,2)
+    DF3 = round(df.totaldfap3,2)
+    return render(request, 'display/risk_Matrix.html', {'API1':locat(df.totaldfap1, ca.fcofvalue), 'API2':locat(df.totaldfap2, ca.fcofvalue), 'API3':locat(df.totaldfap3, ca.fcofvalue),'DF1': DF1,'DF2': DF2,'DF3': DF3, 'ca':Ca, 'ass':rwAss,'isTank': isTank, 'isShell': isShell, 'df':df})

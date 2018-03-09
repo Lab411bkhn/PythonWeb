@@ -57,6 +57,7 @@ urlpatterns = [
     url(r'^proposal/(?P<proposalname>\d+)/result/DF/$', views.displayDF, name='resultdf'),
     url(r'^proposal/(?P<proposalname>\d+)/result/POF/$', views.displayFullDF, name='resultpof'),
     url(r'^component/(?P<componentname>\d+)/proposal/display/$', views.displayProposal, name= 'proposalDisplay'),
+    url(r'^proposal/(?P<proposalname>\d+)/result/RiskMatrix/$', views.displayRiskMap, name='riskMatrix')
     # Proposal URL( RBI 581 calculate URL)
 
 ]
