@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+import datetime
 from pygments.lexer import default
 
 
@@ -109,7 +110,7 @@ class ComponentMaster(models.Model):
     componentdesc = models.CharField(db_column='ComponentDesc', max_length=250, blank=True, null=True)  # Field name made lowercase.
     isequipmentlinked = models.IntegerField(db_column='IsEquipmentLinked', default=0)  # Field name made lowercase.
     apicomponenttypeid = models.IntegerField(db_column='APIComponentTypeID')  # Field name made lowercase.
-
+    create = models.DateTimeField(db_column='Create', default=datetime.datetime.now())
     class Meta:
         managed = False
         db_table = 'component_master'
@@ -222,7 +223,7 @@ class EquipmentMaster(models.Model):
     pfdno = models.CharField(db_column='PFDNo', max_length=100, blank=True, null=True)  # Field name made lowercase.
     processdescription = models.CharField(db_column='ProcessDescription', max_length=250, blank=True, null=True)  # Field name made lowercase.
     equipmentdesc = models.CharField(db_column='EquipmentDesc', max_length=250, blank=True, null=True)  # Field name made lowercase.
-
+    create = models.DateTimeField(db_column='Create', default= datetime.datetime.now())
     def __str__(self):
         return self.equipmentnumber
 
@@ -249,6 +250,7 @@ class Facility(models.Model):
     siteid = models.ForeignKey('Sites', on_delete=models.CASCADE, db_column='SiteID')  # Field name made lowercase.
     facilityname = models.CharField(db_column='FacilityName', max_length=100)  # Field name made lowercase.
     managementfactor = models.FloatField(db_column='ManagementFactor')  # Field name made lowercase.
+    create = models.DateTimeField(db_column='Create', default= datetime.datetime.now())
     def __str__(self):
         return self.facilityname
     class Meta:
@@ -286,7 +288,7 @@ class RwAssessment(models.Model):
     riskanalysisperiod = models.IntegerField(db_column='RiskAnalysisPeriod')  # Field name made lowercase.
     isequipmentlinked = models.IntegerField(db_column='IsEquipmentLinked', default=0)  # Field name made lowercase.
     proposalname = models.CharField(db_column='ProposalName', max_length=100, blank=True, null=True)  # Field name made lowercase.
-
+    create = models.DateTimeField(db_column='Create', default= datetime.datetime.now())
     def __str__(self):
         return self.proposalname
 
@@ -668,6 +670,7 @@ class RwStream(models.Model):
 class Sites(models.Model):
     siteid = models.AutoField(db_column='SiteID', primary_key=True)  # Field name made lowercase.
     sitename = models.CharField(db_column='SiteName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    create = models.DateTimeField(db_column='Create', default= datetime.datetime.now())
     def __str__(self):
         return self.sitename
     # def get_absolute_url(self):

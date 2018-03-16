@@ -676,41 +676,72 @@
 
                         <tr>
                             <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px">Material Grade to Evaluate</br>Severity of HTHA</span></td>
-                            <td><input type="checkbox" value="1" name="MGTEHTHA"/> </td>
+                            <td><input type="checkbox" id="HTHA" value="1" name="MGTEHTHA"/> </td>
                         </tr>
 
                         <tr>
                             <td><span style="font-size: 15px">HTHA Material Grade</span></td>
-                            <td><select class="form-control" list="HTHA" name="HTHAMaterialGrade" >
-                                <option>1.25Cr-0.5Mo</option>
-                                <option>1Cr-0.5Mo</option>
-                                <option>2.25Cr-1Mo</option>
-                                <option>C-0.5Mo (Annealed)</option>
-                                <option>C-0.5Mo (Normalised)</option>
-                                <option>Carbon Steel</option>
-                                <option>Not Applicable</option>
+                            <td><select style="width: 500px" class="form-control" list="HTHA" id="HTHAMaterial" name="HTHAMaterialGrade" >
                             </select>
                             </td>
                         </tr>
-
+                        <!-----------HTHA STICK CHANGE----------->
+                        <script>
+                            $(document).ready(function () {
+                                $("#HTHAMaterial").attr("disabled",true);
+                                $("#HTHAMaterial").empty();
+                                $("#HTHA").click(function () {
+                                    if($("#HTHA").prop("checked") == true){
+                                        $("#HTHAMaterial").html(" <option>1.25Cr-0.5Mo</option>\n" +
+                                            "                                <option>1Cr-0.5Mo</option>\n" +
+                                            "                                <option>2.25Cr-1Mo</option>\n" +
+                                            "                                <option>C-0.5Mo (Annealed)</option>\n" +
+                                            "                                <option>C-0.5Mo (Normalised)</option>\n" +
+                                            "                                <option>Carbon Steel</option>\n" +
+                                            "                                <option>Not Applicable</option>");
+                                        $("#HTHAMaterial").attr("disabled",false);
+                                    }
+                                    else {
+                                        $("#HTHAMaterial").empty();
+                                        $("#HTHAMaterial").attr("disabled",true);
+                                    }
+                                })
+                            })
+                        </script>
                         <tr>
                             <td><span style="color: rgba(50, 50, 120, 0.93);font-size: 16px"> Material Grade to Evaluate</br>Severity of PTA Cracking</span></td>
-                            <td><input type="checkbox" list="MaterialEvaluate" name="MaterialPTA" size="30"/></td>
+                            <td><input type="checkbox" list="MaterialEvaluate" id="PTA" name="MaterialPTA" size="30"/></td>
                         </tr>
 
                         <tr>
                             <td><span style="font-size: 15px">PTA Material Grade</span></td>
-                            <td><select class="form-control" list="PTA" name="PTAMaterialGrade" >
-                                <option>321 Stainless Stee</option>
-                                <option>347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay</option>
-                                <option>Regular 300 series Stainless Steels and Alloys 600 and 800</option>
-                                <option>H Grade 300 series Stainless Steels</option>
-                                <option>L Grade 300 series Stainless Steels</option>
-                                <option>Not Applicable</option>
+                            <td><select style="width: 500px" class="form-control" list="PTA" id="PTAMaterial" name="PTAMaterialGrade" >
                             </select>
                             </td>
                         </tr>
+                        <!------------PTA CHECKED FUNCTION-------------->
+                        <script>
+                            $(document).ready(function () {
+                                $("#PTAMaterial").attr("disabled", true);
+                                $("#PTAMaterial").empty();
+                                $("#PTA").click(function () {
+                                    if($("#PTA").prop("checked") == true){
+                                        $("#PTAMaterial").html("<option>321 Stainless Stee</option>\n" +
+                                            "                                <option>347 Stainless Steel, Alloy 20, Alloy 625, All austenitic weld overlay</option>\n" +
+                                            "                                <option>Regular 300 series Stainless Steels and Alloys 600 and 800</option>\n" +
+                                            "                                <option>H Grade 300 series Stainless Steels</option>\n" +
+                                            "                                <option>L Grade 300 series Stainless Steels</option>\n" +
+                                            "                                <option>Not Applicable</option>");
+                                        $("#PTAMaterial").attr("disabled",false);
+                                    }
+                                    else {
+                                        $("#PTAMaterial").empty();
+                                        $("#PTAMaterial").attr("disabled",true);
+                                    }
+                                })
 
+                            })
+                        </script>
                         <tr>
                             <td><span style="font-size: 16px">Material Cost Factor</span></td>
                             <td><input type="number" class="form-control" step="0.01" value="0" min="0" name="MaterialCostFactor"/> </td>
@@ -801,14 +832,15 @@
                         <table>
                             <tr>
                                 <td><span style="font-size: 16px">Internal Cladding</span></td>
+                                <td>&emsp;&emsp;&emsp;&ensp;</td>
                                 <td><input type="checkbox" list="InternalCladding" name="InternalCladding"/></td>
-                                <td>&emsp;&emsp;</td>
+
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">Cladding Corrosion Rate</span></td>
-                                <td><input type="number" class="form-control" step="0.01" min="0" name="CladdingCorrosionRate" value="0" /></td><td>mm/yr</td>
-                                <td>&ensp;</td>
+                                <td></td>
+                                <td><input style="width: 300px" type="number" class="form-control" step="0.01" min="0" name="CladdingCorrosionRate" value="0" /></td><td>mm/yr</td>
                             </tr>
                         </table>
                     </fieldset>
@@ -818,22 +850,15 @@
                         <table>
                             <tr>
                                 <td><span style="color:#ff0000;font-size: 16px">Internal Lining </span></td>
+                                <td>&emsp;&emsp;</td>
+                                <td><input type="checkbox" id="InterLinning" list="InternalLining" name="InternalLining"/></td>
                                 <td></td>
-                                <td><input type="checkbox"  list="InternalLining" name="InternalLining"/></td>
-                                <td>&ensp;</td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">Internal Liner Type</span></td>
                                 <td></td>
-                                <td><select class="form-control" list="ILT" name="InternalLinerType">
-                                    <option>Acid Brick</option>
-                                    <option>Castable refractory</option>
-                                    <option>Castable refractory severe condition</option>
-                                    <option>Fibreglass</option>
-                                    <option>Glass lined</option>
-                                    <option>Organic</option>
-                                    <option>Strip lined alloy</option>
+                                <td><select style="width: 300px" class="form-control" list="ILT" id="LinningType" name="InternalLinerType">
                                 </select>
                                 </td>
                             </tr>
@@ -841,14 +866,43 @@
                             <tr>
                                 <td><span style="font-size: 16px">Internal Liner Condition</span></td>
                                 <td></td>
-                                <td><select class="form-control" list="ILC" name="InternalLinerCondition">
-                                    <option>Average</option>
-                                    <option>Good</option>
-                                    <option>Poor</option>
-                                    <option>Unknown</option>
+                                <td><select style="width: 300px" class="form-control" list="ILC" id="LinningCondition" name="InternalLinerCondition">
                                 </select>
                                 </td>
                             </tr>
+                            <!-----------LINNING CHECKED-------------->
+                            <script>
+                                $(document).ready(function () {
+                                    $("#LinningType").attr("disabled", true);
+                                    $("#LinningType").empty();
+                                    $("#LinningCondition").attr("disabled", true);
+                                    $("#LinningCondition").empty();
+                                    $("#InterLinning").click(function () {
+                                        if($("#InterLinning").prop("checked") == true){
+                                            $("#LinningType").html("<option>Acid Brick</option>\n" +
+                                                "                                    <option>Castable refractory</option>\n" +
+                                                "                                    <option>Castable refractory severe condition</option>\n" +
+                                                "                                    <option>Fibreglass</option>\n" +
+                                                "                                    <option>Glass lined</option>\n" +
+                                                "                                    <option>Organic</option>\n" +
+                                                "                                    <option>Strip lined alloy</option>");
+                                            $("#LinningCondition").html("    <option>Average</option>\n" +
+                                                "                                    <option>Good</option>\n" +
+                                                "                                    <option>Poor</option>\n" +
+                                                "                                    <option>Unknown</option>");
+
+                                            $("#LinningType").attr("disabled",false);
+                                            $("#LinningCondition").attr("disabled",false);
+                                        }
+                                        else{
+                                            $("#LinningType").empty();
+                                            $("#LinningType").attr("disabled", true);
+                                            $("#LinningCondition").empty();
+                                            $("#LinningCondition").attr("disabled", true);
+                                        }
+                                    })
+                                })
+                            </script>
                         </table>
                     </fieldset>
                     <fieldset class="scheduler-border">
@@ -856,39 +910,62 @@
                         <table>
                             <tr>
                                 <td><span style="color: #ff0000;font-size: 16px"> External Insulation</span></td>
-                                <td><input  type="checkbox" list="ExternalInsulation" name="ExternalInsulation" size="40"/>
-                                <td>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</td>
-                                <td>&emsp;</td>
-                                <td>&emsp;&emsp;</td>
+                                <td></td>
+                                <td><input  type="checkbox" id="ExternalInsulation" list="ExternalInsulation" name="ExternalInsulation" size="40"/>
+                                <td></td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">Insulation Contains Chlorides</span></td>
+                                <td></td>
                                 <td><input type="checkbox" list="ICC" name="ICC"/></td>
                             </tr>
 
                             <tr>
                                 <td><span style="font-size: 16px">External Insulation Type</span></td>
-                                <td><select class="form-control" list="EIT" name="ExternalInsulationType" >
-                                    <option>Asbestos</option>
-                                    <option>Calcium Silicate</option>
-                                    <option>Fibreglass</option>
-                                    <option>Foam Glass</option>
-                                    <option>Mineral Wool</option>
-                                    <option>Pearlite</option>
+                                <td></td>
+                                <td><select style="width: 300px" class="form-control" id="ExternalInsulationType" list="EIT" name="ExternalInsulationType" >
                                 </select>
                                 </td>
                             </tr>
 
                             <tr>
-                            <td><span style="color: #ff0000;font-size: 16px">Insulation Condition</span></td>
-                            <td><select class="form-control" list="IC" name="InsulationCondition">
-                                <option>Above average</option>
-                                <option>Average</option>
-                                <option>Below average</option>
-                            </select>
-                            </td>
+                                <td><span style="color: #ff0000;font-size: 16px">Insulation Condition</span></td>
+                                <td></td>
+                                <td><select style="width: 300px" class="form-control" id="InsulationCondition" list="IC" name="InsulationCondition"></select></td>
                             </tr>
+                            <!----------------External Checked------------------>
+                            <script>
+                                $(document).ready(function () {
+                                    $("#ExternalInsulationType").empty();
+                                    $("#ExternalInsulationType").attr("disabled",true);
+                                    $("#InsulationCondition").empty();
+                                    $("#InsulationCondition").attr("disabled", true);
+                                    $("#ExternalInsulation").click(function () {
+                                        if($("#ExternalInsulation").prop("checked") == true){
+                                            $("#ExternalInsulationType").html("  <option>Asbestos</option>\n" +
+                                                "                                    <option>Calcium Silicate</option>\n" +
+                                                "                                    <option>Fibreglass</option>\n" +
+                                                "                                    <option>Foam Glass</option>\n" +
+                                                "                                    <option>Mineral Wool</option>\n" +
+                                                "                                    <option>Pearlite</option>");
+
+                                            $("#InsulationCondition").html(" <option>Above average</option>\n" +
+                                                "                                <option>Average</option>\n" +
+                                                "                                <option>Below average</option>");
+
+                                            $("#ExternalInsulationType").attr("disabled",false);
+                                            $("#InsulationCondition").attr("disabled",false);
+                                        }
+                                        else{
+                                            $("#ExternalInsulationType").empty();
+                                            $("#ExternalInsulationType").attr("disabled",true);
+                                            $("#InsulationCondition").empty();
+                                            $("#InsulationCondition").attr("disabled", true);
+                                        }
+                                    })
+                                })
+                            </script>
                         </table>
                     </fieldset>
                 </fieldset>

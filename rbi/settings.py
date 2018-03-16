@@ -57,8 +57,7 @@ ROOT_URLCONF = 'rbi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,16 +90,16 @@ WSGI_APPLICATION = 'rbi.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#      'default': {
-#          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#          'NAME': 'djangorbi',
-#          'USER': 'postgres',
-#          'PASSWORD': 'root',
-#          'HOST': 'localhost',
-#          'PORT': '5432',
-#      }
-#   }
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': 'djangorbi',
+         'USER': 'postgres',
+         'PASSWORD': 'root',
+         'HOST': 'localhost',
+         'PORT': '5432',
+     }
+  }
 
 # DATABASES = {
 #     'default': {
@@ -113,16 +112,16 @@ WSGI_APPLICATION = 'rbi.wsgi.application'
 #     }
 #  }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'fgmmzejj',
-        'USER': 'fgmmzejj',
-        'PASSWORD': 'nVrL5qDChU1pL83jlXqcKrNVyfAwxXCQ',
-        'HOST': 'baasu.db.elephantsql.com',
-        'PORT': '5432',
-    }
- }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'fgmmzejj',
+#         'USER': 'fgmmzejj',
+#         'PASSWORD': 'nVrL5qDChU1pL83jlXqcKrNVyfAwxXCQ',
+#         'HOST': 'baasu.db.elephantsql.com',
+#         'PORT': '5432',
+#     }
+#  }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
