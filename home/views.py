@@ -5,7 +5,7 @@ from rbi.models import Sites
 from rbi.models import Facility,EquipmentMaster, ComponentMaster, EquipmentType, DesignCode, Manufacturer, ComponentType
 from rbi.models import FacilityRiskTarget
 from rbi.models import RwAssessment,RwEquipment,RwComponent,RwStream,RwExtcorTemperature, RwCoating, RwMaterial
-from rbi.models import RwInputCaLevel1, RwCaLevel1, RwFullPof, RwFullFcof, RwInputCaTank, RwCaTank, RwDamageMechanism
+from rbi.models import RwInputCaLevel1, RwCaLevel1, RwFullPof, RwFullFcof, RwInputCaTank, RwCaTank, RwDamageMechanism, DmItems
 from django.http import Http404, HttpResponse
 from rbi.DM_CAL import DM_CAL
 from rbi.CA_CAL import CA_NORMAL, CA_SHELL, CA_TANK_BOTTOM
@@ -1974,6 +1974,18 @@ def convertCA(CA):
     else:
         return 5
 
+def convertRisk(CA,DF):
+    if CA == 0 or DF == 'N/A':
+        return 'N/A'
+    elif CA in (1,2) and DF in ('A','B','C'):
+        return "Low"
+    elif (CA in (1,2) and DF == 'D') or (CA in (3,4) and DF in ('A','B')) or (CA == 3 and DF == 'C'):
+        return "Medium"
+    elif (CA == 5 and DF in ('C','D','E')) or (CA == 4 and DF == 'E'):
+        return "High"
+    else:
+        return "Medium High"
+
 def exportDemo(request, proposalname):
     rwAss = RwAssessment.objects.get(id=proposalname)
     component = ComponentMaster.objects.get(componentid=rwAss.componentid_id)
@@ -1982,176 +1994,335 @@ def exportDemo(request, proposalname):
     else:
         isTank = 0
 
+    equip = EquipmentMaster.objects.get(equipmentid= component.equipmentid_id)
 
-    if "xls" in request.POST:
-        output = BytesIO()
-        workbook = xlsxwriter.Workbook(output)
-        worksheet = workbook.add_worksheet('Risk Summary')
-        worksheet1 = workbook.add_worksheet('Risk Summary Detail')
-        worksheet2 = workbook.add_worksheet('Inspection Plan')
+    fcof = RwFullFcof.objects.get(id=proposalname)
+    fpof = RwFullPof.objects.get(id=proposalname)
+    ca = convertCA(fcof.fcofvalue)
+    df = convertDF(fpof.totaldfap1)
+    dfFuture = convertDF(fpof.totaldfap2)
+    risk = convertRisk(ca,df)
+    riskFuture = convertRisk(ca,dfFuture)
+    inspMethod= ['Inspection Type','ACFM',
+                'Angled Compression Wave',
+                'Angled Shear Wave',
+                'A-scan Thickness Survey',
+                'B-scan',
+                'Chime',
+                'Compton Scatter',
+                'Crack Detection',
+                'C-scan',
+                'Digital Ultrasonic Thickness Gauge',
+                'Endoscopy',
+                'Gamma Radiography',
+                'Hardness Surveys',
+                'Hydrotesting',
+                'Leak Detection',
+                'Liquid Penetrant Inspection',
+                'Lorus',
+                'Low frequency',
+                'Magnetic Fluorescent Inspection',
+                'Magnetic Flux Leakage',
+                'Magnetic Particle Inspection',
+                'Microstructure Replication',
+                'Naked Eye',
+                'On-line Monitoring',
+                'Passive Thermography',
+                'Penetrant Leak Detection',
+                'Pulsed',
+                'Real-time Radiography',
+                'Remote field',
+                'Standard (flat coil)',
+                'Surface Waves',
+                'Teletest',
+                'TOFD',
+                'Transient Thermography',
+                'Video',
+                'X-Radiography']
+    #if "xls" in request.POST:
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet('Risk Summary')
+    worksheet1 = workbook.add_worksheet('Risk Summary Detail')
+    worksheet2 = workbook.add_worksheet('Inspection Plan')
+    worksheet3 = workbook.add_worksheet('Lookup')
 
-        format = workbook.add_format()
-        format.set_font_name('Times New Roman')
-        format.set_font_size(14)
-        format.set_border()
-        format.set_rotation(90)
-        format.set_align('center')
-        format.set_bg_color('gray')
+    format = workbook.add_format()
+    format.set_font_name('Times New Roman')
+    format.set_font_size(14)
+    format.set_border()
+    format.set_rotation(90)
+    format.set_align('center')
+    format.set_bg_color('#B7B7B7')
 
-        format1 = workbook.add_format()
-        format1.set_font_name('Times New Roman')
-        format1.set_font_size(14)
-        format1.set_border()
-        format1.set_align('center')
-        format1.set_bg_color('gray')
+    format1 = workbook.add_format()
+    format1.set_font_name('Times New Roman')
+    format1.set_font_size(14)
+    format1.set_border()
+    format1.set_align('center')
+    format1.set_align('vcenter')
+    format1.set_bg_color('#B7B7B7')
 
-        formatdata = workbook.add_format()
-        formatdata.set_font_name('Times New Roman')
-        formatdata.set_font_size(14)
+    formatdata = workbook.add_format()
+    formatdata.set_font_name('Times New Roman')
+    formatdata.set_font_size(13)
 
-        ### SHEET CONTENT
-        ### sheet 1 RiskSummary Ban Tho
-        worksheet.merge_range('A1:D1', 'Indentification', format1)
-        worksheet.set_column('C2:C2', 30)
-        worksheet.set_column('B2:B2', 5)
-        worksheet.write('A2', 'Equipment', format)
-        worksheet.write('B2', 'Equipment Description', format)
-        worksheet.write('C2', 'Equipment Type', format)
-        worksheet.write('D2', 'Components', format)
-        worksheet.merge_range('E1:E2', 'Represent.fluid', format)
-        worksheet.merge_range('F1:F2', 'Fluid phase', format)
-        worksheet.merge_range('G1:M1', 'Consequence (COF)', format1)
-        worksheet.merge_range('O1:W1', 'Probability (POF)', format1)
-        worksheet.merge_range('X1:Y1', 'Risk', format1)
-        worksheet.write('G2', 'Current Risk', format)
+    formattime = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+    formatdata.set_font_name('Times New Roman')
+    formattime.set_font_size(13)
+
+    formatrisk = workbook.add_format()
+    formatrisk.set_font_name('Times New Roman')
+    formatrisk.set_font_size(13)
+    if risk == 'N/A':
+        formatrisk.set_bg_color('gray')
+    elif risk == 'Low':
+        formatrisk.set_bg_color('green')
+    elif risk == 'Medium':
+        formatrisk.set_bg_color('yellow')
+    elif risk == 'Medium High':
+        formatrisk.set_bg_color('orange')
+    else:
+        formatrisk.set_bg_color('red')
+
+    formatriskFuture = workbook.add_format()
+    formatriskFuture.set_font_name('Times New Roman')
+    formatriskFuture.set_font_size(13)
+    if riskFuture == 'N/A':
+        formatriskFuture.set_bg_color('gray')
+    elif riskFuture == 'Low':
+        formatriskFuture.set_bg_color('green')
+    elif riskFuture == 'Medium':
+        formatriskFuture.set_bg_color('yellow')
+    elif riskFuture == 'Medium High':
+        formatriskFuture.set_bg_color('orange')
+    else:
+        formatriskFuture.set_bg_color('red')
+
+    ## Sheet lookup
+    print(len(inspMethod))
+    for i in range(1, len(inspMethod) + 1):
+        worksheet3.write('A' + str(i), inspMethod[i - 1], formatdata)
+    worksheet3.hide()
+
+    ### SHEET CONTENT
+    ### sheet 1 RiskSummary Ban Tho
+    worksheet.merge_range('A1:D1', 'Indentification', format1)
+    worksheet.set_column('A2:A2', 20)
+    worksheet.set_column('C2:C2', 30)
+    worksheet.set_column('B2:B2', 30)
+    worksheet.set_column('D2:D2', 20)
+    worksheet.write('A2', 'Equipment', format)
+    worksheet.write('B2', 'Equipment Description', format)
+    worksheet.write('C2', 'Equipment Type', format)
+    worksheet.write('D2', 'Components', format)
+    worksheet.merge_range('E1:E2', 'Represent.fluid', format)
+    worksheet.merge_range('F1:F2', 'Fluid phase', format)
+    worksheet.merge_range('G1:M1', 'Consequence (COF)', format1)
+    worksheet.merge_range('O1:W1', 'Probability (POF)', format1)
+    worksheet.merge_range('X1:Y1', 'Risk', format1)
+    worksheet.write('G2', 'Current Risk', format)
+    if isTank:
+        worksheet.write('H2', 'Cofcat.Component Damage', format)
+    else:
         worksheet.write('H2', 'Cofcat.Flammable', format)
-        worksheet.write('I2', 'Cofcat.People', format)
-        worksheet.write('J2', 'Cofcat.Asset', format)
-        worksheet.write('K2', 'Cofcat.Env', format)
-        worksheet.write('L2', 'Cofcat.Reputation', format)
-        worksheet.write('M2', 'Cofcat.Combined', format)
-        worksheet.merge_range('N1:N2', 'Component Material Glade', format)
-        worksheet.write('O2', 'InitThinningPOFCatalog', format)
-        worksheet.write('P2', 'InitEnv.Cracking', format)
-        worksheet.write('Q2', 'InitOtherPOFCatalog', format)
-        worksheet.write('R2', 'InitPOFCatelog', format)
-        worksheet.write('S2', 'ExtThinningPOF', format)
-        worksheet.write('T2', 'ExtEnvCrackingProbabilityCatelog', format)
-        worksheet.write('U2', 'ExtOtherPOFCatelog', format)
-        worksheet.write('V2', 'ExtPOFCatelog', format)
-        worksheet.write('W2', 'POFCategory', format)
-        worksheet.write('X2', 'Current Risk', format)
-        worksheet.set_column('X2:X2', 20)
-        worksheet.write('Y2', 'Future Risk', format)
-        worksheet.set_column('Y2:Y2', 20)
+    worksheet.write('I2', 'Cofcat.People', format)
+    worksheet.write('J2', 'Cofcat.Asset', format)
+    worksheet.write('K2', 'Cofcat.Env', format)
+    worksheet.write('L2', 'Cofcat.Reputation', format)
+    worksheet.write('M2', 'Cofcat.Combined', format)
+    worksheet.merge_range('N1:N2', 'Component Material Glade', format)
+    worksheet.write('O2', 'InitThinningPOFCatalog', format)
+    worksheet.write('P2', 'InitEnv.Cracking', format)
+    worksheet.write('Q2', 'InitOtherPOFCatalog', format)
+    worksheet.write('R2', 'InitPOFCatelog', format)
+    worksheet.write('S2', 'ExtThinningPOF', format)
+    worksheet.write('T2', 'ExtEnvCrackingProbabilityCatelog', format)
+    worksheet.write('U2', 'ExtOtherPOFCatelog', format)
+    worksheet.write('V2', 'ExtPOFCatelog', format)
+    worksheet.write('W2', 'POFCategory', format)
+    worksheet.write('X2', 'Current Risk', format)
+    worksheet.set_column('X2:X2', 20)
+    worksheet.write('Y2', 'Future Risk', format)
+    worksheet.set_column('Y2:Y2', 20)
 
-        ### sheet 2 RiskSummary Ban Tinh
-        worksheet1.merge_range('A1:D1', 'Indentification', format1)
-        worksheet1.set_column('C2:C2', 30)
-        worksheet1.set_column('B2:B2', 5)
-        worksheet1.write('A2', 'Equipment', format)
-        worksheet1.write('B2', 'Equipment Description', format)
-        worksheet1.write('C2', 'Equipment Type', format)
-        worksheet1.write('D2', 'Components', format)
-        worksheet1.merge_range('E1:E2', 'Represent.fluid', format)
-        worksheet1.merge_range('F1:F2', 'Fluid phase', format)
-        worksheet1.merge_range('G1:M1', 'Consequence (COF)', format1)
-        worksheet1.merge_range('O1:W1', 'Probability (POF)', format1)
-        worksheet1.merge_range('X1:Y1', 'Risk', format1)
-        worksheet1.write('G2', 'Current Risk', format)
-        worksheet1.write('H2', 'Cofcat.Flammable', format)
-        worksheet1.write('I2', 'Cofcat.People', format)
-        worksheet1.write('J2', 'Cofcat.Asset', format)
-        worksheet1.write('K2', 'Cofcat.Env', format)
-        worksheet1.write('L2', 'Cofcat.Reputation', format)
-        worksheet1.write('M2', 'Cofcat.Combined', format)
-        worksheet1.merge_range('N1:N2', 'Component Material Glade', format)
-        worksheet1.write('O2', 'InitThinningPOFCatalog', format)
-        worksheet1.write('P2', 'InitEnv.Cracking', format)
-        worksheet1.write('Q2', 'InitOtherPOFCatalog', format)
-        worksheet1.write('R2', 'InitPOFCatelog', format)
-        worksheet1.write('S2', 'ExtThinningPOF', format)
-        worksheet1.write('T2', 'ExtEnvCrackingProbabilityCatelog', format)
-        worksheet1.write('U2', 'ExtOtherPOFCatelog', format)
-        worksheet1.write('V2', 'ExtPOFCatelog', format)
-        worksheet1.write('W2', 'POFCategory', format)
-        worksheet1.write('X2', 'Current Risk', format)
-        worksheet1.set_column('X2:X2', 20)
-        worksheet1.write('Y2', 'Future Risk', format)
-        worksheet1.set_column('Y2:Y2', 20)
+    ### sheet 2 RiskSummary Ban Tinh
+    worksheet1.merge_range('A1:D1', 'Indentification', format1)
+    worksheet1.set_column('A2:A2', 20)
+    worksheet1.set_column('C2:C2', 30)
+    worksheet1.set_column('B2:B2', 30)
+    worksheet1.set_column('D2:D2', 20)
+    worksheet1.write('A2', 'Equipment', format)
+    worksheet1.write('B2', 'Equipment Description', format)
+    worksheet1.write('C2', 'Equipment Type', format)
+    worksheet1.write('D2', 'Components', format)
+    worksheet1.merge_range('E1:E2', 'Represent.fluid', format)
+    worksheet1.merge_range('F1:F2', 'Fluid phase', format)
+    worksheet1.merge_range('G1:M1', 'Consequence (COF), $', format1)
+    worksheet1.merge_range('O1:W1', 'Probability (POF)', format1)
+    worksheet1.merge_range('X1:Y1', 'Risk, $/year', format1)
+    worksheet1.write('G2', 'Current Risk', format)
+    worksheet1.write('H2', 'Cofcat.Flammable', format)
+    worksheet1.write('I2', 'Cofcat.People', format)
+    worksheet1.write('J2', 'Cofcat.Asset', format)
+    worksheet1.write('K2', 'Cofcat.Env', format)
+    worksheet1.write('L2', 'Cofcat.Reputation', format)
+    worksheet1.write('M2', 'Cofcat.Combined', format)
+    worksheet1.merge_range('N1:N2', 'Component Material Glade', format)
+    worksheet1.write('O2', 'InitThinningPOFCatalog', format)
+    worksheet1.write('P2', 'InitEnv.Cracking', format)
+    worksheet1.write('Q2', 'InitOtherPOFCatalog', format)
+    worksheet1.write('R2', 'InitPOFCatelog', format)
+    worksheet1.write('S2', 'ExtThinningPOF', format)
+    worksheet1.write('T2', 'ExtEnvCrackingProbabilityCatelog', format)
+    worksheet1.write('U2', 'ExtOtherPOFCatelog', format)
+    worksheet1.write('V2', 'ExtPOFCatelog', format)
+    worksheet1.write('W2', 'POFCategory', format)
+    worksheet1.write('X2', 'Current Risk', format)
+    worksheet1.set_column('X2:X2', 20)
+    worksheet1.write('Y2', 'Future Risk', format)
+    worksheet1.set_column('Y2:Y2', 20)
 
-        ### sheet 3 InspectionPlan
-        worksheet2.write('A1', 'System', format1)
-        worksheet2.set_column('A1:A1', 20)
-        worksheet2.write('B1', 'Equipment Name', format1)
-        worksheet2.set_column('B1:B1', 20)
-        worksheet2.write('C1', 'Damage Mechanism', format1)
-        worksheet2.set_column('C1:C1', 30)
-        worksheet2.write('D1', 'Method', format1)
-        worksheet2.set_column('D1:D1', 20)
-        worksheet2.write('E1', 'Coverage', format1)
-        worksheet2.set_column('E1:E1', 50)
-        worksheet2.write('F1', 'Availability', format1)
-        worksheet2.set_column('F1:F1', 20)
-        worksheet2.write('G1', 'Last Inspection Date', format1)
-        worksheet2.set_column('G1:G1', 40)
-        worksheet2.write('H1', 'Inspection Interval', format1)
-        worksheet2.set_column('H1:H1', 30)
-        worksheet2.write('I1', 'Due Date', format1)
-        worksheet2.set_column('I1:I1', 20)
+    ### sheet 3 InspectionPlan
+    worksheet2.set_row(0, 60)
+    worksheet2.write('A1', 'System', format1)
+    worksheet2.set_column('A1:A1', 20)
+    worksheet2.write('B1', 'Equipment Name', format1)
+    worksheet2.set_column('B1:B1', 20)
+    worksheet2.write('C1', 'Damage Mechanism', format1)
+    worksheet2.set_column('C1:C1', 30)
+    worksheet2.write('D1', 'Method', format1)
+    worksheet2.set_column('D1:D1', 20)
+    worksheet2.write('E1', 'Coverage', format1)
+    worksheet2.set_column('E1:E1', 50)
+    worksheet2.write('F1', 'Availability', format1)
+    worksheet2.set_column('F1:F1', 20)
+    worksheet2.write('G1', 'Last Inspection Date', format1)
+    worksheet2.set_column('G1:G1', 40)
+    worksheet2.write('H1', 'Inspection Interval', format1)
+    worksheet2.set_column('H1:H1', 30)
+    worksheet2.write('I1', 'Due Date', format1)
+    worksheet2.set_column('I1:I1', 20)
 
-        ### VUNA EDIT
-        data = RwFullPof.objects.filter(id= proposalname)
+    ### VUNA EDIT
+    data = RwFullPof.objects.filter(id=proposalname)
+    if isTank:
+        data1 = RwCaTank.objects.filter(id=proposalname)
+        data2 = RwInputCaTank.objects.filter(id=proposalname)
+    else:
+        data1 = RwCaLevel1.objects.filter(id=proposalname)
+        data2 = RwCaLevel1.objects.filter(id=proposalname)
+    index = range(0, data.count())
+    zipRisk = zip(data, data1, index, data2)
+
+    for a, b, ind, c in zipRisk:
+        i = 3 + ind
+        # DF export
+        worksheet.write('A' + str(i), equip.equipmentname, formatdata)
+        worksheet.write('B' + str(i), equip.equipmentdesc, formatdata)
+        worksheet.write('C' + str(i),
+                        EquipmentType.objects.get(equipmenttypeid=equip.equipmenttypeid_id).equipmenttypename,
+                        formatdata)
+        worksheet.write('D' + str(i), component.componentname, formatdata)
+
+        worksheet.write('O' + str(i), convertDF(a.thinningap1), formatdata)
+        worksheet.write('P' + str(i), convertDF(a.sccap1), formatdata)
+        worksheet.write('Q' + str(i), convertDF(a.htha_ap1 + a.brittleap1 + a.fatigueap1), formatdata)
+        worksheet.write('R' + str(i), convertDF(a.thinningap1 + a.sccap1 + a.htha_ap1 + a.brittleap1), formatdata)
+        worksheet.write('S' + str(i), convertDF(a.externalap1), formatdata)
+        worksheet.write('T' + str(i), convertDF(0), formatdata)
+        worksheet.write('U' + str(i), convertDF(0), formatdata)
+        worksheet.write('V' + str(i), convertDF(a.externalap1), formatdata)
+        worksheet.write('W' + str(i), convertDF(a.totaldfap1), formatdata)
+
+        # Sheet1 demo
+        worksheet1.write('A' + str(i), equip.equipmentnumber, formatdata)
+        worksheet1.write('B' + str(i), equip.equipmentdesc, formatdata)
+        worksheet1.write('C' + str(i),
+                         EquipmentType.objects.get(equipmenttypeid=equip.equipmenttypeid_id).equipmenttypename,
+                         formatdata)
+        worksheet1.write('D' + str(i), component.componentname, formatdata)
+
+        worksheet1.write('O' + str(i), a.thinningap1, formatdata)
+        worksheet1.write('P' + str(i), a.sccap1, formatdata)
+        worksheet1.write('Q' + str(i), a.htha_ap1 + a.brittleap1 + a.fatigueap1, formatdata)
+        worksheet1.write('R' + str(i), a.thinningap1 + a.sccap1 + a.htha_ap1 + a.brittleap1, formatdata)
+        worksheet1.write('S' + str(i), a.externalap1, formatdata)
+        worksheet1.write('T' + str(i), 'N/A', formatdata)
+        worksheet1.write('U' + str(i), 'N/A', formatdata)
+        worksheet1.write('V' + str(i), a.externalap1, formatdata)
+        worksheet1.write('W' + str(i), a.totaldfap1, formatdata)
+
+        # CA export
         if isTank:
-            data1 = RwCaTank.objects.filter(id=proposalname)
+            worksheet.write('G' + str(i), "N/A", formatdata)
+            worksheet.write('H' + str(i), convertCA(b.component_damage_cost), formatdata)
+            worksheet.write('I' + str(i), 0, formatdata)
+            worksheet.write('J' + str(i), convertCA(b.business_cost), formatdata)
+            worksheet.write('K' + str(i), convertCA(b.fc_environ), formatdata)
+            worksheet.write('L' + str(i), "N/A", formatdata)
+            worksheet.write('M' + str(i), convertCA(b.consequence), formatdata)
+            worksheet.write('E' + str(i), c.api_fluid, formatdata)
+            worksheet.write('F' + str(i), 'Liquid', formatdata)
+            # Sheet 1
+            worksheet1.write('G' + str(i), "N/A", formatdata)
+            worksheet1.write('H' + str(i), b.component_damage_cost, formatdata)
+            worksheet1.write('I' + str(i), 0, formatdata)
+            worksheet1.write('J' + str(i), b.business_cost, formatdata)
+            worksheet1.write('K' + str(i), b.fc_environ, formatdata)
+            worksheet1.write('L' + str(i), "N/A", formatdata)
+            worksheet1.write('M' + str(i), b.consequence, formatdata)
+            worksheet1.write('E' + str(i), c.api_fluid, formatdata)
+            worksheet1.write('F' + str(i), 'Liquid', formatdata)
         else:
-            data1 = RwCaLevel1.objects.filter(id=proposalname)
-
-        index = range(0, data.count())
-        zipRisk = zip(data, data1, index)
-
-        for a, b, ind in zipRisk:
-            i = 3 + ind
-            # DF export
-            worksheet.write('O' + str(i), convertDF(a.thinningap1) , formatdata)
-            worksheet.write('P' + str(i), convertDF(a.sccap1) , formatdata)
-            worksheet.write('Q' + str(i), convertDF(a.htha_ap1 + a.brittleap1 + a.fatigueap1) , formatdata)
-            worksheet.write('R' + str(i), convertDF(a.thinningap1 + a.sccap1 + a.htha_ap1 + a.brittleap1), formatdata)
-            worksheet.write('S' + str(i), convertDF(a.externalap1), formatdata)
-            worksheet.write('T' + str(i), convertDF(0), formatdata)
-            worksheet.write('U' + str(i), convertDF(0), formatdata)
-            worksheet.write('V' + str(i), convertDF(a.externalap1), formatdata)
-            #PoF = initPoF + extPoF
-
-
-            worksheet.write('W' + str(i),convertDF(a.totaldfap1), formatdata)
-
-            # CA export
-            if isTank:
-                print('abc')
-            else:
-                worksheet.write('G' + str(i), 0, formatdata)
-                worksheet.write('H' + str(i), b.ca_inj_flame, formatdata)
-                worksheet.write('I' + str(i), b.fc_inj, formatdata)
-                worksheet.write('J' + str(i), b.fc_prod, formatdata)
-                worksheet.write('K' + str(i), b.fc_envi, formatdata)
-                worksheet.write('L' + str(i), 0, formatdata)
-                worksheet.write('M' + str(i), b.fc_total, formatdata)
-                z = a.pofap1 * b.fc_total
-                k = a.pofap2 * b.fc_total
-                worksheet.write('X' + str(i), z, formatdata)
-                worksheet.write('Y' + str(i), k, formatdata)
-
-        data2 = RwInputCaLevel1.objects.all()
-        index2 = range(0, data2.count() - 1)
-        zipData2 = zip(data2, index2)
-        for c, index2 in zipData2:
-            i = 3 + index2
+            worksheet.write('G' + str(i), "N/A", formatdata)
+            worksheet.write('H' + str(i), convertCA(b.fc_cmd), formatdata)
+            worksheet.write('I' + str(i), convertCA(b.fc_inj), formatdata)
+            worksheet.write('J' + str(i), convertCA(b.fc_prod), formatdata)
+            worksheet.write('K' + str(i), convertCA(b.fc_envi), formatdata)
+            worksheet.write('L' + str(i), "N/A", formatdata)
+            worksheet.write('M' + str(i), convertCA(b.fc_total), formatdata)
             worksheet.write('E' + str(i), c.api_fluid)
             worksheet.write('F' + str(i), c.system)
-        workbook.close()
-        output.seek(0)
-        response = HttpResponse(output.read(), content_type="application/ms-excel")
-        response['Content-Disposition'] = 'attachment; filename=myexport.xlsx'
-        return response
-    return render(request, 'home/new/test.html')
+            # Sheet 1
+            worksheet1.write('G' + str(i), "N/A", formatdata)
+            worksheet1.write('H' + str(i), b.fc_cmd, formatdata)
+            worksheet1.write('I' + str(i), b.fc_inj, formatdata)
+            worksheet1.write('J' + str(i), b.fc_prod, formatdata)
+            worksheet1.write('K' + str(i), b.fc_envi, formatdata)
+            worksheet1.write('L' + str(i), "N/A", formatdata)
+            worksheet1.write('M' + str(i), b.fc_total, formatdata)
+            worksheet1.write('E' + str(i), c.api_fluid)
+            worksheet1.write('F' + str(i), c.system)
+
+        worksheet.write('X' + str(i), risk, formatrisk)
+        worksheet.write('Y' + str(i), riskFuture, formatriskFuture)
+        worksheet1.write('X' + str(i), fcof.fcofvalue * fpof.pofap1, formatrisk)
+        worksheet1.write('Y' + str(i), fcof.fcofvalue * fpof.pofap2, formatriskFuture)
+
+    inspInfo = RwDamageMechanism.objects.filter(id_dm=proposalname)
+    print(inspInfo)
+    lenght = range(0, inspInfo.count())
+    print(lenght)
+    inspZip = zip(inspInfo, lenght)
+
+    for a, b in inspZip:
+        i = 2 + b
+        worksheet2.write('A' + str(i), 'Inspection', formatdata)
+        worksheet2.write('B' + str(i), equip.equipmentname, formatdata)
+        worksheet2.write('C' + str(i), DmItems.objects.get(dmitemid=a.dmitemid_id).dmdescription, formatdata)
+        worksheet2.write('D' + str(i), 'ACFM', formatdata)
+        worksheet2.data_validation('D' + str(i), {'validate': 'list', 'source': '=Lookup!$A$2:$A$37'})
+        worksheet2.write('E' + str(i), 'N/A', formatdata)
+        worksheet2.write('F' + str(i), 'online', formatdata)
+        worksheet2.data_validation('F' + str(i), {'validate': 'list',
+                                                  'source': ['online', 'shutdown']})
+        worksheet2.write('G' + str(i), a.lastinspdate.date(), formattime)
+        worksheet2.write('H' + str(i), a.inspduedate.year - a.lastinspdate.year, formatdata)
+        worksheet2.write('I' + str(i), a.inspduedate.date(), formattime)
+
+    workbook.close()
+    output.seek(0)
+    response = HttpResponse(output.read(), content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=myexport.xlsx'
+    return response

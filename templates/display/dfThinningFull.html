@@ -149,6 +149,7 @@
                 <li><a href="{% url 'resultBottom' obj.id_id %}">CA Result</a></li>
             {% endif %}
             <li><a href="{% url 'riskMatrix' obj.id_id %}">Risk Matrix</a></li>
+            <li><a href="{% url 'export' obj.id_id%}">Export Report</a></li>
             <li><a href="{% url 'proposalDisplay' assess.componentid_id %}">Back to Component</a></li>
         </ul>
     </div>
@@ -286,7 +287,6 @@
     </div>
 
 </div>
-
 </body>
 </html>
 

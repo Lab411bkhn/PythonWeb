@@ -61,6 +61,6 @@ urlpatterns = [
     # Proposal URL( RBI 581 calculate URL)
 
     #Demo export data
-    url(r'^export/$', views.exportDemo, name='export')
+    url(r'^export/(?P<proposalname>\d+)/$', views.exportDemo, name='export')
 
 ]
