@@ -36,6 +36,20 @@
             });
         });
     </script>
+    <script>
+        function Sub(){
+	        var Status;
+	        if (confirm("Are you sure want to delete this item?")) {
+                Status = '_delete';
+                document.getElementById("sub").name = Status;
+            }
+	        else{
+    	        Status = '_cancel';
+                document.getElementById("sub").name = Status;
+            }
+            $(this).form.submit();
+        }
+    </script>
 </head>
 <body>
 <div id="menu_top">
@@ -100,7 +114,8 @@
     <br>
         <table style="text-align: right">
             <td>
-                <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
+                <button class="btn btn-info" id="sub" onclick="Sub()">Delete Selected</button>
+                <button class="btn btn-info" name="_export" type="submit">Export Report</button>
             </td>
         </table>
     </form>

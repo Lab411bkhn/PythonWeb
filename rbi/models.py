@@ -114,6 +114,7 @@ class ComponentMaster(models.Model):
     class Meta:
         managed = False
         db_table = 'component_master'
+        ordering = ('componentid',)
 
 
 class ComponentType(models.Model):
@@ -126,6 +127,7 @@ class ComponentType(models.Model):
     class Meta:
         managed = False
         db_table = 'component_type'
+        ordering = ('componenttypeid',)
 
 
 class DesignCode(models.Model):
@@ -139,6 +141,7 @@ class DesignCode(models.Model):
     class Meta:
         managed = False
         db_table = 'design_code'
+        ordering = ('designcodeid',)
 
 
 class DjangoAdminLog(models.Model):
@@ -193,6 +196,7 @@ class DmCategory(models.Model):
         managed = False
         db_table = 'dm_category'
         verbose_name = "Damage Category"
+        ordering = ('dmcategoryid',)
 
 
 class DmItems(models.Model):
@@ -208,6 +212,7 @@ class DmItems(models.Model):
         managed = False
         db_table = 'dm_items'
         verbose_name = "Damage Item"
+        ordering = ('dmitemid',)
 
 
 class EquipmentMaster(models.Model):
@@ -230,7 +235,7 @@ class EquipmentMaster(models.Model):
     class Meta:
         managed = False
         db_table = 'equipment_master'
-
+        ordering = ('equipmentid',)
 
 class EquipmentType(models.Model):
     equipmenttypeid = models.IntegerField(db_column='EquipmentTypeID', primary_key=True)  # Field name made lowercase.
@@ -243,6 +248,7 @@ class EquipmentType(models.Model):
     class Meta:
         managed = False
         db_table = 'equipment_type'
+        ordering = ('equipmenttypeid',)
 
 
 class Facility(models.Model):
@@ -256,6 +262,7 @@ class Facility(models.Model):
     class Meta:
         managed = False
         db_table = 'facility'
+        ordering = ('facilityid',)
 
 
 class FacilityRiskTarget(models.Model):
@@ -266,6 +273,7 @@ class FacilityRiskTarget(models.Model):
     class Meta:
         managed = False
         db_table = 'facility_risk_target'
+        ordering = ('facilityid',)
 
 
 class Manufacturer(models.Model):
@@ -278,6 +286,7 @@ class Manufacturer(models.Model):
     class Meta:
         managed = False
         db_table = 'manufacturer'
+        ordering = ('manufacturerid',)
 
 
 class RwAssessment(models.Model):
@@ -295,6 +304,7 @@ class RwAssessment(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_assessment'
+        ordering = ('id',)
 
 
 class RwCaLevel1(models.Model):
@@ -318,6 +328,7 @@ class RwCaLevel1(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_ca_level1'
+        ordering = ('id',)
 
 
 class RwCaTank(models.Model):
@@ -365,6 +376,7 @@ class RwCaTank(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_ca_tank'
+        ordering = ('id',)
 
 
 class RwCoating(models.Model):
@@ -387,6 +399,7 @@ class RwCoating(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_coating'
+        ordering = ('id',)
 
 
 class RwComponent(models.Model):
@@ -422,6 +435,7 @@ class RwComponent(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_component'
+        ordering = ('id',)
 
 
 class RwEquipment(models.Model):
@@ -458,6 +472,7 @@ class RwEquipment(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_equipment'
+        ordering = ('id',)
 
 
 class RwExtcorTemperature(models.Model):
@@ -476,6 +491,7 @@ class RwExtcorTemperature(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_extcor_temperature'
+        ordering = ('id',)
 
 
 class RwFullFcof(models.Model):
@@ -492,6 +508,7 @@ class RwFullFcof(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_full_fcof'
+        ordering = ('id',)
 
 
 class RwFullPof(models.Model):
@@ -536,6 +553,7 @@ class RwFullPof(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_full_pof'
+        ordering = ('id',)
 
 
 class RwInputCaLevel1(models.Model):
@@ -561,6 +579,7 @@ class RwInputCaLevel1(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_input_ca_level1'
+        ordering = ('id',)
 
 
 class RwInputCaTank(models.Model):
@@ -582,6 +601,7 @@ class RwInputCaTank(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_input_ca_tank'
+        ordering = ('id',)
 
 
 class RwInspectionHistory(models.Model):
@@ -598,6 +618,7 @@ class RwInspectionHistory(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_inspection_history'
+        ordering = ('id',)
 
 
 class RwMaterial(models.Model):
@@ -627,6 +648,7 @@ class RwMaterial(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_material'
+        ordering = ('id',)
 
 
 class RwStream(models.Model):
@@ -665,6 +687,7 @@ class RwStream(models.Model):
     class Meta:
         managed = False
         db_table = 'rw_stream'
+        ordering = ('id',)
 
 
 class Sites(models.Model):
@@ -679,6 +702,7 @@ class Sites(models.Model):
     class Meta:
         managed = False
         db_table = 'sites'
+        ordering = ('siteid',)
 
 
 class Tbl204DmHtha(models.Model):

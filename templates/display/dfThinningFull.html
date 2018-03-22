@@ -140,17 +140,17 @@
 <div id="main">
     <div id="main-left">
         <ul>
-            <h2>DF Result</h2>
+            <h2>Damage Factor</h2>
             {% if not isTank %}
-                <li><a href="{% url 'resultca' obj.id_id %}">CA Result</a></li>
+                <li><a href="{% url 'resultca' obj.id_id %}">Consequences</a></li>
             {% elif isShell %}
-                <li><a href="{% url 'resultShell' obj.id_id %}">CA Result</a></li>
+                <li><a href="{% url 'resultShell' obj.id_id %}">Consequences</a></li>
             {% else %}
-                <li><a href="{% url 'resultBottom' obj.id_id %}">CA Result</a></li>
+                <li><a href="{% url 'resultBottom' obj.id_id %}">Consequences</a></li>
             {% endif %}
             <li><a href="{% url 'riskMatrix' obj.id_id %}">Risk Matrix</a></li>
             <li><a href="{% url 'export' obj.id_id%}">Export Report</a></li>
-            <li><a href="{% url 'proposalDisplay' assess.componentid_id %}">Back to Component</a></li>
+            <li><a href="{% url 'proposalDisplay' assess.componentid_id %}">Back to Proposal</a></li>
         </ul>
     </div>
     <div id="main-right" align="center">

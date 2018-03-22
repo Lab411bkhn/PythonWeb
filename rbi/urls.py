@@ -21,7 +21,7 @@ from  home import views
 
 urlpatterns = [
     # Project Management URL
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^$', views.home, name='home'),
     url(r'^login/$', views.login, name='login'),
     url(r'^signup/$', views.signup, name='signup'),
@@ -61,6 +61,6 @@ urlpatterns = [
     # Proposal URL( RBI 581 calculate URL)
 
     #Demo export data
-    url(r'^export/(?P<proposalname>\d+)/$', views.exportDemo, name='export')
-
+    url(r'^export/(?P<proposalname>\d+)/$', views.exportDemo, name='export'),
+    url(r'^export/(?P<idx>\d+)/(?P<status>\w+)/$', views.exportFull, name='exportFull')
 ]

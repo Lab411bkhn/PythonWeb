@@ -36,14 +36,40 @@
             });
         });
     </script>
+    <script>
+        function Sub(){
+	        var Status;
+	        if (confirm("Are you sure want to delete this item?")) {
+                Status = '_delete';
+                document.getElementById("sub").name = Status;
+            }
+	        else{
+    	        Status = '_cancel';
+                document.getElementById("sub").name = Status;
+            }
+            $(this).form.submit();
+        }
+        function Export() {
+            var subform;
+            if (confirm("Are you sure want to export this item?")){
+                subform = '_export';
+                document.getElementById("export").name = subform;
+            }
+            else {
+                subform= '_cancel';
+                document.getElementById("export").name = subform;
+            }
+            $(this).form.submit();
+        }
+    </script>
 </head>
 <body>
 <div id="menu_top">
    <ul>
 
-                <li><a href="{% url 'login' %}" accesskey="1" title="">ADMINISTRATOR</a></li>
+                <li><a href="{% url 'home' %}" accesskey="1" title="">ADMINISTRATOR</a></li>
                 <li><a href="#" accesskey="2" title="">CONTACT US</a></li>
-                <li><a href="{% url 'login' %}" accesskey="3" title="">RBI</a></li>
+                <li><a href="{% url 'home' %}" accesskey="3" title="">RBI</a></li>
                 <li><a href="{% url 'home' %}" accesskey="4" title="">HOMEPAGE</a></li>
    </ul>
 </div>
@@ -57,7 +83,6 @@
             <h2>Site Management</h2>
             <li><a href="{% url 'site_display' %}">Site List</a></li>
             <li><a href="{% url 'newSite' %}">New Site</a></li>
-            <li><a href="{% url 'site_display' %}">Risk Summary</a></li>
         </ul>
     </div>
     <div id="main-right" align="center">
@@ -92,9 +117,11 @@
         <table style="text-align: right">
             <td>
                 <button class="btn btn-info" type="submit" name="_edit">Edit Selected</button>
-                <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
+                <button class="btn btn-info" id="sub" onclick="Sub()">Delete Selected</button>
+                <button class="btn btn-info" id="export" onclick="Export()">Export Report</button>
             </td>
         </table>
+
     </form>
     </div>
     </div>

@@ -27,16 +27,17 @@
 <div id="main">
     <div id="main-left">
         <ul>
-            <h2>Proposal Management</h2>
-            <li><a href="{% url 'resultpof' df.id_id %}">DF Result</a></li>
+            <h2>Risk Matrix</h2>
+            <li><a href="{% url 'resultpof' df.id_id %}">Damage Factor</a></li>
             {% if not isTank %}
-                <li><a href="{% url 'resultca' df.id_id %}">CA Result</a></li>
+                <li><a href="{% url 'resultca' df.id_id %}">Consequences</a></li>
             {% elif isShell %}
-                <li><a href="{% url 'resultShell' df.id_id %}">CA Result</a></li>
+                <li><a href="{% url 'resultShell' df.id_id %}">Consequences</a></li>
             {% else %}
-                <li><a href="{% url 'resultBottom' df.id_id %}">CA Result</a></li>
+                <li><a href="{% url 'resultBottom' df.id_id %}">Consequences</a></li>
             {% endif %}
-            <li><a href="{% url 'proposalDisplay' ass.componentid_id %}">Back to Component</a></li>
+            <li><a href="{% url 'export' df.id_id%}">Export Report</a></li>
+            <li><a href="{% url 'proposalDisplay' ass.componentid_id %}">Back to Proposal</a></li>
         </ul>
     </div>
     <div id="main-right">

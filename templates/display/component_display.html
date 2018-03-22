@@ -36,6 +36,32 @@
             });
         });
     </script>
+    <script>
+        function Sub(){
+	        var Status;
+	        if (confirm("Are you sure want to delete this item?")) {
+                Status = '_delete';
+                document.getElementById("sub").name = Status;
+            }
+	        else{
+    	        Status = '_cancel';
+                document.getElementById("sub").name = Status;
+            }
+            $(this).form.submit();
+        }
+        function Export() {
+            var subform;
+            if (confirm("Are you sure want to export this item?")){
+                subform = '_export';
+                document.getElementById("export").name = subform;
+            }
+            else {
+                subform= '_cancel';
+                document.getElementById("export").name = subform;
+            }
+            $(this).form.submit();
+        }
+    </script>
 </head>
 <body>
 <div id="menu_top">
@@ -98,7 +124,8 @@
         <table style="text-align: right">
             <td>
                 <button class="btn btn-info" type="submit" name="_edit">Edit Selected</button>
-                <button class="btn btn-info" type="submit" name="_delete">Delete Selected</button>
+                <button class="btn btn-info" id="sub" onclick="Sub()">Delete Selected</button>
+                <button class="btn btn-info" id="export" onclick="Export()">Export Report</button>
             </td>
         </table>
     </form>

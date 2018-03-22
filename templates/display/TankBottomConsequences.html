@@ -50,11 +50,11 @@
 <div id="main">
     <div id="main-left">
         <ul>
-            <h2>Proposal Management</h2>
-            <li><a href="{% url 'resultpof' obj.id_id %}">DF Result</a></li>
+            <h2>Consequences</h2>
+            <li><a href="{% url 'resultpof' obj.id_id %}">Damage Factor</a></li>
             <li><a href="{% url 'riskMatrix' obj.id_id %}">Risk Matrix</a></li>
             <li><a href="{% url 'export' obj.id_id%}">Export Report</a></li>
-            <li><a href="{% url 'proposalDisplay' assess.componentid_id  %}">Back to Component</a></li>
+            <li><a href="{% url 'proposalDisplay' assess.componentid_id  %}">Back to Proposal</a></li>
         </ul>
     </div>
     <div id="main-right" align="center">
